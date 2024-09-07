@@ -27,14 +27,8 @@ const subscriptionSchema = new Schema<ISubscription>(
       enum: ['Free', 'Platinum'],
       default: 'Free',
     },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-      required: true,
-    },
+    startDate: { type: Date, default: null },  // Allow null
+    endDate: { type: Date, default: null },    // Allow null
     status: {
       type: String,
       enum: ['Active', 'Expired', 'Free'],
