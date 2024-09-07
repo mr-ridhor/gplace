@@ -6,7 +6,7 @@ export const addInvestor = async (payload: any) => {
   return axiosService
     .post("/investors", payload)
     .then(({ data }) => {
-      // You can add path revalidation or similar actions
+      // You can add path revalidation or similar action
       revalidatePath("/", "page");
       return {
         data,
