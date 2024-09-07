@@ -21,7 +21,6 @@ import { toast } from "sonner";
 import moment from "moment";
 import { loginType } from "@/lib/zod-type/loginType";
 import { loginSchema } from "@/lib/zod-schema/loginSchema";
-
 const Login = () => {
   const searchParams = useSearchParams();
   const callBackUrl = searchParams.get("callbackUrl");
@@ -43,7 +42,7 @@ const Login = () => {
     })
       .then((callback) => {
         if (callback?.ok) {
-          toast.success("Login successfully", {
+          toast("Login successfully", {
             description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
           });
           return router.push(`${callback.url}`);
