@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import moment from "moment";
 import { loginType } from "@/lib/zod-type/loginType";
 import { loginSchema } from "@/lib/zod-schema/loginSchema";
+
 const Login = () => {
   const searchParams = useSearchParams();
   const callBackUrl = searchParams.get("callbackUrl");
