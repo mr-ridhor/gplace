@@ -1,0 +1,136 @@
+// types.ts
+export interface MockedData {
+  name: string;
+  country: string;
+  website: string;
+  investmentIndustry: string;
+  investmentGeographies: string;
+  dealsIn5Years: number;
+  dealSize: string;
+  primaryContact: string;
+  status: string;
+  match: number;
+}
+
+export const mockedsData: MockedData[] = [
+  {
+    name: "Volari",
+    country: "Canada",
+    website: "www.volaris.com",
+    investmentIndustry: "Strategic",
+    investmentGeographies: "Asia",
+    dealsIn5Years: 49,
+    dealSize: "$3 mm - 12mm",
+    primaryContact: "Paul Stevens",
+    status: "Data Exchange",
+    match: 90,
+  },
+  {
+    name: "Volaris",
+    country: "Canada",
+    website: "www.volaris.com",
+    investmentIndustry: "Financial",
+    investmentGeographies: "Asia",
+    dealsIn5Years: 49,
+    dealSize: "$3 mm - 12mm",
+    primaryContact: "Paul Stevens",
+    status: "Data Exchange",
+    match: 90,
+  },
+  {
+    name: "AirAsia",
+    country: "Malaysia",
+    website: "www.airasia.com",
+    investmentIndustry: "Strategic",
+    investmentGeographies: "Southeast Asia",
+    dealsIn5Years: 36,
+    dealSize: "$5 mm - 15mm",
+    primaryContact: "John Doe",
+    status: "Negotiation",
+    match: 85,
+  },
+  {
+    name: "Qantas",
+    country: "Australia",
+    website: "www.qantas.com",
+    investmentIndustry: "Strategic",
+    investmentGeographies: "Oceania",
+    dealsIn5Years: 52,
+    dealSize: "$4 mm - 10mm",
+    primaryContact: "Jane Smith",
+    status: "Contract Signed",
+    match: 92,
+  },
+  {
+    name: "Delta",
+    country: "USA",
+    website: "www.delta.com",
+    investmentIndustry: "Financial",
+    investmentGeographies: "North America",
+    dealsIn5Years: 65,
+    dealSize: "$10 mm - 20mm",
+    primaryContact: "Bob Johnson",
+    status: "In Progress",
+    match: 88,
+  },
+  {
+    name: "British Airways",
+    country: "UK",
+    website: "www.britishairways.com",
+    investmentIndustry: "Strategic",
+    investmentGeographies: "Europe",
+    dealsIn5Years: 58,
+    dealSize: "$6 mm - 18mm",
+    primaryContact: "Alice Brown",
+    status: "Finalized",
+    match: 91,
+  },
+  {
+    name: "Lufthansa",
+    country: "Germany",
+    website: "www.lufthansa.com",
+    investmentIndustry: "Financial",
+    investmentGeographies: "Europe",
+    dealsIn5Years: 70,
+    dealSize: "$7 mm - 22mm",
+    primaryContact: "Carl White",
+    status: "In Progress",
+    match: 89,
+  },
+  {
+    name: "Emirates",
+    country: "UAE",
+    website: "www.emirates.com",
+    investmentIndustry: "Strategic",
+    investmentGeographies: "Middle East",
+    dealsIn5Years: 44,
+    dealSize: "$8 mm - 25mm",
+    primaryContact: "David Green",
+    status: "Contract Signed",
+    match: 93,
+  },
+  {
+    name: "Singapore Airlines",
+    country: "Singapore",
+    website: "www.singaporeair.com",
+    investmentIndustry: "Strategic",
+    investmentGeographies: "Asia",
+    dealsIn5Years: 60,
+    dealSize: "$9 mm - 30mm",
+    primaryContact: "Emma Blue",
+    status: "Negotiation",
+    match: 87,
+  },
+  {
+    name: "Cathay Pacific",
+    country: "Hong Kong",
+    website: "www.cathaypacific.com",
+    investmentIndustry: "Financial",
+    investmentGeographies: "Asia",
+    dealsIn5Years: 55,
+    dealSize: "$5 mm - 20mm",
+    primaryContact: "Linda Gray",
+    status: "Data Exchange",
+    match: 90,
+  },
+];

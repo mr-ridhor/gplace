@@ -1,0 +1,159 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { TabsContent } from "@/components/ui/tabs";
+import Link from "next/link";
+import React from "react";
+import { BiLogoTelegram } from "react-icons/bi";
+
+const Discussion = () => {
+  const data = [
+    {
+      id: 1,
+      header: "Primary Contact",
+      name: "Hallme Nezihe",
+    },
+    {
+      id: 2,
+      header: "# of Deals in 5 Years",
+      name: 21,
+    },
+    {
+      id: 3,
+      header: "Median Deal Size ($ mm)",
+      name: "$65.00",
+    },
+    {
+      id: 4,
+      header: "AUM ($ mm)",
+      name: "$325.00",
+    },
+  ];
+  return (
+    <TabsContent value="discussion" className="space-y-4">
+      <div className="grid gap-x-5 gap-y-2 grid-cols-2 lg:grid-cols-4 w-full">
+        {data.map((list, id) => {
+          return (
+            <Card
+              key={id}
+              className="border-l-2 flecenter border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-fit col-span-1"
+            >
+              <CardContent className="h-[100px] gap-y-2 flex flex-col justify-center  tems-center">
+                <p className="text-[10px] lg:text-sm">{list.header}</p>
+                <p className="font-medium text-[10px] lg:text-sm">
+                  {list.name}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+      {/* <div className="grid gap-x-5 grid-cols-4 w-full">
+        <Card className="border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] col-span-1">
+          <CardContent></CardContent>
+        </Card>
+        <Card className="border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] order-2 col-span-1">
+          <CardContent></CardContent>
+        </Card>
+        <Card className="border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] order-2 col-span-1">
+          <CardContent></CardContent>
+        </Card>
+        <Card className="border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] order-2 col-span-1">
+          <CardContent></CardContent>
+        </Card>
+      </div> */}
+      <div className="w-full gap-y-2 md:grid-cols-2 text-[10px] lg:text-sm grid gap-x-4 ">
+        <Card className="border col-span-1 b">
+          <CardHeader className="text-[#898989]">
+            <p>Description</p>
+          </CardHeader>
+          <CardContent className="text-[10px] lg:text-sm ">
+            Introducing Volaris inc. - a leading provider of innovative software
+            solutions for businesses worldwide. Our team of experts is dedicated
+            to delivering cutting-edge technology that drives efficiency,
+            productivity, and growth. With a focus on user experience and
+            customer satisfaction, we are committed to helping our clients
+            succeed in the digital age. Choose TechNova Solutions for reliable,
+            scalable, and customized software solutions tailored to your unique
+            business needs.
+          </CardContent>
+        </Card>
+        <Card className="border col-span-1">
+          <CardHeader className="text-[#898989]">
+            <p>Investment Profile</p>
+          </CardHeader>
+          <CardContent className="text-[10px] lg:text-sm w-full space-y-4">
+            <div className="w-full lg:w-[80%] justify-between h-1/2 flex ap-x-3">
+              <div className="space-y-2">
+                <p className="text-[8px] lg:text-sm">Investment industry</p>
+                <div className="bg-[#F5E2B7] rounded-md flex items-center w-[100px] justify-center h-8">
+                  <p>Strategic</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-[8px] lg:text-sm">Investment Geographies</p>
+                <div className="bg-[#E4DAF4] rounded-md flex items-center w-[100px] justify-center h-8">
+                  <p>Asia</p>
+                </div>
+              </div>
+            </div>
+            <div className="h2">
+              <div className="">
+                <p># of Deals in LTM</p>
+                <p>2</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="w-full p-4 border rounded-md space-y-4 text-[10px] lg:text-sm">
+        <div className="flex w-full justify-between items-center">
+          <p className="text-[#898989]">Typical Acquisition Target</p>
+          <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
+            <Link href={""}>Request Info</Link>
+            <BiLogoTelegram />
+          </Button>
+        </div>
+        <div className="grid-cols-3 grid w-full">
+          <div className="col-span-1">
+            <p className="">Revenue ($ mm)</p>
+            <p className="">$22 mm - $217 mm</p>
+          </div>
+          <div className="col-span-1">
+            <p className="">EBITDA ($ mm)</p>
+            <p className="">$ mm - $ mm</p>
+          </div>
+          <div className="col-span-1">
+            <p className="">Deal Size ($ mm)</p>
+            <p className="">$12 mm - $65 mm</p>
+          </div>
+        </div>
+      </div>
+      <div className="w-fulltext-[10px] lg:text-sm p-4 border rounded-md space-y-4">
+        <div className="flex w-full justify-between items-center">
+          <p className="text-[#898989]">Typical Price Paid</p>
+          <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
+            <Link href={""}>Request Info</Link>
+            <BiLogoTelegram />
+          </Button>
+        </div>
+        <div className="text-[10px] lg:text-sm grid-cols-3 grid w-full">
+          <div className="col-span-1">
+            <p className="">Valuation ($ mm)</p>
+            <p className="">$23 mm - $109 mm</p>
+          </div>
+          <div className="col-span-1">
+            <p className="">EV/Revenue</p>
+            <p className="">0.53x - 10x</p>
+          </div>
+          <div className="col-span-1">
+            <p className="">EV/EBITDA</p>
+            <p className="">x - x</p>
+          </div>
+        </div>
+      </div>
+    </TabsContent>
+  );
+};
+
+export default Discussion;
