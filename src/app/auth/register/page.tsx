@@ -135,7 +135,7 @@ export default function RegisterPage() {
 
     try {
       const response = await axiosService.post("/auth/signup", payload);
-
+      console.log(response);
       if (response.status !== 200) {
         throw new Error("Failed to submit the data");
       }

@@ -17,7 +17,7 @@ export default function DashboardLayout({
   return (
     <section className="w-screen h-screen flx bg-reen-400 overflow-hidden">
       <Navbar />
-      <div className=" h-full flex-1 no-scrollbar px-5  overflow-auto ">
+      <div className=" h-full flex-1 no-scrollbar   overflow-auto ">
         {children}
       </div>
     </section>

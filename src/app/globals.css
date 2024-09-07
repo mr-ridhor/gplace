@@ -77,3 +77,17 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+.circle-b {
+  fill: none;
+  stroke: #ddd;
+}
+.circle-pr {
+  fill: none;
+  stroke: #ddd;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.circle-text {
+  font-size: 0.6rem;
+  font-weight: bold;
+}

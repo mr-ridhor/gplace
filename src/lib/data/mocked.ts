@@ -14,7 +14,7 @@ export interface MockedData {
 
 export const mockedsData: MockedData[] = [
   {
-    name: "Volaris",
+    name: "Volari",
     country: "Canada",
     website: "www.volaris.com",
     investmentIndustry: "Strategic",

@@ -7,6 +7,7 @@ import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
+import { StoreProvider } from "./StoreProvider";
 
 interface AppProvidersProps extends PropsWithChildren {
   session: Session;
@@ -15,11 +16,13 @@ interface AppProvidersProps extends PropsWithChildren {
 const AppProviders: FC<AppProvidersProps> = ({ children, session }) => {
   return (
     <SessionProvider session={session}>
-      <TooltipProvider>
-        {children}
-        <Toaster />
-        <SonnerToaster />
-      </TooltipProvider>
+      <StoreProvider>
+        <TooltipProvider>
+          {children}
+          <Toaster />
+          <SonnerToaster />
+        </TooltipProvider>
+      </StoreProvider>
     </SessionProvider>
   );
 };
