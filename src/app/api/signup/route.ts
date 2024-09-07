@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     };
 
     // Send the verification email
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptions, (error: any, info: any) => {
       if (error) {
         console.error("Error sending email:", error);
         return NextResponse.json(
