@@ -43,7 +43,7 @@ const Login = () => {
     })
       .then((callback) => {
         if (callback?.ok) {
-          toast("Login successfully", {
+          toast.success("Login successfully", {
             description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
           });
           return router.push(`${callback.url}`);
