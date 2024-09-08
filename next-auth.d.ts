@@ -29,9 +29,7 @@ declare module "next-auth" {
     };
   }
 
-  interface User extends DefaultUser {
-    jwt: string; // Extend the User type to include 'jwt'
-  }
+  interface User extends DefaultUser {}
 
   interface JWT {
     jwt: string;

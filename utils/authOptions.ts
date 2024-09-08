@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
           type: "text",
         },
       },
-      authorize: async (credentials, req) => {
+      authorize: async (credentials: any, req) => {
         if (!credentials) {
           return null;
         }
@@ -49,12 +49,10 @@ export const authOptions: NextAuthOptions = {
           password,
           user.credentials.password
         );
-
         if (!isPasswordValid) {
           throw new Error("Invalid password");
         }
 
-        // Return the user object including the required jwt field
         return {
           id: user._id,
           name: user.name,
