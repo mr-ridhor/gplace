@@ -4,7 +4,7 @@ import "./globals.css";
 
 import { getServerSession, Session } from "next-auth";
 import AppProviders from "@/lib/providers/Index";
-// import AppProviders from "../lib/providers/Index";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
