@@ -1,12 +1,21 @@
 import Credentials from "next-auth/providers/credentials";
 import { verifyPassword } from "./bcrypt";
 import connectDB from "../config/db";
-import User from "../models/User";
+import User, { IUser } from '../models/User'; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
+import mongoose from "mongoose";
+import argon2, { hash } from 'argon2'
+
+interface IUserResponse {
+  id: any; // Ensure mongoose Types are imported if needed
+  email: string;
+  firstName: string;
+  lastName: string;
+}
 
 interface CredentialsType {
-    email: string,
-    password: string
+  email: any,
+  password: string
 }
 
 export const authOptions: NextAuthOptions = {
@@ -16,68 +25,70 @@ export const authOptions: NextAuthOptions = {
         email: {
           label: "email",
           type: "email",
+          placeholder: 'johndoe@gmail.com'
         },
         password: {
           label: "password",
-          type: "text",
+          type: "password",
+          placeholder: 'password'
         },
       },
-      async authorize(credentials: CredentialsType) {
+      authorize: async (credentials) => {
+        await connectDB();
         if (!credentials) {
           return null;
         }
 
         const { email, password } = credentials;
 
-        await connectDB();
-
-        // Fetch the user by email
-        const user = (await User.findOne({
+        const user: IUser | any = await User.findOne({
           "credentials.email": email,
-        }));
+        });
 
         if (!user) {
-          throw new Error("No user found");
+          throw Error('User not found')
+          return null
         }
 
-        // Compare the password with the stored hashed password
-        const isPasswordValid = await verifyPassword(
-          password,
-          user.credentials.password
-        );
+        const hashedPassword = user.credentials.password
+        const isPasswordValid = argon2.verify(hashedPassword, password);
         if (!isPasswordValid) {
-          throw new Error("Invalid password");
+          throw Error('Invalid Password');
+          return null;
         }
 
-        return {
-          id: user._id,
-          firstName: user.bio.firstName,
+        const response: IUserResponse = {
+          id: user._id, // Use type assertion here
           email: user.credentials.email,
+          firstName: user.bio.firstName,
+          lastName: user.bio.lastName
         };
+
+        return response;
       },
-    }),
+    })
   ],
   pages: {
-    signIn: "/auth/register",
+    signIn: "/auth/login",
   },
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // Example: 30 days
   },
   callbacks: {
-    async jwt({ token, user }: { token: any; user?: any }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }: { session: any, token: any }) {
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
       }
       return session;
     },
-  },
-};
+  }
+}
