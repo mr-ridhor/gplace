@@ -56,7 +56,8 @@ import { personalType } from "@/lib/zod-type/personalType";
 import { companyType } from "@/lib/zod-type/companyType";
 import { teamType } from "@/lib/zod-type/teamType";
 import { authType } from "@/lib/zod-type/authType";
-import axiosService from "@/lib/services/axiosService";
+// import axiosService from "@/lib/services/axiosService";
+import axios from "axios";
 // import { BioType } from "./types/bioType";
 // import { CompanyType } from "./types/companyType";
 // import { TeamType } from "./types/teamType";
@@ -134,7 +135,7 @@ export default function RegisterPage() {
     };
 
     try {
-      const response = await axiosService.post("/auth/signup", payload);
+      const response = await axios.post("/auth/signup", payload);
       console.log(response);
       if (response.status !== 200) {
         throw new Error("Failed to submit the data");
