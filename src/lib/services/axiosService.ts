@@ -1,6 +1,6 @@
 // import { authOptions } from "@/app/api/auth/authOption";
 // import { Options } from "@/app/api/auth/Option";
-import { Options } from "@/app/api/auth/Option";
+import { authOptions } from "../../../utils/authOptions";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 
@@ -14,7 +14,7 @@ const axiosService = axios.create({
 axiosService.defaults.headers.post["Content-Type"] = "application/json";
 
 axiosService.interceptors.request.use(async (AxiosRequestConfig) => {
-  const session: any = await getServerSession(Options);
+  const session: any = await getServerSession(authOptions);
   let token;
   if (session) {
     token = session.jwt;

@@ -34,6 +34,7 @@ const Login = () => {
   });
 
   const onSubmit = (data: loginType) => {
+
     // alert("HI");
     return signIn("credentials", {
       ...data,
