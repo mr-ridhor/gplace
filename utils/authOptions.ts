@@ -4,9 +4,20 @@ import connectDB from "../config/db";
 import User from "../models/User";
 import { NextAuthOptions } from "next-auth";
 
+<<<<<<< HEAD
 interface CredentialsType {
     email: string,
     password: string
+=======
+interface UserType {
+  _id: string;
+  name: string;
+  email: string;
+  credentials: {
+    email: string;
+    password: string;
+  };
+>>>>>>> 84d54d6ae6ffcc53cff4479c6774673bfcbb1c7a
 }
 
 export const authOptions: NextAuthOptions = {
@@ -22,7 +33,11 @@ export const authOptions: NextAuthOptions = {
           type: "text",
         },
       },
+<<<<<<< HEAD
       async authorize(credentials: CredentialsType) {
+=======
+      authorize: async (credentials: any, req) => {
+>>>>>>> 84d54d6ae6ffcc53cff4479c6774673bfcbb1c7a
         if (!credentials) {
           return null;
         }
@@ -34,8 +49,12 @@ export const authOptions: NextAuthOptions = {
         // Fetch the user by email
         const user = (await User.findOne({
           "credentials.email": email,
+<<<<<<< HEAD
         }));
 
+=======
+        })) as UserType | null;
+>>>>>>> 84d54d6ae6ffcc53cff4479c6774673bfcbb1c7a
         if (!user) {
           throw new Error("No user found");
         }
@@ -80,4 +99,8 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 84d54d6ae6ffcc53cff4479c6774673bfcbb1c7a
