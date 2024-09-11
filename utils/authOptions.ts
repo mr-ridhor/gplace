@@ -1,9 +1,8 @@
 import Credentials from "next-auth/providers/credentials";
-import { verifyPassword } from "./bcrypt";
 import connectDB from "../config/db";
 import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import argon2, { hash } from "argon2";
 
 interface IUserResponse {
@@ -11,11 +10,6 @@ interface IUserResponse {
   email: string;
   firstName: string;
   lastName: string;
-}
-
-interface CredentialsType {
-  email: any;
-  password: string;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -73,6 +67,8 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+  },
+  jwt: {
     maxAge: 30 * 24 * 60 * 60, // Example: 30 days
   },
   callbacks: {
@@ -80,6 +76,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
       }
       return token;
     },
@@ -88,6 +86,8 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
       }
       return session;
     },

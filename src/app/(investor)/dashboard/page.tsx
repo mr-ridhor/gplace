@@ -5,6 +5,7 @@ const page = () => {
   return (
     <div className="h-[80%] my-4 no-scrollbar overflow-y-auto">
       <Table />
+      {/* <h1>Welcome to dashboard</h1> */}
     </div>
   );
 };

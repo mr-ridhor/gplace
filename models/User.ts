@@ -46,7 +46,7 @@ export interface IUser extends Document {
       expiryDate: Date;
     };
     isVerified?: boolean;
-    verificationCode?: string;
+    verificationCode?: number;
   };
 }
 
@@ -117,16 +117,6 @@ const hashPassword = (password: string): Promise<string> => {
   });
 };
 
-// Helper function to validate the password
-const validatePassword = (password: string, hash: string): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
-    const [salt, key] = hash.split(':');
-    crypto.pbkdf2(password, salt, 1000, 64, 'sha512', (err, derivedKey) => {
-      if (err) reject(err);
-      resolve(key === derivedKey.toString('hex'));
-    });
-  });
-};
 
 // Pre-save hook to hash passwords
 userSchema.pre('save', async function (next) {
@@ -138,6 +128,25 @@ userSchema.pre('save', async function (next) {
     next(error as Error); // Type-cast error to Error or CallbackError
   }
 });
+
+// export interface IUserMethods {
+//     revenue: number;
+//     EBITDA: number;
+//     industry: string;
+// }
+
+// userSchema.statics.getClientMetrics = async function (userId: string) {
+//   const user = await this.findById(userId).select('company');
+//   if (!user) throw new Error('User not found');
+
+//   const { revenue, EBITDA, industry } = user.company;
+//   const response : IUserMethods = {
+//     revenue: revenue.ltm, // Client's latest revenue
+//     EBITDA: EBITDA.ltm,   // Client's latest EBITDA
+//     industry,
+//   }
+//   return response
+// };
 
 // Export the model
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
