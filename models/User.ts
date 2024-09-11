@@ -46,7 +46,7 @@ export interface IUser extends Document {
       expiryDate: Date;
     };
     isVerified?: boolean;
-    verificationCode?: string;
+    verificationCode?: number;
   };
 }
 

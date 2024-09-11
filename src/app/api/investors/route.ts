@@ -10,20 +10,16 @@ import { authOptions } from '../../../../utils/authOptions';
 // POST route to create a new Investor entry
 export async function POST(req: NextRequest) {
     try {
-        await connectDB()
-        const data = await getServerSession(authOptions)
+        await connectDB();
+        const data = await getServerSession(authOptions);
 
         const { companyInfo, investmentBio, targetInfo, paidInfo, primaryContact } = await req.json();
         const user = await User.findById(data?.user.id).select('company');
-        if (!user) return NextResponse.json({ message: 'User not found' }, { status: 500 });;
+        if (!user) return NextResponse.json({ message: 'User not found' }, { status: 500 });
 
         const { revenue, EBITDA, industry } = user.company;
 
-        const userMetric: {
-            userRevenue: number;
-            userEBITDA: number;
-            userIndustry: string;
-        } = {
+        const userMetric = {
             userRevenue: revenue.ltm, // Client's latest revenue
             userEBITDA: EBITDA.ltm,   // Client's latest EBITDA
             userIndustry: industry,
@@ -39,9 +35,37 @@ export async function POST(req: NextRequest) {
             primaryContact,
         });
 
-        // Calculate the match score
-        const score = Investor.calculateMatchScore(userMetric, newInvestor);
-        newInvestor.matchScore.totalScore = score;
+        // Calculate the match score directly in the route
+        let totalScore = 0;
+
+        if (userMetric.userRevenue >= newInvestor.targetInfo.revenue.from && userMetric.userRevenue <= newInvestor.targetInfo.revenue.to) {
+            newInvestor.matchScore.revenueScore = 50;
+            totalScore += 50;
+        }
+
+        if (userMetric.userEBITDA >= newInvestor.targetInfo.EBITDA.from && userMetric.userEBITDA <= newInvestor.targetInfo.EBITDA.to) {
+            newInvestor.matchScore.ebitdaScore = 10;
+            totalScore += 10;
+        }
+
+        if (newInvestor.investmentBio.dealsInLTM > 3) {
+            newInvestor.matchScore.dealsScore = 20;
+            totalScore += 20;
+        }
+
+        if (newInvestor.companyInfo.investorType === 'Strategic') {
+            newInvestor.matchScore.investorTypeScore = 10;
+            totalScore += 10;
+        }
+
+        if (userMetric.userIndustry === newInvestor.vertical) {
+            newInvestor.matchScore.industryScore = 10;
+            totalScore += 10;
+        }
+
+        newInvestor.matchScore.totalScore = totalScore;
+
+        // Save the new investor document
         await newInvestor.save();
 
         return NextResponse.json(
@@ -52,7 +76,7 @@ export async function POST(req: NextRequest) {
         console.error("Error:", error);
         return NextResponse.json({ message: error.message }, { status: 500 });
     }
-};
+}
 
 // GET route to fetch all Investors
 export async function GET(req: NextRequest) {

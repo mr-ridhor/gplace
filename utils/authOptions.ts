@@ -2,7 +2,7 @@ import Credentials from "next-auth/providers/credentials";
 import connectDB from "../config/db";
 import User, { IUser } from '../models/User'; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import argon2, { hash } from 'argon2'
 
 interface IUserResponse {
@@ -10,11 +10,6 @@ interface IUserResponse {
   email: string;
   firstName: string;
   lastName: string;
-}
-
-interface CredentialsType {
-  email: any,
-  password: string
 }
 
 export const authOptions: NextAuthOptions = {
