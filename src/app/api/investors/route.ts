@@ -4,17 +4,17 @@ import Investor from '../../../../models/Investor';
 import User from '../../../../models/User';
 import connectDB from '../../../../config/db';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../../utils/authOptions';
 
 
 // POST route to create a new Investor entry
 export async function POST(req: NextRequest) {
     try {
         await connectDB()
-        const session = await getServerSession()
-        const userId = session?.user.id
+        const data = await getServerSession(authOptions)
 
         const { companyInfo, investmentBio, targetInfo, paidInfo, primaryContact } = await req.json();
-        const user = await User.findById(userId).select('company');
+        const user = await User.findById(data?.user.id).select('company');
         if (!user) return NextResponse.json({ message: 'User not found' }, { status: 500 });;
 
         const { revenue, EBITDA, industry } = user.company;
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
         // Create a new investor instance
         const newInvestor = new Investor({
-            user: userId,
+            user: data?.user.id,
             companyInfo,
             investmentBio,
             targetInfo,
@@ -58,14 +58,13 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
     try {
         await connectDB()
-        const session = await getServerSession()
-        const userId = session?.user.id
+        const user = await getServerSession(authOptions)
 
-        if (!userId) {
+        if (!user) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
         
-        const investors = await Investor.find({ user: userId });
+        const investors = await Investor.find({ user: user?.user.id });
         if (!investors || investors.length === 0) {
             return NextResponse.json({ message: 'No Investors found' }, { status: 404 });
         }

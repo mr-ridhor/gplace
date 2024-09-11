@@ -4,7 +4,7 @@ import { authOptions } from '../../utils/authOptions'
 
 const page = async () => {
   const data = await getServerSession(authOptions)
-  console.log(data)
+  console.log(data.user.id)
 
   return (
     <div className='p-5'>
