@@ -9,26 +9,35 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
+import {
+  getInvestor,
+  setPrice,
+  setProfile,
+} from "@/lib/slice/addInvestorSlice";
 import { invproSchema } from "@/lib/zod-schema/invproSchema";
 import { invproType } from "@/lib/zod-type/invproType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
   onNext: () => void;
-  setPro: React.Dispatch<React.SetStateAction<invproType>>;
-  profile: invproType;
+  // setPro: React.Dispatch<React.SetStateAction<invproType>>;
+  // profile: invproType;
 }
-const ProfileInfo: React.FC<Props> = ({ profile, setPro, onNext }) => {
+const ProfileInfo: React.FC<Props> = ({ onNext }) => {
+  const dispatch = useDispatch();
+  const profile = useSelector(getInvestor);
   const form = useForm<invproType>({
     resolver: zodResolver(invproSchema),
     defaultValues: profile,
   });
   const onSubmit = (data: invproType) => {
     console.log(data);
-    setPro(data);
-    alert("hi");
+    dispatch(setProfile(data));
+    // setPro(data);
+    // alert("hi");
     onNext();
   };
   return (

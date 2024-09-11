@@ -13,57 +13,32 @@ import {
 import { Input } from "@/components/ui/input";
 import { MoveRight } from "lucide-react";
 import React from "react";
-import { personalSchema } from "@/lib/zod-schema/personalSchema";
-import { personalType } from "@/lib/zod-type/personalType";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 import { companyType } from "@/lib/zod-type/companyType";
 import { companySchema } from "@/lib/zod-schema/companySchema";
 import { YearSelect } from "@/components/YearSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { getRegister, setCompanyInfo } from "@/lib/slice/registerSlice";
 
 interface CompanyInfoProps {
-  companyInfo: companyType;
-  setCompanyInfo: React.Dispatch<React.SetStateAction<companyType>>;
   onNext: () => void;
 }
-const CompanyInfo: React.FC<CompanyInfoProps> = ({
-  companyInfo,
-  setCompanyInfo,
-  onNext,
-}) => {
-  const router = useRouter(); // Initialize router
-  // const form = useForm<companyType>({
-  //   resolver: zodResolver(companySchema),
-  //   defaultValues: {
-  //     email: "",
-  //     companyName: "",
-  //     country: "",
-  //     prevEbitda: "",
-  //     profit: "",
-  //     prevProfit: "",
-  //     prevRevenue: "",
-  //     revenue: "",
-  //     foundingYear: "",
-  //     industry: "",
-  //     website: "",
-  //     ebitda: "",
-  //     city: "",
-  //   },
-  // });
-
-  // const onSubmit = (data: companyType) => {
-  //   console.log(data);
-  //   // Navigate to the company-info step
-  //   router.push("/auth/register?step=team-info");
-  // };
+const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const companyInfo = useSelector(getRegister);
   const form = useForm<companyType>({
     resolver: zodResolver(companySchema),
     defaultValues: companyInfo,
   });
 
   const onSubmit = (data: companyType) => {
-    setCompanyInfo(data);
+    dispatch(setCompanyInfo(data));
+
+    console.log("this", data);
+
     onNext();
     router.push("/auth/register?step=team-info");
   };
@@ -399,8 +374,6 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({
         </form>
       </div>
     </Form>
-    //   </div>
-    // </div>
   );
 };
 

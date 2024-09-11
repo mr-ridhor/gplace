@@ -11,6 +11,9 @@ import {
 } from "redux-persist";
 import { storageService } from "./storageService";
 import selectedRowReducer from "../slice/selectedRowSlice";
+import registerReducer from "../slice/registerSlice";
+// import addInverstorReducer from "../slice/addInvestorSlice";
+import addInvestorReducer from "../slice/addInvestorSlice";
 const persistConfig = {
   key: "root",
   storage: storageService,
@@ -19,6 +22,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   row: selectedRowReducer,
+  register: registerReducer,
+  addInvestor: addInvestorReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

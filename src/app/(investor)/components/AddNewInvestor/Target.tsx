@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
+import { getInvestor, setTarget } from "@/lib/slice/addInvestorSlice";
 import { invpro2Schema } from "@/lib/zod-schema/invpro2Schema";
 import { targetSchema } from "@/lib/zod-schema/targetSchema";
 
@@ -18,22 +19,23 @@ import { tragetType } from "@/lib/zod-type/targetType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
   handleClick: () => void;
-  target: tragetType;
-  setTarget: React.Dispatch<React.SetStateAction<tragetType>>;
 }
 
-const Target: React.FC<Props> = ({ target, setTarget, handleClick }) => {
+const Target: React.FC<Props> = ({ handleClick }) => {
+  const dispatch = useDispatch();
+  const target = useSelector(getInvestor);
   const form = useForm<tragetType>({
     resolver: zodResolver(targetSchema),
     defaultValues: target,
   });
   const onSubmit = (data: tragetType) => {
-    alert("hi");
     console.log(data);
-    setTarget(data);
+    dispatch(setTarget(data));
+
     handleClick();
   };
   return (

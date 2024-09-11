@@ -4,8 +4,12 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import AddContact from "./AddContact";
+import { Investor } from "@/lib/data/mocked";
 
-const ContactHeader = () => {
+interface Props {
+  selectedItem?: Investor;
+}
+const ContactHeader: React.FC<Props> = ({ selectedItem }) => {
   return (
     <div className="w-full flex items-center gap-x-4 justify-between">
       <div className="">
@@ -28,7 +32,7 @@ const ContactHeader = () => {
                 <FaPlus />
                 Add New
               </DialogTrigger>
-              <AddContact />
+              <AddContact selectedItem={selectedItem} />
             </Dialog>
           </Button>
         </div>

@@ -33,7 +33,7 @@ export const fetchEvents = async () => {
 // };
 export const addContact = async (data: contType) => {
   const payload = {
-    investor: "605c72efb0f5f1a7c44a9d0d",
+    // investor: "605c72efb0f5f1a7c44a9d0d",
     name: data.name,
     surname: data.surname,
     email: data.email,

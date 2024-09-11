@@ -1,8 +1,12 @@
 import { TabsContent } from "@/components/ui/tabs";
 import React from "react";
 import EmailPage from "./EmailEchange/EmailPage";
+import { Investor } from "@/lib/data/mocked";
 
-const Email = () => {
+interface Props {
+  selectedItem?: Investor;
+}
+const Email: React.FC<Props> = ({ selectedItem }) => {
   return (
     <TabsContent value="email">
       <EmailPage />

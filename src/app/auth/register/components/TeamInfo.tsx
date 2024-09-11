@@ -20,42 +20,28 @@ import { useRouter } from "next/navigation";
 import { teamType } from "@/lib/zod-type/teamType";
 import { teamSchema } from "@/lib/zod-schema/teamSchema";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getRegister, setTeamInfo } from "@/lib/slice/registerSlice";
+
 interface TeamInfoProps {
-  teamInfo: teamType;
-  setTeamInfo: React.Dispatch<React.SetStateAction<teamType>>;
   onNext: () => void;
 }
-const TeamInfo: React.FC<TeamInfoProps> = ({
-  teamInfo,
-  setTeamInfo,
-  onNext,
-}) => {
+const TeamInfo: React.FC<TeamInfoProps> = ({ onNext }) => {
   const router = useRouter();
-  // const form = useForm<teamType>({
-  //   resolver: zodResolver(teamSchema),
-  //   defaultValues: {
-  //     fullName: "",
-  //     role: "",
-  //     fullName2: "",
-  //     role2: "",
-  //   },
-  // });
+  const dispatch = useDispatch();
+  const teamInfo = useSelector(getRegister);
   const form = useForm<teamType>({
     resolver: zodResolver(teamSchema),
     defaultValues: teamInfo,
   });
 
   const onSubmit = (data: teamType) => {
-    setTeamInfo(data);
+    dispatch(setTeamInfo(data));
+    console.log(data);
     onNext();
     router.push("/auth/register?step=set-credentials");
   };
 
-  // const onSubmit = (data: teamType) => {
-  //   console.log(data);
-  //   // Navigate to the company-info step
-  //   router.push("/auth/register?step=set-credentials");
-  // };
   return (
     <Form {...form}>
       <div className=" h-[70%]   space-y-6 overflow-y-auto no-scrollbar flex flex-col items-center w-full">

@@ -19,63 +19,66 @@ import { useRouter } from "next/navigation";
 
 import { authType } from "@/lib/zod-type/authType";
 import { authSchema } from "@/lib/zod-schema/authSchema";
+import { useDispatch, useSelector } from "react-redux";
+// import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
+import axiosService from "@/lib/services/axiosService";
+import axios from "axios";
+import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
 
 interface CredentialsProps {
-  credentials: authType;
-  setCredentials: React.Dispatch<React.SetStateAction<authType>>;
-  // onNext: () => void;
-  // onPrevious: () => void;
-  submit: () => void;
+  onNext: () => void;
 }
-const Credentials: React.FC<CredentialsProps> = ({
-  credentials,
-  setCredentials,
-
-  submit,
-}) => {
+const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
   const router = useRouter();
-  // const form = useForm<authType>({
-  //   resolver: zodResolver(authSchema),
-  //   defaultValues: {
-  //     email: "",
-  //     password: "",
-  //     confirmPass: "",
-  //   },
-  // });
+  const dispatch = useDispatch();
 
-  // const onSubmit = (data: authType) => {
-  //   console.log(data);
-  //   alert("HI");
-  //   // Navigate to the company-info step
-  //   router.push("/auth/register?step=otp");
-  // };
+  const { credentials, personalInfo, companyInfo, teamInfo } =
+    useSelector(getRegister);
+
   const form = useForm<authType>({
     resolver: zodResolver(authSchema),
-    defaultValues: credentials,
+    // defaultValues: credentials,
+    defaultValues: {
+      email: credentials.email,
+      password: credentials.password,
+    },
   });
-  useEffect(() => {
-    const subscription = form.watch((data: any) => {
-      return setCredentials(data);
-    });
-    return () => subscription.unsubscribe(); // Cleanup subscription on unmount
-  }, [form.watch, setCredentials]);
-  // const onSubmit = (data: authType) => {
-  //   console.log("cred", data);
-  //   setCredentials(data);
-  //   // onNext();
-  //   submit();
-  // };
+
   const onSubmit = async (data: authType) => {
-    console.log("cred", data);
-
     // Update credentials and then proceed with submission
-    setCredentials(data);
+    dispatch(setCredentials(data));
+    const payload = {
+      bio: personalInfo,
+      company: companyInfo,
+      team: teamInfo,
+      credentials: data,
+    };
+    console.log("cred", payload);
+    try {
+      const response = await axios.post(
+        "https://goodplace-api.vercel.app/api/auth/signup",
+        payload
+      );
+      console.log("res", response.config.data);
 
-    // Wait for state to update and then call submit
-    setTimeout(() => {
-      submit();
-    }, 0);
-    router.push("login");
+      const verificationResponse = await axios.post(
+        "https://goodplace-api.vercel.app/api/email/verify",
+        { email: data.email },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("otp", verificationResponse);
+      if (response.status !== 201) {
+        throw new Error("Failed to submit the data");
+      }
+      router.push(`/auth/register?step=otp`);
+      onNext();
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
   };
 
   return (

@@ -1,14 +1,13 @@
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import React from "react";
-// import axios from "axios";
 
 const Plan = () => {
+  const router = useRouter();
+
   const handlePlanSelection = async (planType: string) => {
     try {
-      // Send the selected plan type to the backend
-      // await axios.post("/api/plan-selection", { planType });
-      // Optionally handle successful response (e.g., show a confirmation message)
-      // alert(`Selected plan: ${planType}`);
+      router.push("login");
     } catch (error) {
       // Handle error (e.g., show an error message)
       console.error("Error sending plan selection:", error);
