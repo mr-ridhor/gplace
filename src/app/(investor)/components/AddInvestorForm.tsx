@@ -17,12 +17,13 @@ import { contType } from "@/lib/zod-type/contType";
 import { companyType } from "@/lib/zod-type/companyType";
 import axiosService from "@/lib/services/axiosService";
 import { addInvestor } from "@/lib/actions/investorAction";
-import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import axios from "axios";
+// import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
 const AddInvestorForm: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<string>("company");
   const [visitedTabs, setVisitedTabs] = useState<string[]>(["company"]); // 'company' as default visited
-  const axiosAuth = useAxiosAuth();
+  // const axiosAuth = useAxiosAuth();
   // List of all tabs
   const tabs = ["company", "profile", "profile2", "target", "price", "contact"];
 
@@ -163,7 +164,8 @@ const AddInvestorForm: React.FC = () => {
     console.log(payload);
 
     try {
-      const response = await axiosAuth.post("/investors", payload);
+      // const response = await axiosAuth.post("/investors", payload);
+      const response = await axios.post('/api/investors', payload)
 
       if (response.status !== 200) {
         throw new Error("Failed to submit the data");

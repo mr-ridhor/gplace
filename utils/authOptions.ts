@@ -1,5 +1,4 @@
 import Credentials from "next-auth/providers/credentials";
-import { verifyPassword } from "./bcrypt";
 import connectDB from "../config/db";
 import User, { IUser } from '../models/User'; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
@@ -80,6 +79,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
       }
       return token;
     },
@@ -87,6 +88,8 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
       }
       return session;
     },

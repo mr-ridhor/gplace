@@ -1,8 +1,7 @@
 import connectDB from "../../../../config/db";
 import User from "../../../../models/User";
-import { NextResponse } from "next/server";
 import transporter from "../../../../utils/transporter"; // Adjust the path if needed
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
