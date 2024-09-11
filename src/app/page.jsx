@@ -1,11 +1,12 @@
-'use client'
-// import { getServerSession } from 'next-auth'
+// 'use client'
+import { getServerSession } from 'next-auth'
 import React from 'react'
-// import { authOptions } from '../../utils/authOptions'
+import { authOptions } from '../../utils/authOptions'
 import axios from 'axios'
 
-const page = () => {
-  // const data = await getServerSession(authOptions)
+const page = async () => {
+  const data = await getServerSession(authOptions)
+  console.log(data)
 
   const payload = {
     "companyInfo": {
@@ -84,7 +85,9 @@ const page = () => {
   return (
     <div className='p-5'>
       <h1 className="text-2xl font-bold">Welcome to Goodplace CRM</h1>
-      <button onClick={handleTest}>Test API route</button>
+      <h1 className="text-2xl">{data.user.id}</h1>
+      {/* <h1 className="text-2xl">{new Date(data.exp).toLocaleString()}</h1> */}
+      {/* <button onClick={handleTest} className=''>Test API route</button> */}
     </div>
   )
 }
