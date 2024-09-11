@@ -92,7 +92,7 @@ export async function GET(req: NextRequest) {
         if (!investors || investors.length === 0) {
             return NextResponse.json({ message: 'No Investors found' }, { status: 404 });
         }
-        return NextResponse.json({ investors }, { status: 200 });
+        return NextResponse.json( investors, { status: 200 });
     } catch (error : any) {
         console.error("Error:", error);
         return NextResponse.json({ message: error.message }, { status: 500 });
