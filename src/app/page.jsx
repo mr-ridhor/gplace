@@ -147,7 +147,7 @@ const page = () => {
       {/* <h1 className="text-2xl">{data.user.id}</h1> */}
       {/* <h1 className="text-2xl">{new Date(data.exp).toLocaleString()}</h1> */}
       <button onClick={handleTest} className=''>Test API route</button>
-      {/* <button onClick={()=> signOut({ callbackUrl: '/auth/login' })}>Signout</button> */}
+      <button className='mx-8 p-2 border' onClick={()=> signOut({ callbackUrl: '/auth/login' })}>Signout</button>
     </div>
   )
 }
