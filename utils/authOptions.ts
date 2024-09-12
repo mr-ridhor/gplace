@@ -3,7 +3,7 @@ import connectDB from "../config/db";
 import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
 // import mongoose from "mongoose";
-import argon2, { hash } from "argon2";
+import bcrypt from 'bcrypt'
 
 interface IUserResponse {
   id: any; // Ensure mongoose Types are imported if needed
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const hashedPassword = user.credentials.password;
-        const isPasswordValid = argon2.verify(hashedPassword, password);
+        const isPasswordValid = bcrypt.compare(hashedPassword, password);
         if (!isPasswordValid) {
           throw Error("Invalid Password");
           return null;
