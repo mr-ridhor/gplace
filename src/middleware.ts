@@ -1,37 +1,39 @@
-import { withAuth } from "next-auth/middleware";
-// export { default } from 'next-auth/middleware'
+// import { withAuth } from "next-auth/middleware";
+export { default } from 'next-auth/middleware'
 
-// export const config = {
-//   matcher: ['/dashboard']
-// }
+export const config = {
+  matcher: ['/dashboard']
+}
 
-export default withAuth(
-  function middleware(req) {
-    // Custom logic if needed
-  },
-  {
-    callbacks: {
-      authorized({ token, req }) {
-        const { pathname } = req.nextUrl;
+// this is causing the login not to work 
 
-        // Corrected the condition to group it properly with parentheses
-        if (
-          pathname.startsWith("/auth/register") ||
-          pathname.startsWith("/auth/forget-password")
-        ) {
-          return true;
-        }
+// export default withAuth(
+//   function middleware(req) {
+//     // Custom logic if needed
+//   },
+//   {
+//     callbacks: {
+//       authorized({ token, req }) {
+//         const { pathname } = req.nextUrl;
 
-        // Standard authentication check
-        return !!token;
-      },
-    },
-    pages: {
-      signIn: "/auth/login", // Redirect to login if not authenticated
-      // error: "/error", // Error page
-    },
-  }
-);
+//         // Corrected the condition to group it properly with parentheses
+//         if (
+//           pathname.startsWith("/auth/register") ||
+//           pathname.startsWith("/auth/forget-password")
+//         ) {
+//           return true;
+//         }
+
+//         // Standard authentication check
+//         return !!token;
+//       },
+//     },
+//     pages: {
+//       signIn: "/auth/login", // Redirect to login if not authenticated
+//       // error: "/error", // Error page
+//     },
+//   }
+// );
 
 // import { withAuth } from "next-auth/middleware";
 
