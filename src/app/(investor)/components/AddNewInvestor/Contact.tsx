@@ -98,7 +98,7 @@ const Contact = () => {
 
     dispatch(setContact(data));
     try {
-      const res = await axios.post(`api/investors`, payload, {
+      const res = await axios.post(`/api/investors`, payload, {
         headers: {
           // Authorization: `Bearer ${session?.user.dbToken}`,
           "Content-Type": "application/json",
