@@ -55,7 +55,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
     };
     // console.log("cred", payload);
     try {
-      const response = await axios.post(`api/signup`, payload, {
+      const response = await axios.post(`/api/signup`, payload, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -64,7 +64,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
 
       if (response.statusText === "ok") {
         const verificationResponse = await axios.post(
-          `api/email/verification`,
+          `/api/email/verification`,
 
           { email: data.email },
           {
