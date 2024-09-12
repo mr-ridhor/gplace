@@ -3,8 +3,11 @@ import React from 'react'
 import { signOut } from 'next-auth/react'
 import axios from 'axios'
 // import { getUser } from '../../utils/getUser'
+import { useRouter } from 'next/navigation'
 
 const page = () => {
+  const router = useRouter()
+  router.push('/dashboard')
   const handleTest = async () => {
     // const response = await axios.get('/api/investors')
 
