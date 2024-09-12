@@ -25,7 +25,7 @@ import { loginSchema } from "@/lib/zod-schema/loginSchema";
 
 const Login = () => {
   const searchParams = useSearchParams();
-  const callBackUrl = searchParams.get("callbackUrl"); // URL to redirect to after login
+  // const callBackUrl = searchParams.get("callbackUrl"); // URL to redirect to after login
   const router = useRouter();
   const form = useForm<loginType>({
     resolver: zodResolver(loginSchema),
@@ -40,7 +40,7 @@ const Login = () => {
       const result = await signIn("credentials", {
         ...data,
         redirect: false,
-        callbackUrl: callBackUrl ?? "/dashboard",
+        callbackUrl: "/dashboard",
       });
 
       if (result?.ok) {
