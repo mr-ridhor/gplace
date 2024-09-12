@@ -7,14 +7,11 @@ import axios from "axios";
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 export const fetchInvestors = async () => {
   try {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/investors`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axios.get(`api/investors`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     return response.data;
   } catch (error: any) {
     console.error("No investor found ", error.response?.data || error.message);
