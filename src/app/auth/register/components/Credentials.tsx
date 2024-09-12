@@ -53,12 +53,9 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
       team: teamInfo,
       credentials: data,
     };
-    console.log("cred", payload);
+    // console.log("cred", payload);
     try {
-      const response = await axios.post(
-        "/api/signup",
-        payload
-      );
+      const response = await axios.post("/api/signup", payload);
       // console.log("res", response.config.data);
 
       // const verificationResponse = await axios.post(
@@ -70,7 +67,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
       //     },
       //   }
       // );
-      console.log("otp", response.data);
+      // console.log("otp", response);
       if (response.status !== 201) {
         throw new Error("Failed to submit the data");
       }

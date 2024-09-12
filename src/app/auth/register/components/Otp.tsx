@@ -50,6 +50,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
     try {
       const response = await axios.post(
         "/api/email/verification",
+        // '/api/email/otp'
         payload //,
         // {
         //   headers: {
@@ -102,11 +103,11 @@ const Otp: React.FC<Props> = ({ onNext }) => {
                     <div className="w-full  flex justify-between">
                       <InputOTP
                         containerClassName="w-full justify-between flex space-x-3"
-                        maxLength={4}
+                        maxLength={5}
                         className="flex w-full justify-between "
                         {...field}
                       >
-                        {[...Array(4)].map((_, index) => (
+                        {[...Array(5)].map((_, index) => (
                           <InputOTPGroup key={index} className="">
                             <InputOTPSlot
                               className="text-center  focus:border-0 focus-visible:ring-[#04acc2]   border rounded-md p-2"
