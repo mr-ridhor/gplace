@@ -49,13 +49,13 @@ const Otp: React.FC<Props> = ({ onNext }) => {
     console.log(payload);
     try {
       const response = await axios.post(
-        "https://goodplace-api.vercel.app/api/email/verify/code",
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        "/api/email/verification",
+        payload //,
+        // {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // }
       );
 
       if (response.status === 200) {

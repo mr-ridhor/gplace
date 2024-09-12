@@ -21,7 +21,7 @@ import { authType } from "@/lib/zod-type/authType";
 import { authSchema } from "@/lib/zod-schema/authSchema";
 import { useDispatch, useSelector } from "react-redux";
 // import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
-import axiosService from "@/lib/services/axiosService";
+// import axiosService from "@/lib/services/axiosService";
 import axios from "axios";
 import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
 
@@ -56,21 +56,21 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
     console.log("cred", payload);
     try {
       const response = await axios.post(
-        "https://goodplace-api.vercel.app/api/auth/signup",
+        "/api/signup",
         payload
       );
-      console.log("res", response.config.data);
+      // console.log("res", response.config.data);
 
-      const verificationResponse = await axios.post(
-        "https://goodplace-api.vercel.app/api/email/verify",
-        { email: data.email },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("otp", verificationResponse);
+      // const verificationResponse = await axios.post(
+      //   "/api/email/otp",
+      //   { email: data.email },
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      console.log("otp", response.data);
       if (response.status !== 201) {
         throw new Error("Failed to submit the data");
       }
