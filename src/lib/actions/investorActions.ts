@@ -3,46 +3,27 @@
 import { getServerSession } from "next-auth/next";
 import axiosService from "../services/axiosService";
 import { authOptions } from "../../../utils/authOptions";
-
+import axios from "axios";
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
 export const fetchInvestors = async () => {
   try {
-    // Retrieve the session
-    const session: any = await getServerSession(authOptions);
-
-    let token;
-    // if (session) {
-    //   token = session?.user?.dbToken; // Extract the token from the session
-    // }
-
-    // Configure headers
-    const headers: HeadersInit = {
-      "Content-Type": "application/json",
-    };
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-
-    // Fetch investors with the appropriate headers
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/investors`,
-      { headers }
-    );
-
-    if (!response.ok) {
-      // Handle HTTP errors
-      const errorData = await response.json();
-      throw new Error(errorData?.message ?? "Error fetching investors");
-    }
-
-    const data = await response.json();
-    console.log(data);
-    return data;
+    const response = await axios.get("/api/investors", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error: any) {
-    // Handle other errors
-    console.log(error);
-    throw new Error(error.message ?? "Error fetching investors");
+    console.error(
+      "Failed to fetch investors:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.message || "Error fetching investors"
+    );
   }
 };
+
 export const fetchInvestor = async (detail: string) => {
   try {
     // Retrieve the session
@@ -62,10 +43,7 @@ export const fetchInvestor = async (detail: string) => {
     }
 
     // Fetch investor details with the appropriate headers
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/investors/${detail}`,
-      { headers }
-    );
+    const response = await fetch(`api/investors/${detail}`, { headers });
 
     if (!response.ok) {
       // Handle HTTP errors
@@ -90,8 +68,8 @@ export const addContact = async (contactData: {
   phone: string;
   title: string;
 }) => {
-  return axiosService
-    .post("/investors/contacts", contactData)
+  return axios
+    .post("investor/contact", contactData)
     .then((response) => {
       console.log(response.data);
       return response.data;

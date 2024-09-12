@@ -83,6 +83,7 @@ const addInvestorSlice = createSlice({
     setContact(state, action) {
       state.contact = { ...state.contact, ...action.payload };
     },
+    resetPayload: () => initialState,
   },
 });
 
@@ -93,6 +94,7 @@ export const {
   setPrice,
   setCompanyInfo,
   setContact,
+  resetPayload,
 } = addInvestorSlice.actions;
 
 export const getInvestor = (state: any) => state.addInvestor;

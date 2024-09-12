@@ -11,11 +11,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
 import axiosService from "@/lib/services/axiosService";
-import { getInvestor, setContact } from "@/lib/slice/addInvestorSlice";
+import {
+  getInvestor,
+  resetPayload,
+  setContact,
+} from "@/lib/slice/addInvestorSlice";
 import { contSchema } from "@/lib/zod-schema/contSchema";
 import { contType } from "@/lib/zod-type/contType";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -32,7 +37,6 @@ const Contact = () => {
     resolver: zodResolver(contSchema),
     defaultValues: contact,
   });
-
   const onSubmit = async (data: contType) => {
     console.log(data);
     const payload = {
@@ -94,20 +98,24 @@ const Contact = () => {
 
     dispatch(setContact(data));
     try {
-      const response = await axiosService.post("/investors", payload, {
+      const res = await axios.post("api/investors", payload, {
         headers: {
           // Authorization: `Bearer ${session?.user.dbToken}`,
           "Content-Type": "application/json",
         },
       });
-
+      console.log(res);
+      dispatch(resetPayload());
+      // window.location.reload();
       // if (response.status !== 200) {
       //   throw new Error("Failed to submit the data");
       // }
     } catch (error) {
+      console.log(error);
       console.error("Error submitting data:", error);
     }
   };
+
   return (
     <TabsContent value="contact">
       <Form {...form}>

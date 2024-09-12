@@ -1,8 +1,9 @@
+// import { Options } from "@/app/api/auth/Option";
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../utils/authOptions";
 
 const axiosService = axios.create({
+  // baseURL: "https://goodplace-api.vercel.app/api",
   baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}`,
   headers: {
     "Content-Type": "application/json",
@@ -11,7 +12,7 @@ const axiosService = axios.create({
 
 // Optionally add request and response interceptors
 axiosService.interceptors.request.use(async (AxiosRequestConfig) => {
-  // const session: any = await getServerSession(authOptions);
+  // const session: any = await getServerSession(Options);
   let token;
   // if (session) {
   //   token = session?.user?.dbToken;

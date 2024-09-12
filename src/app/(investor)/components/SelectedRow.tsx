@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,9 +9,7 @@ import Contact from "./Contact";
 import Email from "./Email";
 import Notes from "./Notes";
 import { useSession } from "next-auth/react";
-// import { fetchInvestor } from "@/lib/actions/investorActions";
-// import { Investor } from "@/lib/data/mocked";
-import { fetchInvestor } from "@/lib/actions/investorActions";
+import axios from "axios"; // Using axios instead of fetch
 import { Investor } from "@/lib/data/mocked";
 
 const SelectedRow = () => {
@@ -24,17 +22,12 @@ const SelectedRow = () => {
   const { data: session } = useSession(); // Get the session data (assuming you're using next-auth)
 
   useEffect(() => {
-    // const currentTab = searchParams.get("tab");
-    // if (currentTab) {
-    //   setActiveTab(currentTab);
-    // }
-
     const fetchData = async () => {
       if (detail) {
         try {
-          const investorData = await fetchInvestor(detail); // Fetch investor data
-          if (investorData) {
-            setSelectedItem(investorData); // Set the fetched data
+          const response = await axios.get(`/api/investors/${detail}`); // Fetch investor data using Axios
+          if (response.data) {
+            setSelectedItem(response.data); // Set the fetched data
           }
         } catch (error) {
           console.error("Failed to fetch investor:", error);
@@ -103,18 +96,10 @@ const SelectedRow = () => {
               </div>
             </div>
           </TabsList>
-          {/* <TabsContent value="detail"> */}
           <Detailed selectedItem={selectedItem} />
-          {/* </TabsContent> */}
-          {/* <TabsContent value="contact"> */}
           <Contact selectedItem={selectedItem} />
-          {/* </TabsContent> */}
-          {/* <TabsContent value="email"> */}
           <Email selectedItem={selectedItem} />
-          {/* </TabsContent> */}
-          {/* <TabsContent value="notes"> */}
           <Notes selectedItem={selectedItem} />
-          {/* </TabsContent> */}
         </Tabs>
       </div>
     </div>

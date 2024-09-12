@@ -21,13 +21,13 @@ import { useSession } from "next-auth/react";
 import { Investor } from "@/lib/data/mocked";
 import { addContact } from "@/lib/actions/investorActions";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 interface Props {
   selectedItem?: Investor;
 }
 const AddContact: React.FC<Props> = ({ selectedItem }) => {
-  const { data: session, status } = useSession(); // Use session from next-auth
-  // const router = useRouter();
+  const router = useRouter();
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
     defaultValues: {
@@ -47,7 +47,8 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
         throw new Error("Investor ID is missing");
       }
 
-      const result = await addContact({
+      // Use axios directly to post data
+      await axios.post("/api/contacts", {
         investor: investorId,
         name: data.name,
         surname: data.surname,
@@ -55,9 +56,10 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
         phone: data.phone,
         title: data.title,
       });
-      // router.refresh();
-      window.location.reload();
-      console.log(result.message); // Handle success message
+
+      // Refresh the data or reload the page
+      router.refresh();
+      console.log("Contact added successfully"); // Handle success message
     } catch (error: any) {
       console.error(error.message); // Handle error
     }

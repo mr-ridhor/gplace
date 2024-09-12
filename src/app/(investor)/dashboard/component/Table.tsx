@@ -3,13 +3,12 @@
 import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/ui/data-table";
-// import { Column } from "./Column";
+import { Column } from "./Column";
 import { Investor } from "@/lib/data/mocked";
 import { VisibilityState } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import { getActiveTab, setSelectedRow } from "@/lib/slice/selectedRowSlice";
 import SelectedRow from "../../components/SelectedRow";
-import { Column } from "./Column";
 
 interface Props {
   investors: Investor[]; // Investors must be an array
@@ -30,7 +29,7 @@ const Table: React.FC<Props> = ({ investors }) => {
   );
 
   const activeTab = useSelector(getActiveTab);
-
+  console.log(investors);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     name: true,
     country: true,

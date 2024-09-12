@@ -239,37 +239,31 @@ const Navbar = () => {
         </Tabs>
       </div>
       <div className="hidden md:flex items-center h-full gap-x-4 bg-red-0 justify-end">
-        {(tab === "detail" || pathname === "/dashboard") && (
-          <div className="flex gap-x-2 items-center h-full">
-            <Filter />
-            <p>Filter</p>
-          </div>
-        )}
-        {(tab === "detail" ||
-          tab === "contact" ||
-          pathname === "/dashboard") && (
-          <div className="h-1/2 items-center flex gap-x bordr w-1/4">
-            <Search size={14} />
-            <input
-              placeholder="Search"
-              className="focus-visible:outline-none h-1/2 px-2 w-[90%] bg-inherit"
-            />
-          </div>
-        )}
+        {tab !== "contact" && tab === "detail" ? (
+          <>
+            <div className="flex gap-x-2 items-center h-full">
+              <Filter />
+              <p>Filter</p>
+            </div>
 
-        {(pathname === "/dashboard" || tab === "detail") && (
-          <Dialog>
-            <DialogTrigger className="flex gap-x-2 text-sm h-14 items-center">
-              <Button className="bg-[#03AAC1] text-white h-10 items-center gap-x-2">
-                <FaPlus />
-                Add New
-              </Button>
-            </DialogTrigger>
-            <AddInvestorForm />
-          </Dialog>
-        )}
-
-        {!(pathname === "/dashboard" || tab === "detail") && (
+            <div className="h-1/2 items-center flex gap-x bordr w-1/4">
+              <Search size={14} />
+              <input
+                placeholder="Search"
+                className="focus-visible:outline-none h-1/2 px-2 w-[90%] bg-inherit"
+              />
+            </div>
+            <Dialog>
+              <DialogTrigger className="flex gap-x-2 text-sm h-14 items-center">
+                <Button className="bg-[#03AAC1] text-white h-10 items-center gap-x-2">
+                  <FaPlus />
+                  Add New
+                </Button>
+              </DialogTrigger>
+              <AddInvestorForm />
+            </Dialog>
+          </>
+        ) : (
           <Link href={"profile"}>
             <Button className="bg-[#dcf8fc] hover:bg-[#dcf8fc]/10 flex items-center gap-x-1">
               <FaPen />
@@ -277,6 +271,15 @@ const Navbar = () => {
             </Button>
           </Link>
         )}
+
+        {/* {tab != "detail" && pathname !== "/dashboard" && (
+          <Link href={"profile"}>
+            <Button className="bg-[#dcf8fc] hover:bg-[#dcf8fc]/10 flex items-center gap-x-1">
+              <FaPen />
+              Edit
+            </Button>
+          </Link>
+        )} */}
 
         <div className="">
           <p>Mr Ed.</p>
