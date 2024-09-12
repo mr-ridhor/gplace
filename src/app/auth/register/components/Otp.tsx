@@ -49,7 +49,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
     console.log(payload);
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_UR}api/email/otp`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/email/otp`,
         payload,
         {
           headers: {

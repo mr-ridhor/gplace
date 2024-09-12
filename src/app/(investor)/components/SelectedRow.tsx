@@ -26,7 +26,7 @@ const SelectedRow = () => {
       if (detail) {
         try {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_UR}/api/investors/${detail}`
+            `${process.env.NEXT_PUBLIC_API_URL}/api/investors/${detail}`
           ); // Fetch investor data using Axios
           if (response.data) {
             setSelectedItem(response.data); // Set the fetched data
