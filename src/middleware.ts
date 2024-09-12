@@ -28,7 +28,7 @@ export default withAuth(
     },
     pages: {
       signIn: "/auth/login", // Redirect to login if not authenticated
-      error: "/error", // Error page
+      // error: "/error", // Error page
     },
   }
 );
