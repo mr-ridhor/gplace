@@ -99,7 +99,7 @@ const Contact = () => {
     dispatch(setContact(data));
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_UR}api/investors`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/investors`,
         payload,
         {
           headers: {
