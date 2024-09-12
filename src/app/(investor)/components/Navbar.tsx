@@ -239,7 +239,7 @@ const Navbar = () => {
         </Tabs>
       </div>
       <div className="hidden md:flex items-center h-full gap-x-4 bg-red-0 justify-end">
-        {tab !== "contact" && tab === "detail" ? (
+        {(tab as string) !== "contact" || (tab as string) === "detail" ? (
           <>
             <div className="flex gap-x-2 items-center h-full">
               <Filter />

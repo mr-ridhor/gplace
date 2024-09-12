@@ -62,7 +62,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
       });
       console.log("res", response);
 
-      if (response.status === 201) {
+      if (response.statusText === "ok") {
         const verificationResponse = await axios.post(
           `api/email/verification`,
 
