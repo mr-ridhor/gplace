@@ -98,16 +98,12 @@ const Contact = () => {
 
     dispatch(setContact(data));
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}api/investors`,
-        payload,
-        {
-          headers: {
-            // Authorization: `Bearer ${session?.user.dbToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await axios.post(`api/investors`, payload, {
+        headers: {
+          // Authorization: `Bearer ${session?.user.dbToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       console.log(res);
       dispatch(resetPayload());
       // window.location.reload();

@@ -55,20 +55,16 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
     };
     // console.log("cred", payload);
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/signup`,
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post(`api/signup`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log("res", response);
 
       if (response.status === 201) {
         const verificationResponse = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/email/verification`,
+          `/email/verification`,
 
           { email: data.email },
           {

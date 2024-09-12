@@ -51,14 +51,11 @@ const Page: React.FC = () => {
     const loadInvestors = async () => {
       try {
         // const data = await fetchInvestors();
-        const data = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}api/investors`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const data = await axios.get(`api/investors`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         console.log(data.data);
         setInvestors(data.data);
       } catch (error) {
