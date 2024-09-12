@@ -4,12 +4,12 @@ import { authOptions } from "../../../utils/authOptions";
 export const createNote = async (note: { title: string; body: string }) => {
   try {
     // Retrieve the session
-    const session: any = await getServerSession(authOptions);
+    // const session: any = await getServerSession(authOptions);
 
     let token;
-    if (session) {
-      token = session?.user?.dbToken; // Extract the token from the session
-    }
+    // if (session) {
+    //   token = session?.user?.dbToken; // Extract the token from the session
+    // }
 
     // Configure headers
     const headers: HeadersInit = {

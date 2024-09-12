@@ -11,11 +11,11 @@ const axiosService = axios.create({
 
 // Optionally add request and response interceptors
 axiosService.interceptors.request.use(async (AxiosRequestConfig) => {
-  const session: any = await getServerSession(authOptions);
+  // const session: any = await getServerSession(authOptions);
   let token;
-  if (session) {
-    token = session?.user?.dbToken;
-  }
+  // if (session) {
+  //   token = session?.user?.dbToken;
+  // }
   AxiosRequestConfig.headers.Authorization = `Bearer ${token}`;
   return AxiosRequestConfig;
 });

@@ -10,9 +10,9 @@ export const fetchInvestors = async () => {
     const session: any = await getServerSession(authOptions);
 
     let token;
-    if (session) {
-      token = session?.user?.dbToken; // Extract the token from the session
-    }
+    // if (session) {
+    //   token = session?.user?.dbToken; // Extract the token from the session
+    // }
 
     // Configure headers
     const headers: HeadersInit = {
@@ -46,12 +46,12 @@ export const fetchInvestors = async () => {
 export const fetchInvestor = async (detail: string) => {
   try {
     // Retrieve the session
-    const session: any = await getServerSession(authOptions);
+    // const session: any = await getServerSession(authOptions);
 
     let token;
-    if (session) {
-      token = session?.user?.dbToken; // Extract the token from the session
-    }
+    // if (session) {
+    //   token = session?.user?.dbToken; // Extract the token from the session
+    // }
 
     // Configure headers
     const headers: HeadersInit = {
@@ -108,12 +108,12 @@ export const addContact = async (contactData: {
 export const fetchInvestorContacts = async (investorId: string) => {
   try {
     // Retrieve the session
-    const session: any = await getServerSession(authOptions);
+    // const session: any = await getServerSession(authOptions);
 
     let token;
-    if (session) {
-      token = session?.user?.dbToken; // Extract the token from the session
-    }
+    // if (session) {
+    //   token = session?.user?.dbToken; // Extract the token from the session
+    // }
 
     // Configure headers
     const headers: HeadersInit = {
