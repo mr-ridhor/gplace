@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { TiArrowRight } from "react-icons/ti";
 import { TabsContent } from "@/components/ui/tabs";
 import { Investor } from "@/lib/data/mocked";
 import { createNote } from "@/lib/actions/noteAction";
+import axios from "axios";
 // import { createNote } from "@/lib/actions/notesAction";
 
 interface Props {
@@ -21,18 +22,19 @@ const Notes: React.FC<Props> = ({ selectedItem }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  // useEffect(() => {
-  //   const loadNotes = async () => {
-  //     try {
-  //       const fetchedNotes = await fetchNotes();
-  //       setNotes(fetchedNotes);
-  //     } catch (error) {
-  //       console.error("Failed to fetch notes:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const loadNotes = async () => {
+      try {
+        const fetchedNotes = (await axios.get(`/api/investors/${selectedItem?._id}/note`)).data
+        // const fetchedNotes = await fetchNotes();
+        setNotes(fetchedNotes);
+      } catch (error) {
+        console.error("Failed to fetch notes:", error);
+      }
+    };
 
-  //   loadNotes();
-  // }, []);
+    loadNotes();
+  }, []);
 
   const handleSaveNote = async () => {
     if (title.trim() === "" || body.trim() === "") {
@@ -41,9 +43,11 @@ const Notes: React.FC<Props> = ({ selectedItem }) => {
     }
 
     try {
-      const newNote = await createNote({ title, body });
-      console.log("Note created successfully:", newNote); // Log the response
-      setNotes([newNote.note, ...notes]);
+      // const newNote = await createNote({ title, body });
+      // console.log("Note created successfully:", newNote); // Log the response
+      // setNotes([newNote.note, ...notes]);
+      const response = await axios.post(`/api/investors/${selectedItem?._id}/note`, { title, body })
+      if(response.status == 201) console.log(response.data)
       setTitle("");
       setBody("");
     } catch (error) {
