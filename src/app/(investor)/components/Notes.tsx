@@ -55,14 +55,17 @@ const Notes: React.FC<Props> = ({ selectedItem }) => {
     }
   };
 
-  // const handleDeleteNote = async (id: string) => {
-  //   try {
-  //     await deleteNote(id);
-  //     setNotes(notes.filter((note) => note._id !== id));
-  //   } catch (error) {
-  //     console.error("Failed to delete note:", error);
-  //   }
-  // };
+  const handleDeleteNote = async (id: string) => {
+    try {
+      const response = await axios.delete(`/api/investors/${selectedItem?._id}/note/${id}`)
+      if(response.status == 200) {
+        alert('Delete')
+      }
+      // setNotes(notes.filter((note) => note._id !== id));
+    } catch (error) {
+      console.error("Failed to delete note:", error);
+    }
+  };
 
   return (
     <TabsContent value="notes" className="w-full mt-4">
@@ -110,7 +113,7 @@ const Notes: React.FC<Props> = ({ selectedItem }) => {
                   <div className="flex w-full justify-end">
                     <Button
                       className="bg-transparent hover:bg-transparent text-red-700 flex gap-x-1 h-8 items-center"
-                      // onClick={() => handleDeleteNote(note._id)}
+                      onClick={() => handleDeleteNote(note._id)}
                     >
                       <p>Delete</p>
                       <BiTrash />
