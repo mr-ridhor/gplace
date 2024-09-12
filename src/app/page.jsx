@@ -1,10 +1,10 @@
-// 'use client'
+'use client'
 import React from 'react'
 import { signOut } from 'next-auth/react'
 import axios from 'axios'
-import { getUser } from '../../utils/getUser'
+// import { getUser } from '../../utils/getUser'
 
-const page = async () => {
+const page = () => {
   const handleTest = async () => {
     // const response = await axios.get('/api/investors')
 
@@ -21,15 +21,15 @@ const page = async () => {
     }
   }
 
-  const user = await getUser()
+  // const user = await getUser()
 
   return (
     <div className='p-5'>
       <h1 className="text-2xl font-bold">Welcome to Goodplace CRM</h1>
-      <h1 className="text-2xl">{user.id} {user.email}</h1>
-      <h1 className="text-2xl">{user.firstName} {user.lastName}</h1>
+      {/* <h1 className="text-2xl">{user.id} {user.email}</h1> */}
+      {/* <h1 className="text-2xl">{user.firstName} {user.lastName}</h1> */}
       {/* <button onClick={handleTest} className=''>Test API route</button> */}
-      {/* <button className='mx-8 p-2 border' onClick={()=> signOut({ callbackUrl: '/auth/login' })}>Signout</button> */}
+      <button className='mx-8 p-2 border' onClick={()=> signOut({ callbackUrl: '/auth/login' })}>Signout</button>
     </div>
   )
 }

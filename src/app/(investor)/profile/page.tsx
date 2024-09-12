@@ -1,15 +1,32 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LuPencil } from "react-icons/lu";
 import { GrLogout } from "react-icons/gr";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import PersonalnfoForm from "./components/PersonalnfoForm";
 import CompanyInfoForm from "./components/CompanyInfoForm";
 import TeamInfoForm from "./components/TeamInfoForm";
+import axios from "axios";
+import formatPrice from "../../../../utils/formtPrice";
+
 
 const page = () => {
+  const [profile, setProfile] = useState<any>()
+
+  useEffect(()=>{
+    fetch('/api/profile').then(response => response.json())
+    .then(data => {
+      setProfile(data)
+      // console.log(data)
+    })
+    .catch(err => console.log(err))
+
+  }, [])
+
   return (
     <div className="w-full py-5 flex flex-col items-center gap-y-5 text-sm overflow-y-auto no-scrollbar h-[90%]">
       <div className="w-[85%] ">
@@ -23,9 +40,9 @@ const page = () => {
               alt="img"
             />
             <div className="space-y-2">
-              <p className="font-bold">Edward NewGate</p>
-              <p className="text-[#808080]">CEO WBpirates Inc.</p>
-              <p className="text-[#808080]">Kigali, Rwanda</p>
+              <p className="font-bold">{profile?.bio.firstName} {profile?.bio.lastName}</p>
+              <p className="text-[#808080]">{profile?.bio.title} {profile?.company.name}.</p>
+              <p className="text-[#808080]">{profile?.bio.city}, {profile?.bio.country}</p>
             </div>
           </div>
           <div className="grid-cols-1 grid gap-y-2 md:flex gap-x-2 ">
@@ -69,49 +86,49 @@ const page = () => {
         <div className="grid grid-cols-2  md:grid-cols-3 lg:w-[60%]">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">First Name</p>
-            <p>Edwward</p>
+            <p>{profile?.bio.firstName}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Last Name</p>
-            <p>NewGate</p>
+            <p>{profile?.bio.lastName}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Title</p>
-            <p>CEO</p>
+            <p>{profile?.bio.title}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Email</p>
             <p className="line-clamp-3 md:line-clamp-0">
-              WhiteBeard.pirates@email.com
+              {profile?.bio.email}
             </p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Phone number</p>
-            <p>(123) 456-7890</p>
+            <p>{profile?.bio.phone}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">LinkedIn</p>
-            <p>@WhiteBInclinkedIn</p>
+            <p>{profile?.bio.linkedIn}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">X</p>
-            <p>@WhiteBIncX</p>
+            <p>{profile?.bio.x}</p>
           </div>
         </div>
         <div className="grid grid-cols-3 lg:w-[60%]">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Country</p>
-            <p>Wano</p>
+            <p>{profile?.bio.country}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">City</p>
-            <p>Onigashima</p>
+            <p>{profile?.bio.city}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Address</p>
-            <p>Random address off 49 street</p>
+            <p>{profile?.bio.address}</p>
           </div>
         </div>
       </div>
@@ -135,61 +152,61 @@ const page = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:w-[60%]">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Company Name</p>
-            <p>WhiteBread Steel Inc.</p>
+            <p>{profile?.company.name}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Country</p>
-            <p>Wano</p>
+            <p>{profile?.company.country}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">City</p>
-            <p>Onihashima</p>
+            <p>{profile?.company.city}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Comapany Email</p>
-            <p>WhiteBeard.pirates@email.com</p>
+            <p>{profile?.company.email}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Founding Year</p>
-            <p>1990</p>
+            <p>{profile?.company.foundingYear}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Industry</p>
-            <p>Steel</p>
+            <p>{profile?.company.industry}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Website</p>
-            <p>wwebsiteexm.com</p>
+            <p>{profile?.company.website}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 w-[100%]">
           <div className="col-span-2 space-y-2">
             <p className="text-[#808080] ">Revenue (LTM, $K)</p>
-            <p>$1,123.12</p>
+            <p>{formatPrice(profile?.company.revenue.ltm)}</p>
           </div>
           <div className="col-span-2 space-y-2">
             <p className="text-[#808080] ">Revenue (Previous year, $K) </p>
-            <p>$1,234.20</p>
+            <p>{formatPrice(profile?.company.revenue.previousYear)}</p>
           </div>
           <div className="col-span-2 space-y-2">
             <p className="text-[#808080] ">Gross Profit(LTM, $K) </p>
-            <p>$1,234.20</p>
+            <p>{formatPrice(profile?.company.grossProfit.ltm)}</p>
           </div>
           <div className="col-span-2 space-y-2">
             <p className="text-[#808080] ">Gross profit(Previous year, $K) </p>
-            <p>$120</p>
+            <p>{formatPrice(profile?.company.grossProfit.previousYear)}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 lg:w-[60%]">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">EBIDTA</p>
-            <p>$1,12.12</p>
+            <p>{formatPrice(profile?.company.EBITDA.ltm)}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">EBIDTA (Previous year, $K) </p>
-            <p>$3,34.20</p>
+            <p>{formatPrice(profile?.company.EBITDA.previousYear)}</p>
           </div>
         </div>
       </div>
@@ -213,21 +230,21 @@ const page = () => {
         <div className="grid grid-cols-2 lg:w-[60%]">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">User 1</p>
-            <p>Mr John Doe</p>
+            <p>{profile?.team?.team1.fullName}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Email</p>
-            <p>example@gmail.com</p>
+            <p>{profile?.team?.team1.role}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 lg:w-[60%]">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">User 2</p>
-            <p>Clifford Ray</p>
+            <p>{profile?.team?.team2?.fullName}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Email</p>
-            <p>example@gmail.com</p>
+            <p>{profile?.team?.team2.role}</p>
           </div>
         </div>
       </div>
@@ -244,7 +261,7 @@ const page = () => {
         <div className="grid grid-cols-2 lg:w-[60%]">
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Username</p>
-            <p>WhitebeardCRM</p>
+            <p>{profile?.credentials.email}</p>
           </div>
           <div className="col-span-1 space-y-2">
             <p className="text-[#808080] ">Password</p>
