@@ -99,10 +99,9 @@ export const fetchInvestorContacts = async (investorId: string) => {
     }
 
     // Fetch investor contacts with the appropriate headers
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/investors/${investorId}/contacts`,
-      { headers }
-    );
+    const response = await fetch(`api/investors/${investorId}/contacts`, {
+      headers,
+    });
 
     if (!response.ok) {
       // Handle HTTP errors
