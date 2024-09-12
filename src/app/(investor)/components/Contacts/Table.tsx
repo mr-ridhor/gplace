@@ -22,7 +22,7 @@ const Table: React.FC<Props> = ({ id }) => {
         console.log("here", response);
         setData(response.data); // Set the data from the response
       } catch (error: any) {
-        setError(error.message || "Failed to fetch contacts"); // Set error message in case of failure
+        setError(error.message || "No contact found"); // Set error message in case of failure
       } finally {
         setLoading(false); // Set loading to false after fetching is done
       }
@@ -32,7 +32,7 @@ const Table: React.FC<Props> = ({ id }) => {
   }, [id]);
 
   if (loading) return <p>Loading data...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>

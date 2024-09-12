@@ -55,24 +55,33 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
     };
     console.log("cred", payload);
     try {
-      const response = await axios.post("auth/signup", payload);
-      console.log("res", response.config.data);
+      const response = await axios.post(`/signup`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("res", await response.data);
 
-      const verificationResponse = await axios.post(
-        "https://goodplace-api.vercel.app/api/email/verify",
-        { email: data.email },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+      if (response.status === 200) {
+        const verificationResponse = await axios.post(
+          `/email/verification`,
+
+          { email: data.email },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("otp", verificationResponse);
+        if (verificationResponse.status === 200) {
+          router.push(`/auth/register?step=otp`);
+          onNext();
         }
-      );
-      console.log("otp", verificationResponse);
-      if (response.status !== 201) {
-        throw new Error("Failed to submit the data");
       }
-      router.push(`/auth/register?step=otp`);
-      onNext();
+      // if (response.status !== 201) {
+      //   throw new Error("Failed to submit the data");
+      // }
     } catch (error) {
       console.error("Error submitting data:", error);
     }

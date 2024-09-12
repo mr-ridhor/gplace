@@ -144,7 +144,7 @@ const Login = () => {
               </label>
             </div>
             <div className="text-[10px] md:text-sm lg:text-base">
-              <Link href={"/forget-password"}>Forgot your password?</Link>
+              <Link href={"forget-password"}>Forgot your password?</Link>
             </div>
           </div>
         </div>
