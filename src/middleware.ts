@@ -12,7 +12,7 @@ export default withAuth(
         // Corrected the condition to group it properly with parentheses
         if (
           pathname.startsWith("/auth/register") ||
-          pathname.startsWith("/auth/forgett-password")
+          pathname.startsWith("/auth/forget-password")
         ) {
           return true;
         }
