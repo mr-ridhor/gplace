@@ -195,7 +195,7 @@ export const Column: ColumnDef<Investor>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center">
-        <div className="ml-2 rounded-full border bg-[#57D08D]  text-gren-600">
+        <div className="ml-2 rounded-full border bg-[#58d18e]  text-gren-600">
           <CircularProgress
             // percentage={10}
             percentage={row.original.matchScore.totalScore}
