@@ -18,7 +18,7 @@ const Table: React.FC<Props> = ({ id }) => {
     const fetchData = async () => {
       try {
         setLoading(true); // Set loading to true while fetching
-        const response = await axios.get(`api/investors/${id}`); // Axios GET request
+        const response = await axios.get(`/api/investors/${id}/contact`); // Axios GET request
         console.log("here", response);
         setData(response.data); // Set the data from the response
       } catch (error: any) {

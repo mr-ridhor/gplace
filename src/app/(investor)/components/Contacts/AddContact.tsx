@@ -48,8 +48,7 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
       }
 
       // Use axios directly to post data
-      await axios.post("/api/contacts", {
-        investor: investorId,
+      await axios.post(`/api/investors/${investorId}/contact`, {
         name: data.name,
         surname: data.surname,
         email: data.email,

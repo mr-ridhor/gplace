@@ -131,7 +131,7 @@ const page = () => {
     // const response = axios.post('/api/signup', payload)
     // const response = await axios.post('/api/investors', payload) // this is for posting new investor
     // const response = await axios.get('/api/investors') //this is for getting all investors,
-    // /api/investors/66e187858f191cc51aebfce9/contact/ // to get or post
+    const response = await axios.get('/api/investors/66e187858f191cc51aebfce9/contact') // to get or post
 
     // const response = await axios.get('/api/investors/66e187858f191cc51aebfce9') // to get a single investor
     // const response = await axios.put('/api/investors/66e187858f191cc51aebfce9', payload) // to update a single investor
