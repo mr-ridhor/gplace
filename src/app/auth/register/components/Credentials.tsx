@@ -55,24 +55,37 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
     };
     // console.log("cred", payload);
     try {
-      const response = await axios.post("/api/signup", payload);
-      // console.log("res", response.config.data);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_UR}/api/signup`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("res", response);
 
-      // const verificationResponse = await axios.post(
-      //   "/api/email/otp",
-      //   { email: data.email },
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-      // console.log("otp", response);
-      if (response.status !== 201) {
-        throw new Error("Failed to submit the data");
+      if (response.status === 201) {
+        const verificationResponse = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_UR}/email/verification`,
+
+          { email: data.email },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("otp", verificationResponse);
+        if (verificationResponse.status === 200) {
+          router.push(`/auth/register?step=otp`);
+          onNext();
+        }
       }
-      router.push(`/auth/register?step=otp`);
-      onNext();
+      // if (response.status !== 201) {
+      //   throw new Error("Failed to submit the data");
+      // }
     } catch (error) {
       console.error("Error submitting data:", error);
     }

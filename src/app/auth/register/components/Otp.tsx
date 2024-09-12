@@ -49,14 +49,13 @@ const Otp: React.FC<Props> = ({ onNext }) => {
     console.log(payload);
     try {
       const response = await axios.post(
-        "/api/email/verification",
-        // '/api/email/otp'
-        payload //,
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }
+        `${process.env.NEXT_PUBLIC_API_UR}api/email/otp`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       if (response.status === 200) {
@@ -81,7 +80,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
               Email Verification
             </strong>
             <p className="font-light text-sm xl:text-lg">
-              Check your email for a 5 digits OTP , input them in the field
+              Check your email for a 4 digits OTP , input them in the field
               below and verify your email
             </p>
           </div>
@@ -133,6 +132,14 @@ const Otp: React.FC<Props> = ({ onNext }) => {
             </div>
           </div>
         </form>
+        <div className="w-full flex items-center justify-start gap-x-4">
+          <button
+            className="w-ful h-0 mt- bg-transparent hover:bg-transparent rounded-md flex items-center justify-center"
+            // type="submit"
+          >
+            <p className=" font-bold">Resend otp</p>
+          </button>
+        </div>
       </div>
     </Form>
     //   </div>
