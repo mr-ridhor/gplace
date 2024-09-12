@@ -37,7 +37,7 @@ const page = () => {
               width={100}
               height={100}
               className=""
-              alt="img"
+              alt="img" 
             />
             <div className="space-y-2">
               <p className="font-bold">{profile?.bio.firstName} {profile?.bio.lastName}</p>
