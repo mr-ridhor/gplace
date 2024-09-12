@@ -1,36 +1,43 @@
-import { mockedInfo } from "@/lib/data/mockedInfo";
-import React from "react";
-import { Column } from "./Column";
-import { VisibilityState } from "@tanstack/react-table";
-import { DataTable } from "@/components/ui/data-table";
+"use client";
 
-const Table = () => {
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({
-      name: true,
-      country: true,
-      website: true,
-      investmentIndustry: true,
-      investmentGeographies: true,
-      dealsIn5Years: true,
-      dealSize: true,
-      primaryContact: true,
-      status: true,
-      match: true,
-    });
-  const handleSetColumnVisibility = (
-    newVisibility: VisibilityState | ((old: VisibilityState) => VisibilityState)
-  ) => {
-    setColumnVisibility(newVisibility);
-  };
+import React, { useEffect, useState } from "react";
+import { Column } from "./Column";
+import { DataTable } from "@/components/ui/data-table";
+import axios from "axios"; // Importing Axios for API requests
+
+interface Props {
+  id: string;
+}
+
+const Table: React.FC<Props> = ({ id }) => {
+  const [data, setData] = useState<any[]>([]); // State for storing fetched data
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [error, setError] = useState<string | null>(null); // Error state
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true); // Set loading to true while fetching
+        const response = await axios.get(`api/investors/${id}`); // Axios GET request
+        console.log("here", response);
+        setData(response.data); // Set the data from the response
+      } catch (error: any) {
+        setError(error.message || "Failed to fetch contacts"); // Set error message in case of failure
+      } finally {
+        setLoading(false); // Set loading to false after fetching is done
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) return <p>Loading data...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div>
-      <DataTable
-        columns={Column}
-        data={mockedInfo}
-        columnVisibility={columnVisibility}
-        setColumnVisibility={handleSetColumnVisibility}
-      />
+      <DataTable columns={Column} data={data} />{" "}
+      {/* Render DataTable with fetched data */}
     </div>
   );
 };

@@ -10,16 +10,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { addContact } from "@/lib/actions/contactAction";
-// import { addContact } from "@/lib/actions/investorAction";
+
 import axiosService from "@/lib/services/axiosService";
 import { contSchema } from "@/lib/zod-schema/contSchema";
 import { contType } from "@/lib/zod-type/contType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { Investor } from "@/lib/data/mocked";
+import { addContact } from "@/lib/actions/investorActions";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
-const AddContact = () => {
+interface Props {
+  selectedItem?: Investor;
+}
+const AddContact: React.FC<Props> = ({ selectedItem }) => {
+  const router = useRouter();
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
     defaultValues: {
@@ -30,37 +38,33 @@ const AddContact = () => {
       title: "",
     },
   });
-  const onSubmit = async (formData: contType) => {
+
+  const onSubmit = async (data: contType) => {
     try {
-      const result = await addContact(formData);
-      console.log(result.message); // Handle success message
+      const investorId = selectedItem?._id;
+
+      if (!investorId) {
+        throw new Error("Investor ID is missing");
+      }
+
+      // Use axios directly to post data
+      await axios.post("/api/contacts", {
+        investor: investorId,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        title: data.title,
+      });
+
+      // Refresh the data or reload the page
+      router.refresh();
+      console.log("Contact added successfully"); // Handle success message
     } catch (error: any) {
       console.error(error.message); // Handle error
     }
   };
 
-  // const onSubmit = async (data: contType) => {
-  //   const payload = {
-  //     investor: "605c72efb0f5f1a7c44a9d0d",
-  //     name: data.name,
-  //     surname: data.surname,
-  //     email: data.email,
-  //     phone: data.phone,
-  //     title: data.title,
-  //   };
-  //   try {
-  //     const response = await axiosService.post("/investor/contacts", payload);
-
-  //     if (response.status !== 200) {
-  //       throw new Error("Failed to submit the data");
-  //     }
-
-  //     // router.push("/login");
-  //   } catch (error) {
-  //     console.error("Error submitting data:", error);
-  //   }
-  //   alert(data);
-  // };
   return (
     <DialogContent className="max-h-[550px] text-sm  w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>

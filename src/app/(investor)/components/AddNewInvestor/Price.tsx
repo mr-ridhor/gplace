@@ -9,28 +9,33 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
+import { getInvestor, setPrice } from "@/lib/slice/addInvestorSlice";
 import { priceSchema } from "@/lib/zod-schema/priceSchema";
 import { priceType } from "@/lib/zod-type/priceType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
   handleClick: () => void;
-  price: priceType;
-  setPri: React.Dispatch<React.SetStateAction<priceType>>;
+  // price: priceType;
+  // setPri: React.Dispatch<React.SetStateAction<priceType>>;
 }
 
-const Price: React.FC<Props> = ({ price, setPri, handleClick }) => {
+const Price: React.FC<Props> = ({ handleClick }) => {
+  const dispatch = useDispatch();
+  const price = useSelector(getInvestor);
   const form = useForm<priceType>({
     resolver: zodResolver(priceSchema),
     defaultValues: price,
   });
 
   const onSubmit = (data: priceType) => {
-    alert("HI");
+    // alert("HI");
     console.log(data);
-    setPri(data);
+    dispatch(setPrice(data));
+    // setPri(data);
     handleClick();
   };
   return (

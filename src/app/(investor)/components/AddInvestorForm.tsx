@@ -17,7 +17,6 @@ import { contType } from "@/lib/zod-type/contType";
 import { companyType } from "@/lib/zod-type/companyType";
 import axiosService from "@/lib/services/axiosService";
 import { addInvestor } from "@/lib/actions/investorAction";
-import axios from "axios";
 // import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
 const AddInvestorForm: React.FC = () => {
@@ -43,141 +42,69 @@ const AddInvestorForm: React.FC = () => {
       handleTabChange(nextTab);
     }
   };
-  const [invCom, setInvCom] = useState<invcomType>({
-    name: "",
-    country: "",
-    city: "",
-    noEmp: "",
-    website: "",
-    investorType: "",
-    yearFounded: "",
-    description: "",
-  });
+  // const [invCom, setInvCom] = useState<invcomType>({
+  //   name: "",
+  //   country: "",
+  //   city: "",
+  //   noEmp: "",
+  //   website: "",
+  //   investorType: "",
+  //   yearFounded: "",
+  //   description: "",
+  // });
 
-  const [profile, setProfile] = useState<invproType>({
-    invInd: "",
-    invGeo: "",
-    noLTM: "",
-  });
+  // const [profile, setProfile] = useState<invproType>({
+  //   invInd: "",
+  //   invGeo: "",
+  //   noLTM: "",
+  // });
 
-  const [profile2, setProfile2] = useState<invpro2Type>({
-    med: "",
-    aum: "",
-    deal: "",
-  });
+  // const [profile2, setProfile2] = useState<invpro2Type>({
+  //   med: "",
+  //   aum: "",
+  //   deal: "",
+  // });
 
-  const [target, setTarget] = useState<tragetType>({
-    rev: "",
-    ebdt: "",
-    dealsz: "",
-  });
-  const [price, setPrice] = useState<priceType>({
-    val: "",
-    evRev: "",
-    evEbd: "",
-  });
-  const [companyInfo, setCompanyInfo] = useState<companyType>({
-    name: "",
-    country: "",
-    city: "",
-    email: "",
-    website: "",
-    industry: "",
-    foundingYear: "",
-    revenue: {
-      ltm: "",
-      previousYear: "",
-    },
-    grossProfit: {
-      ltm: "",
-      previousYear: "",
-    },
-    EBITDA: {
-      ltm: "",
-      previousYear: "",
-    },
-  });
-  const [contact, setContact] = useState<contType>({
-    name: "",
-    surname: "",
-    email: "",
-    phone: "",
-    title: "",
-  });
-  const handleSubmit = async () => {
-    // Combine all the data into one object
-    const payload = {
-      companyName: {
-        companyName: invCom.name,
-        country: invCom.country,
-        city: invCom.city,
-        website: invCom.website,
-        yearFounded: invCom.yearFounded,
-        employeeNumber: invCom.noEmp,
-        investorType: invCom.investorType,
-        description: invCom.description,
-      },
-      investmentBio: {
-        industry: profile.invInd,
-        geography: profile.invGeo,
-        dealsInLTM: profile.noLTM,
-        medianDealSize: profile2.med,
-        AUM: profile2.aum,
-        dealsIn5Y: profile2.deal,
-      },
-      targetInfo: {
-        revenue: {
-          from: target.rev,
-          to: price.val,
-        },
-        EBITDA: {
-          from: target.ebdt,
-          to: price.evEbd,
-        },
-        dealSize: {
-          from: target.dealsz,
-          to: price.evEbd,
-        },
-      },
-      paidInfo: {
-        valuation: {
-          from: 10000000, // (required)
-          to: 70000000, // (required)
-        },
-        revenue: {
-          from: 3000000, // (required)
-          to: 17000000, // (required)
-        },
-        EBITDA: {
-          from: 1200000, // (required)
-          to: 6800000, // (required)
-        },
-      },
-      primaryContact: {
-        name: contact.name,
-        surname: contact.surname,
-        email: contact.email,
-        phone: contact.phone,
-        title: contact.title,
-      },
-    };
-    console.log(payload);
-
-    try {
-      // const response = await axiosAuth.post("/investors", payload);
-      const response = await axios.post('/api/investors', payload)
-
-      if (response.status !== 200) {
-        throw new Error("Failed to submit the data");
-      }
-
-      // router.push("/login");
-    } catch (error) {
-      console.error("Error submitting data:", error);
-    }
-  };
+  // const [target, setTarget] = useState<tragetType>({
+  //   rev: "",
+  //   ebdt: "",
+  //   dealsz: "",
+  // });
+  // const [price, setPrice] = useState<priceType>({
+  //   val: "",
+  //   evRev: "",
+  //   evEbd: "",
+  // });
+  // const [companyInfo, setCompanyInfo] = useState<companyType>({
+  //   name: "",
+  //   country: "",
+  //   city: "",
+  //   email: "",
+  //   website: "",
+  //   industry: "",
+  //   foundingYear: "",
+  //   revenue: {
+  //     ltm: "",
+  //     previousYear: "",
+  //   },
+  //   grossProfit: {
+  //     ltm: "",
+  //     previousYear: "",
+  //   },
+  //   EBITDA: {
+  //     ltm: "",
+  //     previousYear: "",
+  //   },
+  // });
+  // const [contact, setContact] = useState<contType>({
+  //   name: "",
+  //   surname: "",
+  //   email: "",
+  //   phone: "",
+  //   title: "",
+  // });
   // const handleSubmit = async () => {
-  //   // Combine all the data into one object (payload)
+  //   // Combine all the data into one object
   //   const payload = {
   //     companyName: {
   //       companyName: invCom.name,
@@ -214,15 +141,15 @@ const AddInvestorForm: React.FC = () => {
   //     paidInfo: {
   //       valuation: {
   //         from: 10000000, // (required)
-  //         to: 70000000,  // (required)
+  //         to: 70000000, // (required)
   //       },
   //       revenue: {
-  //         from: 3000000,  // (required)
-  //         to: 17000000,   // (required)
+  //         from: 3000000, // (required)
+  //         to: 17000000, // (required)
   //       },
   //       EBITDA: {
-  //         from: 1200000,  // (required)
-  //         to: 6800000,    // (required)
+  //         from: 1200000, // (required)
+  //         to: 6800000, // (required)
   //       },
   //     },
   //     primaryContact: {
@@ -233,18 +160,18 @@ const AddInvestorForm: React.FC = () => {
   //       title: contact.title,
   //     },
   //   };
-
-  //   console.log(payload);  // Debugging to check the payload object
+  //   console.log(payload);
 
   //   try {
-  //     // Use the addInvestor server action to submit the payload
-  //     const response = await addInvestor(payload);
-  //     console.log(response.message); // Handle the success message
+  //     const response = await axiosService.post("/investors", payload);
 
-  //     // Optionally navigate to another page (uncomment if needed)
+  //     if (response.status !== 200) {
+  //       throw new Error("Failed to submit the data");
+  //     }
+
   //     // router.push("/login");
-  //   } catch (error:any) {
-  //     console.error("Error submitting data:", error.message);  // Handle the error
+  //   } catch (error) {
+  //     console.error("Error submitting data:", error);
   //   }
   // };
 
@@ -287,8 +214,8 @@ const AddInvestorForm: React.FC = () => {
             ))}
           </TabsList>
           <CompanyInfom
-            setCompanyInfo={setInvCom}
-            companyInfo={invCom}
+            // setCompanyInfo={setInvCom}
+            // companyInfo={invCom}
             onNext={handleNextTab}
           />
           {/* <CompanyInfom
@@ -297,28 +224,31 @@ const AddInvestorForm: React.FC = () => {
             onNext={handleNextTab}
           /> */}
           <ProfileInfo
-            setPro={setProfile}
-            profile={profile}
+            // setPro={setProfile}
+            // profile={profile}
             onNext={handleNextTab}
           />
           <ProfileInfo2
-            setPro2={setProfile2}
-            profile2={profile2}
+            // setPro2={setProfile2}
+            // profile2={profile2}
             handleClick={handleNextTab}
           />
 
           <Target
-            target={target}
-            setTarget={setTarget}
+            // target={target}
+            // setTarget={setTarget}
             handleClick={handleNextTab}
           />
 
-          <Price price={price} setPri={setPrice} handleClick={handleNextTab} />
+          <Price
+            // price={price} setPri={setPrice}
+            handleClick={handleNextTab}
+          />
 
           <Contact
-            submit={handleSubmit}
-            conct={contact}
-            setContact={setContact}
+          // submit={handleSubmit}
+          // conct={contact}
+          // setContact={setContact}
           />
           {/* No "Next" button on the last tab */}
         </Tabs>

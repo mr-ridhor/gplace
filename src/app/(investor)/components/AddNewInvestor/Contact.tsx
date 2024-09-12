@@ -10,36 +10,112 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
+import axiosService from "@/lib/services/axiosService";
+import {
+  getInvestor,
+  resetPayload,
+  setContact,
+} from "@/lib/slice/addInvestorSlice";
 import { contSchema } from "@/lib/zod-schema/contSchema";
 import { contType } from "@/lib/zod-type/contType";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
-interface Props {
-  conct: contType;
-  setContact: React.Dispatch<React.SetStateAction<contType>>;
-  submit: () => void;
-}
-const Contact: React.FC<Props> = ({ conct, setContact, submit }) => {
+const Contact = () => {
+  const dispatch = useDispatch();
+  // const router = useRouter;
+  const { data: session } = useSession();
+  const { contact, companyInfo, profile, profile2, target, price } =
+    useSelector(getInvestor);
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
-    defaultValues: conct,
+    defaultValues: contact,
   });
-  useEffect(() => {
-    const subscription = form.watch((data: any) => {
-      return setContact(data);
-    });
-    return () => subscription.unsubscribe(); // Cleanup subscription on unmount
-  }, [form.watch, setContact]);
-  const onSubmit = (data: contType) => {
-    // console.log(data);
-    setContact(data);
-    setTimeout(() => {
-      submit();
-    }, 0);
+  const onSubmit = async (data: contType) => {
+    console.log(data);
+    const payload = {
+      companyInfo: {
+        companyName: companyInfo.name,
+        country: companyInfo.country,
+        city: companyInfo.city,
+        website: companyInfo.website,
+        yearFounded: companyInfo.yearFounded,
+        employeeNumber: companyInfo.noEmp,
+        investorType: companyInfo.investorType,
+        description: companyInfo.description,
+      },
+      investmentBio: {
+        industry: profile.invInd,
+        geography: profile.invGeo,
+        dealsInLTM: profile.noLTM,
+        medianDealSize: profile2.med,
+        AUM: profile2.aum,
+        dealsIn5Y: profile2.deal,
+      },
+      targetInfo: {
+        revenue: {
+          from: target.rev,
+          to: price.val,
+        },
+        EBITDA: {
+          from: target.ebdt,
+          to: price.evEbd,
+        },
+        dealSize: {
+          from: target.dealsz,
+          to: price.evEbd,
+        },
+      },
+      paidInfo: {
+        valuation: {
+          from: 10000000, // (required)
+          to: 70000000, // (required)
+        },
+        revenue: {
+          from: 3000000, // (required)
+          to: 17000000, // (required)
+        },
+        EBITDA: {
+          from: 1200000, // (required)
+          to: 6800000, // (required)
+        },
+      },
+      primaryContact: {
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        title: data.title,
+      },
+    };
+    console.log(payload);
+
+    dispatch(setContact(data));
+    try {
+      const res = await axios.post("api/investors", payload, {
+        headers: {
+          // Authorization: `Bearer ${session?.user.dbToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(res);
+      dispatch(resetPayload());
+      // window.location.reload();
+      // if (response.status !== 200) {
+      //   throw new Error("Failed to submit the data");
+      // }
+    } catch (error) {
+      console.log(error);
+      console.error("Error submitting data:", error);
+    }
   };
+
   return (
     <TabsContent value="contact">
       <Form {...form}>

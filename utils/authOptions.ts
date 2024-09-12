@@ -1,9 +1,9 @@
 import Credentials from "next-auth/providers/credentials";
 import connectDB from "../config/db";
-import User, { IUser } from '../models/User'; // Adjust the path according to your folder structure
+import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
 // import mongoose from "mongoose";
-import argon2, { hash } from 'argon2'
+import argon2, { hash } from "argon2";
 
 interface IUserResponse {
   id: any; // Ensure mongoose Types are imported if needed
@@ -19,12 +19,12 @@ export const authOptions: NextAuthOptions = {
         email: {
           label: "email",
           type: "email",
-          placeholder: 'johndoe@gmail.com'
+          placeholder: "johndoe@gmail.com",
         },
         password: {
           label: "password",
           type: "password",
-          placeholder: 'password'
+          placeholder: "password",
         },
       },
       authorize: async (credentials) => {
@@ -38,16 +38,16 @@ export const authOptions: NextAuthOptions = {
         const user: IUser | any = await User.findOne({
           "credentials.email": email,
         });
-
+        console.log(user);
         if (!user) {
-          throw Error('User not found')
-          return null
+          throw Error("User not found");
+          return null;
         }
 
-        const hashedPassword = user.credentials.password
+        const hashedPassword = user.credentials.password;
         const isPasswordValid = argon2.verify(hashedPassword, password);
         if (!isPasswordValid) {
-          throw Error('Invalid Password');
+          throw Error("Invalid Password");
           return null;
         }
 
@@ -55,12 +55,12 @@ export const authOptions: NextAuthOptions = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,
           firstName: user.bio.firstName,
-          lastName: user.bio.lastName
+          lastName: user.bio.lastName,
         };
-
+        console.log(response);
         return response;
       },
-    })
+    }),
   ],
   pages: {
     signIn: "/auth/login",
@@ -79,9 +79,11 @@ export const authOptions: NextAuthOptions = {
         token.firstName = user.firstName;
         token.lastName = user.lastName;
       }
+      console.log("token", token);
       return token;
     },
-    async session({ session, token }: { session: any, token: any }) {
+    async session({ session, token }: { session: any; token: any }) {
+      console.log(token);
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
@@ -90,5 +92,5 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-  }
-}
+  },
+};

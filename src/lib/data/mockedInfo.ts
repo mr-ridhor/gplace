@@ -1,3 +1,11 @@
+export type mockedInfoType = {
+  name: string;
+  title: string;
+  email: string;
+  phone: string;
+  contactType: string;
+};
+
 export const mockedInfo: Array<{
   name: string;
   title: string;

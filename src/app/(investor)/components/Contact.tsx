@@ -1,11 +1,15 @@
 import { TabsContent } from "@/components/ui/tabs";
 import React from "react";
 import ContactPage from "./Contacts/ContactPage";
+import { Investor } from "@/lib/data/mocked";
 
-const Contact = () => {
+interface Props {
+  selectedItem: Investor;
+}
+const Contact: React.FC<Props> = ({ selectedItem }) => {
   return (
     <TabsContent value="contact" className="w-full">
-      <ContactPage />
+      <ContactPage selectedItem={selectedItem} />
     </TabsContent>
   );
 };

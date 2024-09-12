@@ -8,7 +8,7 @@ const connectDB = async (): Promise<void> => {
     }
 
     // Connect to MongoDB using the connection string from the environment variable
-    await mongoose.connect(process.env.MONGO_URL as string);
+    await mongoose.connect(process.env.MONGO_URI as string);
 
     console.log("MongoDB connected successfully");
   } catch (error) {

@@ -22,8 +22,16 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
-const Otp = () => {
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { getRegister } from "@/lib/slice/registerSlice";
+
+interface Props {
+  onNext: () => void;
+}
+const Otp: React.FC<Props> = ({ onNext }) => {
   const router = useRouter();
+  const { credentials } = useSelector(getRegister);
   const form = useForm<pinType>({
     resolver: zodResolver(pinSchema),
     defaultValues: {
@@ -31,10 +39,37 @@ const Otp = () => {
     },
   });
 
-  const onSubmit = (data: pinType) => {
+  const onSubmit = async (data: pinType) => {
     console.log(data);
     // Navigate to the company-info step
-    router.push("/auth/register?step=plan");
+    const payload = {
+      email: credentials.email,
+      verificationCode: data.otpCode,
+    };
+    console.log(payload);
+    try {
+      const response = await axios.post(
+        "https://goodplace-api.vercel.app/api/email/verify/code",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // OTP is valid, proceed to the next step (e.g., login or dashboard)
+        alert("OTP verified successfully!");
+        onNext();
+        router.push("/auth/register?step=plan");
+      } else {
+        throw new Error("Invalid OTP");
+      }
+    } catch (error) {
+      console.error("OTP submission error:", error);
+      alert("OTP verification failed. Please try again.");
+    }
   };
   return (
     <Form {...form}>
@@ -67,11 +102,11 @@ const Otp = () => {
                     <div className="w-full  flex justify-between">
                       <InputOTP
                         containerClassName="w-full justify-between flex space-x-3"
-                        maxLength={5}
+                        maxLength={4}
                         className="flex w-full justify-between "
                         {...field}
                       >
-                        {[...Array(5)].map((_, index) => (
+                        {[...Array(4)].map((_, index) => (
                           <InputOTPGroup key={index} className="">
                             <InputOTPSlot
                               className="text-center  focus:border-0 focus-visible:ring-[#04acc2]   border rounded-md p-2"

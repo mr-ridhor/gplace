@@ -1,15 +1,38 @@
 import CircularProgress from "@/app/svgComponent/CircularProgress";
 import { Button } from "@/components/ui/button";
-import { createColumnHelper } from "@tanstack/react-table";
+import { Investor } from "@/lib/data/mocked";
+// import { Investors } from "@/lib/data/mocked";
+import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Line, Circle } from "rc-progress";
 import { TiArrowUnsorted } from "react-icons/ti";
 const columnHelper = createColumnHelper();
 
-export const Columns = [
-  columnHelper.accessor("name", {
-    // header: "Name",
+export const Column: ColumnDef<Investor>[] = [
+  // {
+  //   id: "userId",
+  //   // accessorKey: "Name",
+  //   // header: ({ column }) => {
+  //   //   const isSorted = column.getIsSorted();
+  //   //   return (
+  //   //     <Button
+  //   //       variant="ghost"
+  //   //       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //   //     >
+  //   //       Name
+  //   //       <TiArrowUnsorted className="ml-2 h-4 w-4 text-[#898989]" />
+  //   //     </Button>
+  //   //   );
+  //   // },
+  //   cell: ({ row }) => row.original.user,
+  //   enableSorting: true,
+  //   enableHiding: true,
+  // },
+  {
+    id: "name",
+    accessorKey: "Name",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
@@ -20,12 +43,15 @@ export const Columns = [
         </Button>
       );
     },
-    cell: (info) => info.getValue(),
+    cell: ({ row }) => row.original.companyInfo.companyName,
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("country", {
+  },
+  {
+    id: "country",
+    accessorKey: "Country",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
@@ -36,13 +62,15 @@ export const Columns = [
         </Button>
       );
     },
-    cell: (info) => info.getValue(),
+    cell: ({ row }) => row.original.companyInfo.country,
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("website", {
-    // header: "Website",
+  },
+  {
+    id: "website",
+    accessorKey: "Website",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
@@ -53,43 +81,28 @@ export const Columns = [
         </Button>
       );
     },
-    cell: (info) => (
-      <div
-      // href={`https://${info.getValue()}`}
-      // target="_blank"
-      // rel="noopener noreferrer"
-      >
-        {info.getValue()}
-      </div>
-    ),
+    cell: ({ row }) => row.original.companyInfo.website,
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("investmentIndustry", {
+  },
+  {
+    id: "investmentIndustry",
+    accessorKey: "Investment Industry",
     header: "Investment Industry",
-    cell: (info) => (
-      <Button
-        className={`bg-[#F5E2B7] hover:bg-[#F5E2B7]/60 rounded-md h-8  p-1 badge badge-${info.getValue()}`}
-      >
-        {info.getValue()}
-      </Button>
-    ),
-    enableSorting: true,
-    enableHiding: false,
-  }),
-  columnHelper.accessor("investmentGeographies", {
-    header: "Investment Geographies",
-    cell: (info) => (
+    cell: ({ row }) => (
       <Button className="badge badge-purple bg-[#E4DAF4] hover:bg-[#E4DAF4]/60 rounded-md h-8">
-        {info.getValue()}
+        {row.original.investmentBio.industry}
       </Button>
     ),
+
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("dealsIn5Years", {
-    // header: "# of Deals in 5 years",
+  },
+  {
+    id: "dealsIn5Years",
+    accessorKey: "# of Deals in 5 years",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <div
           className="w-[80px]"
@@ -100,11 +113,15 @@ export const Columns = [
         </div>
       );
     },
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("dealSize", {
-    // header: "Deal Size ($M)",
+    cell: ({ row }) => row.original.investmentBio.dealsIn5Y,
+    enableSorting: true,
+    enableHiding: false,
+  },
+  {
+    id: "dealsSize",
+    accessorKey: "Deal Size ($M)",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
@@ -115,12 +132,15 @@ export const Columns = [
         </Button>
       );
     },
-    cell: (info) => info.getValue(),
+    cell: ({ row }) => row.original.investmentBio.dealsInLTM,
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("primaryContact", {
+  },
+  {
+    id: "primaryContact",
+    accessorKey: "Primary Contact",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
@@ -131,12 +151,15 @@ export const Columns = [
         </Button>
       );
     },
-    cell: (info) => info.getValue(),
+    cell: ({ row }) => row.original.primaryContact.phone,
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("status", {
+  },
+  {
+    id: "status",
+    accessorKey: "Status",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
@@ -147,16 +170,19 @@ export const Columns = [
         </Button>
       );
     },
-    cell: (info) => (
+    cell: ({ row }) => (
       <div className="bg-[#EBEBEB] rounded-md  hover:bg-[#EBEBEB]/60 px-2 py-2 badge badge-gray">
-        {info.getValue()}
+        {row.original.status ? row.original.status : "Data Exchange"}
       </div>
     ),
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("match", {
+  },
+  {
+    id: "match",
+    accessorKey: "Match",
     header: ({ column }) => {
+      const isSorted = column.getIsSorted();
       return (
         <Button
           variant="ghost"
@@ -167,14 +193,18 @@ export const Columns = [
         </Button>
       );
     },
-    cell: (info) => (
+    cell: ({ row }) => (
       <div className="flex items-center">
         <div className="ml-2 rounded-full border bg-[#57D08D]  text-gren-600">
-          <CircularProgress percentage={info.getValue()} circleWidth={40} />
+          <CircularProgress
+            // percentage={10}
+            percentage={row.original.matchScore.totalScore}
+            circleWidth={40}
+          />
         </div>
       </div>
     ),
     enableSorting: true,
     enableHiding: false,
-  }),
+  },
 ];

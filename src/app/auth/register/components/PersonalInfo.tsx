@@ -17,47 +17,27 @@ import { personalSchema } from "@/lib/zod-schema/personalSchema";
 import { personalType } from "@/lib/zod-type/personalType";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { getRegister, setPersonalInfo } from "@/lib/slice/registerSlice";
 
 interface PersonalInfoProps {
-  personalInfo: personalType;
-  setPersonalInfo: React.Dispatch<React.SetStateAction<personalType>>;
   onNext: () => void;
 }
-const PersonalInfo: React.FC<PersonalInfoProps> = ({
-  personalInfo,
-  setPersonalInfo,
-  onNext,
-}) => {
+const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
   const router = useRouter(); // Initialize router
-  // const form = useForm<personalType>({
-  // //   resolver: zodResolver(personalSchema),
-  // //   defaultValues: {
-  // //     email: "",
-  // //     firstName: "",
-  // //     lastName: "",
-  // //     address: "",
-  // //     city: "",
-  // //     country: "",
-  // //     title: "",
-  // //     linkedIn: "",
-  // //     phone: "",
-  // //     x: "",
-  // //   },
-  // // });
+  const dispatch = useDispatch();
+  const personalInfo = useSelector(getRegister);
 
-  // // const onSubmit = (data: personalType) => {
-  // //   console.log(data);
-  // //   // Navigate to the company-info step
-  // //   router.push("/auth/register?step=company-info");
-  // // };
   const form = useForm<personalType>({
     resolver: zodResolver(personalSchema),
     defaultValues: personalInfo,
   });
 
   const onSubmit = (data: personalType) => {
-    setPersonalInfo(data);
+    // setPersonalInfo(data);
+    console.log(data);
+    dispatch(setPersonalInfo(data));
     onNext();
     router.push("/auth/register?step=company-info");
   };

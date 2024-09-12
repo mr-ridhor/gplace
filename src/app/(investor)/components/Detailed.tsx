@@ -6,8 +6,11 @@ import Inactive from "./Details/Inactive";
 import Letter from "./Details/Letter";
 import Deligence from "./Details/Deligence";
 import Closing from "./Details/Closing";
-
-const Detailed = () => {
+import { Investor } from "@/lib/data/mocked";
+interface Props {
+  selectedItem: Investor;
+}
+const Detailed: React.FC<Props> = ({ selectedItem }) => {
   return (
     <TabsContent value="detail" className="w-full overflow-x-aut">
       <div className="mt-4">
@@ -54,7 +57,7 @@ const Detailed = () => {
               Closing
             </TabsTrigger>
           </TabsList>
-          <Discussion />
+          <Discussion selectedItem={selectedItem} />
           <Data />
           <Inactive />
           <Letter />
