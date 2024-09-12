@@ -24,7 +24,9 @@ const RootLayout = async ({
     <html lang="en">
       <body className={`overflow-hidden ${inter.className}`}>
         {/* {children} */}
-        <AppProviders session={session as Session}>{children}</AppProviders>
+        <AppProviders session={session as Session}>
+          {children}
+          </AppProviders>
       </body>
     </html>
   );

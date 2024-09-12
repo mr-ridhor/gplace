@@ -79,11 +79,11 @@ export const authOptions: NextAuthOptions = {
         token.firstName = user.firstName;
         token.lastName = user.lastName;
       }
-      console.log("token", token);
+      // console.log("token", token);
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      console.log(token);
+      // console.log(token);
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;

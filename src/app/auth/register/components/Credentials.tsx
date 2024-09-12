@@ -21,7 +21,7 @@ import { authType } from "@/lib/zod-type/authType";
 import { authSchema } from "@/lib/zod-schema/authSchema";
 import { useDispatch, useSelector } from "react-redux";
 // import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
-import axiosService from "@/lib/services/axiosService";
+// import axiosService from "@/lib/services/axiosService";
 import axios from "axios";
 import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
 
@@ -53,7 +53,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
       team: teamInfo,
       credentials: data,
     };
-    console.log("cred", payload);
+    // console.log("cred", payload);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_UR}/api/signup`,

@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      console.log(info);
+      // console.log(info);
     });
 
     return NextResponse.json(
