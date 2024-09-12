@@ -48,11 +48,15 @@ const Otp: React.FC<Props> = ({ onNext }) => {
     };
     console.log(payload);
     try {
-      const response = await axios.post("api/email/otp", payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_UR}api/email/otp`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.status === 200) {
         // OTP is valid, proceed to the next step (e.g., login or dashboard)

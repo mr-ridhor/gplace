@@ -14,10 +14,7 @@ export const fetchInvestors = async () => {
     });
     return response.data;
   } catch (error: any) {
-    console.error(
-      "Failed to fetch investors:",
-      error.response?.data || error.message
-    );
+    console.error("No investor found ", error.response?.data || error.message);
     throw new Error(
       error.response?.data?.message || "Error fetching investors"
     );
