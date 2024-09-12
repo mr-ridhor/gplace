@@ -55,10 +55,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
     };
     console.log("cred", payload);
     try {
-      const response = await axios.post(
-        "https://goodplace-api.vercel.app/api/auth/signup",
-        payload
-      );
+      const response = await axios.post("auth/signup", payload);
       console.log("res", response.config.data);
 
       const verificationResponse = await axios.post(
