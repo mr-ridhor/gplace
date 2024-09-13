@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 
 const page = () => {
   const router = useRouter()
-  router.push('/dashboard')
+  // router.push('/dashboard')
   const handleTest = async () => {
     // const response = await axios.get('/api/investors')
 
