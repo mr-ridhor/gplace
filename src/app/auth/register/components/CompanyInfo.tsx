@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MoveRight } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -21,11 +21,14 @@ import { companySchema } from "@/lib/zod-schema/companySchema";
 import { YearSelect } from "@/components/YearSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegister, setCompanyInfo } from "@/lib/slice/registerSlice";
-
+import { Country, City, ICity } from "country-state-city";
 interface CompanyInfoProps {
   onNext: () => void;
 }
 const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
+  const countryList = Country.getAllCountries();
+  const [cityList, setCityList] = useState<ICity[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
   const router = useRouter();
   const dispatch = useDispatch();
   const companyInfo = useSelector(getRegister);
@@ -33,6 +36,19 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
     resolver: zodResolver(companySchema),
     defaultValues: companyInfo,
   });
+  const handleCountryChange = (countryName: string) => {
+    setSelectedCountry(countryName);
+    // Find the country by name to get the correct ISO code
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === countryName
+    );
+    if (selectedCountry) {
+      const cities = City.getCitiesOfCountry(selectedCountry.isoCode) || [];
+      setCityList(cities);
+    } else {
+      setCityList([]); // Clear cities if no country found
+    }
+  };
 
   const onSubmit = (data: companyType) => {
     dispatch(setCompanyInfo(data));
@@ -87,7 +103,6 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                 <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
                   Country
                 </FormLabel>
-
                 <FormField
                   control={form.control}
                   name="country"
@@ -96,13 +111,16 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                       <FormControl>
                         <Selects
                           value={field.value}
-                          onChange={field.onChange}
-                          className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
-                          placeholder="Ireland"
-                          options={[
-                            { value: "fr", label: "Fr" },
-                            { value: "eng", label: "Eng" },
-                          ]}
+                          onChange={(value) => {
+                            field.onChange(value);
+                            handleCountryChange(value); // Pass the country name to handleCountryChange
+                          }}
+                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          placeholder="Select a country"
+                          options={countryList.map((country) => ({
+                            value: country.name, // Use country.name as the value
+                            label: country.name,
+                          }))}
                         />
                       </FormControl>
                       <FormMessage />
@@ -123,13 +141,13 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                       <FormControl>
                         <Selects
                           value={field.value}
-                          onChange={field.onChange}
-                          className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
-                          placeholder="Ireland"
-                          options={[
-                            { value: "s", label: "Fr" },
-                            { value: "s4", label: "eng" },
-                          ]}
+                          onChange={field.onChange} // Pass the city name to form control
+                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          placeholder="Select a city"
+                          options={cityList.map((city) => ({
+                            value: city.name, // Use city.name as the value
+                            label: city.name,
+                          }))}
                         />
                       </FormControl>
                       <FormMessage />

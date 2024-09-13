@@ -176,7 +176,7 @@ const AddInvestorForm: React.FC = () => {
   // };
 
   return (
-    <DialogContent className="max-h-[550px]  w-[600px] my-3 overflow-auto no-scrollbar">
+    <DialogContent className="h-[450px] md:max-h-[550px] w-[400px] md:w-[600px] my-3 overflow-auto no-scrollbar">
       <div className="space-y-3">
         <p className="font-bold text-lg">Add Investor</p>
 
