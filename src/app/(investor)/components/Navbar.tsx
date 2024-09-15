@@ -37,8 +37,8 @@ const Navbar = () => {
   const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
   const [showPanel, setShowPanel] = React.useState<Checked>(false);
-  const session = useSession();
-  // console.log(session);
+  const { data: session } = useSession();
+
   const dispatch = useDispatch();
   const router = useRouter();
   const selectedRow = useSelector(getSelectedRow);
@@ -159,7 +159,7 @@ const Navbar = () => {
         )}
 
         <div className="">
-          <p>Mr Ed.</p>
+          <p className="max-w-[90px] truncate ">{session?.user.firstName}</p>
         </div>
         {/* <div className="">
           
