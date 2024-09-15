@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 
 const page = () => {
   const router = useRouter()
-  // router.push('/dashboard')
+  router.push('/dashboard')
   const handleTest = async () => {
     // const response = await axios.get('/api/investors')
 
@@ -32,7 +32,7 @@ const page = () => {
       {/* <h1 className="text-2xl">{user.id} {user.email}</h1> */}
       {/* <h1 className="text-2xl">{user.firstName} {user.lastName}</h1> */}
       {/* <button onClick={handleTest} className=''>Test API route</button> */}
-      <button className='mx-8 p-2 border' onClick={()=> signOut({ callbackUrl: '/auth/login' })}>Signout</button>
+      {/* <button className='mx-8 p-2 border' onClick={()=> signOut({ callbackUrl: '/auth/login' })}>Signout</button> */}
     </div>
   )
 }

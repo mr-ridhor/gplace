@@ -35,8 +35,8 @@ export interface IUser extends Document {
     };
   };
   team: {
-    team1?: { fullName: string; role: string };
-    team2?: { fullName: string; role: string };
+    team1?: { fullName: string; email: string };
+    team2?: { fullName: string; email: string };
   };
   credentials: {
     email: string;
