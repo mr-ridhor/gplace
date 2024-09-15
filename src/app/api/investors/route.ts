@@ -1,6 +1,6 @@
 // pages/api/investors/index.ts
 import { NextResponse, NextRequest } from "next/server";
-import Investor from "../../../../models/Investor";
+import Investor, { InvestorInterface } from "../../../../models/Investor";
 import User from "../../../../models/User";
 import connectDB from "../../../../config/db";
 import { getServerSession } from "next-auth";
@@ -85,24 +85,88 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// GET route to fetch all Investors
+// // GET route to fetch all Investors
+// export async function GET(req: NextRequest) {
+//   try {
+//     await connectDB();
+//     const user = await getServerSession(authOptions);
+
+//     if (!user) {
+//       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+//     }
+
+//     const investors = await Investor.find({ user: user?.user.id });
+//     if (!investors || investors.length === 0) {
+//       return NextResponse.json(
+//         { message: "No Investors found" },
+//         { status: 404 }
+//       );
+//     }
+//     return NextResponse.json(investors, { status: 200 });
+//   } catch (error: any) {
+//     console.error("Error:", error);
+//     return NextResponse.json({ message: error.message }, { status: 500 });
+//   }
+// }
+
+
 export async function GET(req: NextRequest) {
   try {
+    // Ensure the database is connected
     await connectDB();
+    
+    // Get the user session
     const user = await getServerSession(authOptions);
 
+    // Check if the user is authenticated
     if (!user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const investors = await Investor.find({ user: user?.user.id });
-    if (!investors || investors.length === 0) {
-      return NextResponse.json(
-        { message: "No Investors found" },
-        { status: 404 }
-      );
+    // Extract and validate query parameters
+    const search = req.nextUrl.searchParams.get('search') || undefined;
+    const country = req.nextUrl.searchParams.get('country') || undefined;
+    const website = req.nextUrl.searchParams.get('website') || undefined;
+    const industry = req.nextUrl.searchParams.get('industry') || undefined;
+    const geo = req.nextUrl.searchParams.get('geo') || undefined;
+    const dealsIn5Y = req.nextUrl.searchParams.get('dealsIn5Y') ? parseInt(req.nextUrl.searchParams.get('dealsIn5Y') as string, 10) : undefined;
+    const dealSize = req.nextUrl.searchParams.get('dealSize') ? parseFloat(req.nextUrl.searchParams.get('dealSize') as string) : undefined;
+    const contact = req.nextUrl.searchParams.get('contact') || undefined;
+    const status = req.nextUrl.searchParams.get('status') || undefined;
+    const match = req.nextUrl.searchParams.get('match') ? parseFloat(req.nextUrl.searchParams.get('match') as string) : undefined;
+
+    // Create a dynamic query object to filter investors based on provided search parameters
+    const query: Record<string, any> = { user: user?.user.id };
+
+    // Apply filters if search parameters are present
+    if (search) {
+      query.$or = [
+        { "primaryContact.name": new RegExp(search, 'i') },
+        { "primaryContact.surname": new RegExp(search, 'i') },
+        { "primaryContact.email": new RegExp(search, 'i') },
+      ];
     }
+    if (country) query["companyInfo.country"] = country;
+    if (website) query["companyInfo.website"] = new RegExp(website, 'i');
+    if (industry) query["investmentBio.industry"] = new RegExp(industry, 'i');
+    if (geo) query["investmentBio.geography"] = new RegExp(geo, 'i');
+    if (dealsIn5Y) query["investmentBio.dealsIn5Y"] = dealsIn5Y;
+    if (dealSize) query["targetInfo.dealSize.to"] = { $gte: dealSize };
+    if (contact) query["primaryContact.name"] = new RegExp(contact, 'i');
+    if (status) query.status = status;
+    if (match) query["matchScore.totalScore"] = { $gte: match };
+
+    // Fetch the investors based on the query
+    const investors: InvestorInterface[] = await Investor.find(query).exec();
+
+    // Handle case when no investors are found
+    if (!investors || investors.length === 0) {
+      return NextResponse.json({ message: "No Investors found" }, { status: 404 });
+    }
+
+    // Return found investors
     return NextResponse.json(investors, { status: 200 });
+
   } catch (error: any) {
     console.error("Error:", error);
     return NextResponse.json({ message: error.message }, { status: 500 });
