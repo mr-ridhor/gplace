@@ -10,18 +10,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-import axiosService from "@/lib/services/axiosService";
 import { contSchema } from "@/lib/zod-schema/contSchema";
 import { contType } from "@/lib/zod-type/contType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
 import { Investor } from "@/lib/data/mocked";
-import { addContact } from "@/lib/actions/investorActions";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { LuLoader } from "react-icons/lu";
 
 interface Props {
   selectedItem?: Investor;
@@ -192,11 +189,24 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
                 />
               </div>
               <div className="w-full flex items-center gap-x-4">
-                <Button
+                {/* <Button
                   className="w-full h-10  rounded-md flex items-center justify-center"
                   type="submit"
                 >
                   <p className="text-white font-bold">Done!</p>
+                </Button> */}
+                <Button
+                  className="w-full h-10  rounded-md flex items-center justify-center"
+                  type="submit"
+                >
+                  {form.formState.isSubmitting ? (
+                    <div className="w-full h-72 flex items-center justify-center">
+                      <LuLoader className="w-8 h-8 text-white" />
+                      {/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
+                    </div>
+                  ) : (
+                    <p className="text-white font-bold">Done!</p>
+                  )}
                 </Button>
               </div>
             </div>

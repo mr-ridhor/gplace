@@ -3,7 +3,8 @@ import connectDB from "../config/db";
 import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
 // import mongoose from "mongoose";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 interface IUserResponse {
   id: any; // Ensure mongoose Types are imported if needed
@@ -11,6 +12,26 @@ interface IUserResponse {
   firstName: string;
   lastName: string;
 }
+// Function to verify the password using crypto
+const verifyPassword = (
+  password: string,
+  storedHash: string
+): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    const [salt, hash] = storedHash.split(":");
+    crypto.pbkdf2(
+      password,
+      salt,
+      1000, // Number of iterations
+      64, // Key length
+      "sha512", // Digest algorithm
+      (err, derivedKey) => {
+        if (err) return reject(err);
+        resolve(hash === derivedKey.toString("hex"));
+      }
+    );
+  });
+};
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -45,7 +66,9 @@ export const authOptions: NextAuthOptions = {
         }
 
         const hashedPassword = user.credentials.password;
-        const isPasswordValid = bcrypt.compare(hashedPassword, password);
+        // const isPasswordValid = bcrypt.compare(hashedPassword, password);
+        const isPasswordValid = await verifyPassword(password, hashedPassword);
+
         if (!isPasswordValid) {
           throw Error("Invalid Password");
           return null;

@@ -11,6 +11,7 @@ import Notes from "./Notes";
 import { useSession } from "next-auth/react";
 import axios from "axios"; // Using axios instead of fetch
 import { Investor } from "@/lib/data/mocked";
+import LoaderComponent from "@/components/LoaderComponent";
 
 const SelectedRow = () => {
   const searchParams = useSearchParams();
@@ -42,7 +43,11 @@ const SelectedRow = () => {
 
   // Ensure selectedItem is loaded before rendering
   if (!selectedItem) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full h-72 flex items-center justify-center">
+        <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
+      </div>
+    );
   }
 
   // Handle tab change and update URL

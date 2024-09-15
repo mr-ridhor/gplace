@@ -11,37 +11,36 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MoveRight } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { teamSchema } from "@/lib/zod-schema/teamSchema";
 import { teamType } from "@/lib/zod-type/teamType";
 import { DialogContent } from "@/components/ui/dialog";
+import { getProfile, updateTeamInfo } from "@/lib/slice/profileSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const TeamInfoForm = () => {
+  const dispatch = useDispatch();
+  const { team } = useSelector(getProfile);
+  useEffect(() => {
+    form.reset(team);
+  }, [team]);
   const form = useForm<teamType>({
     resolver: zodResolver(teamSchema),
-    defaultValues: {
-      team1: {
-        fullName: "",
-        role: "",
-      },
-      team2: {
-        fullName: "",
-        role: "",
-      },
-    },
+    defaultValues: team,
   });
 
   const onSubmit = (data: teamType) => {
     console.log(data);
+    dispatch(updateTeamInfo(data));
   };
   return (
-    <DialogContent className="h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
+    <DialogContent className=" h-fit max-h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>
         <div className="px-2   space-y-6 overflow-y-auto no-scrollbar flex flex-col item-center w-full">
-          <div className="w-full items-center flex flex-col mt-10  ">
+          <div className="w-full items-center flex flex-col  ">
             <div className="w-full">
               <strong className="text-sm xl:text-2xl text-left ">
                 Team Information (Optional)

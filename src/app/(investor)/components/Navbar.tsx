@@ -29,7 +29,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
@@ -37,7 +37,8 @@ const Navbar = () => {
   const [showStatusBar, setShowStatusBar] = React.useState<Checked>(true);
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
   const [showPanel, setShowPanel] = React.useState<Checked>(false);
-
+  const session = useSession();
+  console.log(session);
   const dispatch = useDispatch();
   const router = useRouter();
   const selectedRow = useSelector(getSelectedRow);
@@ -51,6 +52,11 @@ const Navbar = () => {
   console.log(tab);
   const pathname = usePathname();
   console.log(pathname);
+  React.useEffect(() => {
+    if (pathname === "/profile") {
+      dispatch(setActiveTab(""));
+    }
+  }, [pathname, dispatch]);
   const handleInvestorsClick = () => {
     router.push(`/dashboard?detail=&tab=detail`);
     dispatch(setActiveTab("investors"));
@@ -80,7 +86,13 @@ const Navbar = () => {
           <TabsList className="w-full bg-inherit rounded-none rounded-t-md h-12 p-0">
             <TabsTrigger
               value="investors"
-              className="w-full h-full rounded-none border-b rounded-t-md data-[state=active]:border-b-0 data-[state=active]:border-t data-[state=active]:border-l data-[state=active]:border-r data-[state=active]:bg-white data-[state=active]:shadow-none"
+              className={`w-full h-full rounded-none border-b rounded-t-md 
+                  ${
+                    activeTab === "investors"
+                      ? " data-[state=active]:border-b-0 data-[state=active]:border-t data-[state=active]:border-l data-[state=active]:border-r data-[state=active]:bg-white data-[state=active]:shadow-none bg-white"
+                      : ""
+                  }
+                `}
               // className="w-full h-full rounded-none border-b rounded-t-md"
               onClick={handleInvestorsClick}
             >
@@ -89,7 +101,12 @@ const Navbar = () => {
             {selectedRow && (
               <TabsTrigger
                 value={selectedRow}
-                className="w-full h-full rounded-none border-b rounded-t-md data-[state=active]:border-b-0 data-[state=active]:border-t data-[state=active]:border-l data-[state=active]:border-r data-[state=active]:bg-white data-[state=active]:shadow-none"
+                className={`w-full h-full rounded-none border-b rounded-t-md 
+                 ${
+                   activeTab === selectedRow
+                     ? " data-[state=active]:border-b-0 data-[state=active]:border-t data-[state=active]:border-l data-[state=active]:border-r data-[state=active]:bg-white data-[state=active]:shadow-none bg-white"
+                     : ""
+                 }`}
                 // className="w-full h-full rounded-none border-b rounded-t-md"
                 onClick={handleSelectedRowClick}
               >
@@ -107,7 +124,8 @@ const Navbar = () => {
         </Tabs>
       </div>
       <div className="hidden md:flex items-center h-full gap-x-4 bg-red-0 justify-end">
-        {(tab as string) !== "contact" || (tab as string) === "detail" ? (
+        {pathname !== "/profile" &&
+        ((tab as string) !== "contact" || (tab as string) === "detail") ? (
           <>
             <div className="flex gap-x-2 items-center h-full">
               <Filter />
@@ -139,15 +157,6 @@ const Navbar = () => {
             </Button>
           </Link>
         )}
-
-        {/* {tab != "detail" && pathname !== "/dashboard" && (
-          <Link href={"profile"}>
-            <Button className="bg-[#dcf8fc] hover:bg-[#dcf8fc]/10 flex items-center gap-x-1">
-              <FaPen />
-              Edit
-            </Button>
-          </Link>
-        )} */}
 
         <div className="">
           <p>Mr Ed.</p>

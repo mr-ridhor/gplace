@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Column } from "./Column";
 import { DataTable } from "@/components/ui/data-table";
 import axios from "axios"; // Importing Axios for API requests
+import LoaderComponent from "@/components/LoaderComponent";
 
 interface Props {
   id: string;
@@ -31,7 +32,12 @@ const Table: React.FC<Props> = ({ id }) => {
     fetchData();
   }, [id]);
 
-  if (loading) return <p>Loading data...</p>;
+  if (loading)
+    return (
+      <div className="w-full h-72 flex items-center justify-center">
+        <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
+      </div>
+    );
   if (error) return <p>{error}</p>;
 
   return (
