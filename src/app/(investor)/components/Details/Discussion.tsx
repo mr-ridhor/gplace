@@ -52,11 +52,11 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           );
         })}
       </div> */}
-      <div className="grid gap-x-5 grid-cols-4 w-full">
+      <div className="grid gap-x-5 grid-cols-2 gap-y-3 md:grid-cols-4 w-full">
         <Card className="border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] col-span-1">
           <CardContent className="h-[100px] gap-y-2 flex flex-col justify-center  tems-center">
             <p className="text-[10px] lg:text-sm">Primary Contact</p>
-            <p className="font-medium text-[10px] lg:text-sm">
+            <p className="font-medium text-[10px] lg:text-sm  truncate">
               {selectedItem.primaryContact.name}
             </p>
           </CardContent>

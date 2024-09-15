@@ -14,20 +14,22 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
     <div className="w-full space-y-3 my-2">
       <ContactHeader selectedItem={selectedItem} />
       <div className="border rounded-md w-full text-[10px] md:text-sm p-3 space-y-4 shadow shadow-gray-200">
-        <div className="flex justify-between w-full">
+        <div className=" flex-col md:flex-row items-center gap-x-3 flex justify-between w-full">
           <div className="flex gap-x-2 h-fit items-center">
             <p>
               {selectedItem?.primaryContact.name.toUpperCase()}{" "}
               {selectedItem?.primaryContact.surname.toUpperCase()}
             </p>
+          </div>
+          <div className="flex-1 flex md: justify-between">
             <div className="w-fit h-8 px-2 items-center flex bg-[#FCF0FD] rounded-md ">
               <p>Primary Contact</p>
             </div>
-          </div>
-          <div className="text-black h-8">
-            <Button className="h-full items-center flex gap-x-1 bg-[#DCF8FC] hover:bg-[#DCF8FC]/60">
-              View record <BiLogoTelegram />
-            </Button>
+            <div className="text-black h-8">
+              <Button className="h-full items-center flex gap-x-1 bg-[#DCF8FC] hover:bg-[#DCF8FC]/60 text-[10px] md:text-sm">
+                View record <BiLogoTelegram />
+              </Button>
+            </div>
           </div>
         </div>
         <div className="w-full grid-cols-2 gap-y-2 md:grid-cols-3 grid gap-x-2 ">

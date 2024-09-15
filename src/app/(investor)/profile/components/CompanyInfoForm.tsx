@@ -40,7 +40,7 @@ const CompanyInfoForm = () => {
     // router.push("/auth/register?step=team-info");
   };
   return (
-    <DialogContent className="h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
+    <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>
         <div className="    space-y-6 flex flex-col items-center w-full">
           <div className="w-full items-center flex flex-col  ">

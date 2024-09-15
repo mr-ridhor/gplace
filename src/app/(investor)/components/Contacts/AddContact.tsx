@@ -62,7 +62,7 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
   };
 
   return (
-    <DialogContent className="max-h-[550px] text-sm  w-[600px] my-3 overflow-auto no-scrollbar">
+    <DialogContent className="max-h-[550px] text-sm  w-[320px] md:w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>
         <div className="    space-y-6 flex flex-col items-centr w-full">
           <div className="w-full flex flex-col items-center  justify-center">

@@ -7,7 +7,7 @@ import {
   getSelectedRow,
   getActiveTab,
 } from "@/lib/slice/selectedRowSlice";
-import { X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Logo from "@/app/svgComponent/Logo";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -198,6 +198,23 @@ const Navbar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+      </div>
+      <div className=" md:hidden flex">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Menu />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-10">
+            <DropdownMenuLabel className="flex w-full justify-center">
+              <Button
+                className="mx-8 p-2 hover:bg-transparent bg-transparent "
+                onClick={() => signOut({ callbackUrl: "/auth/login" })}
+              >
+                Signout
+              </Button>
+            </DropdownMenuLabel>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ const TeamInfoForm = () => {
     dispatch(updateTeamInfo(data));
   };
   return (
-    <DialogContent className=" h-fit max-h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
+    <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>
         <div className="px-2   space-y-6 overflow-y-auto no-scrollbar flex flex-col item-center w-full">
           <div className="w-full items-center flex flex-col  ">
