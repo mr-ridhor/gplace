@@ -13,6 +13,7 @@ import { storageService } from "./storageService";
 import selectedRowReducer from "../slice/selectedRowSlice";
 import registerReducer from "../slice/registerSlice";
 import addInverstorReducer from "../slice/addInvestorSlice";
+import profileReducer from "../slice/profileSlice";
 const persistConfig = {
   key: "root",
   storage: storageService,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   row: selectedRowReducer,
   register: registerReducer,
   addInvestor: addInverstorReducer,
+  profile: profileReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

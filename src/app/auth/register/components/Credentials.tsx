@@ -62,26 +62,31 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
       });
       console.log("res", response);
 
-      if (response.statusText === "ok") {
-        const verificationResponse = await axios.post(
-          `/api/email/verification`,
+      if (response.status === 201) {
+        // const load = {
+        //   email: data.email,
+        // };
+        router.push("login");
+        // console.log(load);
+        // const verificationResponse = await axios.post(
+        //   `/api/email/verification`,
 
-          { email: data.email },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log("otp", verificationResponse);
-        if (verificationResponse.status === 200) {
-          router.push(`/auth/register?step=otp`);
-          onNext();
-        }
+        //   load,
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //   }
+        // );
+        // console.log("otp", verificationResponse);
+        // if (verificationResponse.status === 200) {
+        //   router.push(`/auth/register?step=otp`);
+        //   onNext();
+        // }
       }
-      // if (response.status !== 201) {
-      //   throw new Error("Failed to submit the data");
-      // }
+      if (response.status !== 201) {
+        throw new Error("Failed to submit the data");
+      }
     } catch (error) {
       console.error("Error submitting data:", error);
     }

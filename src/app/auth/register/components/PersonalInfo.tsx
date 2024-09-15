@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MoveRight } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { personalSchema } from "@/lib/zod-schema/personalSchema";
 import { personalType } from "@/lib/zod-type/personalType";
 import { useForm } from "react-hook-form";
@@ -20,11 +20,28 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegister, setPersonalInfo } from "@/lib/slice/registerSlice";
-
+import { Country, City, ICity } from "country-state-city";
 interface PersonalInfoProps {
   onNext: () => void;
 }
 const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
+  const countryList = Country.getAllCountries();
+  const [cityList, setCityList] = useState<ICity[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const handleCountryChange = (countryName: string) => {
+    setSelectedCountry(countryName);
+    // Find the country by name to get the correct ISO code
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === countryName
+    );
+    if (selectedCountry) {
+      const cities = City.getCitiesOfCountry(selectedCountry.isoCode) || [];
+      setCityList(cities);
+    } else {
+      setCityList([]); // Clear cities if no country found
+    }
+  };
+
   const router = useRouter(); // Initialize router
   const dispatch = useDispatch();
   const personalInfo = useSelector(getRegister);
@@ -191,7 +208,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                 />
               </div>
             </div>
-            <div className="w-full  flex gap-x-4">
+            {/* <div className="w-full  flex gap-x-4">
               <div className="w-1/2 space-y-2">
                 <FormLabel className="font-normal">Country</FormLabel>
 
@@ -242,7 +259,61 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                   )}
                 />
               </div>
+            </div> */}
+            <div className="w-full  flex gap-x-4">
+              <div className="w-1/2 space-y-2">
+                <FormLabel className="font-normal">Country</FormLabel>
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Selects
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                            handleCountryChange(value); // Pass the country name to handleCountryChange
+                          }}
+                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          placeholder="Select a country"
+                          options={countryList.map((country) => ({
+                            value: country.name, // Use country.name as the value
+                            label: country.name,
+                          }))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-1/2 space-y-2">
+                <FormLabel className="font-normal">City</FormLabel>
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Selects
+                          value={field.value}
+                          onChange={field.onChange} // Pass the city name to form control
+                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          placeholder="Select a city"
+                          options={cityList.map((city) => ({
+                            value: city.name, // Use city.name as the value
+                            label: city.name,
+                          }))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
+
             <div className="w-full space-y-2">
               <FormLabel className="font-normal">Address</FormLabel>
               <FormField

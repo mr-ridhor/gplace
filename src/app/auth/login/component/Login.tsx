@@ -22,10 +22,11 @@ import { toast } from "sonner";
 import moment from "moment";
 import { loginType } from "@/lib/zod-type/loginType";
 import { loginSchema } from "@/lib/zod-schema/loginSchema";
+import LoaderComponent from "@/components/LoaderComponent";
 
 const Login = () => {
   const searchParams = useSearchParams();
-  // const callBackUrl = searchParams.get("callbackUrl"); // URL to redirect to after login
+
   const router = useRouter();
   const form = useForm<loginType>({
     resolver: zodResolver(loginSchema),
@@ -36,6 +37,7 @@ const Login = () => {
   });
 
   const onSubmit = async (data: loginType) => {
+    console.log(data);
     try {
       const result = await signIn("credentials", {
         ...data,
@@ -47,11 +49,13 @@ const Login = () => {
         toast("Login successful", {
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
+        console.log(result);
         router.push(result.url ?? "/dashboard"); // Redirect to callback URL or default to /dashboard
       } else {
         throw new Error(result?.error || "Login failed");
       }
     } catch (error: any) {
+      console.log(error);
       toast("Something went wrong", {
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
@@ -122,11 +126,24 @@ const Login = () => {
                   </div>
 
                   <div className="w-full flex items-center justify-center gap-x-4">
-                    <Button
+                    {/* <Button
                       className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
                       type="submit"
                     >
                       <p className="text-white font-bold">Complete</p>
+                    </Button> */}
+                    <Button
+                      className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
+                      type="submit"
+                    >
+                      {form.formState.isSubmitting ? (
+                        <div className="w-8 h-8">
+                          <LoaderComponent className="text-white" />
+                        </div>
+                      ) : (
+                        // <p className="text-black font-bold">Sign in1</p>
+                        <p className="text-white font-bold">Complete</p>
+                      )}
                     </Button>
                   </div>
                 </div>

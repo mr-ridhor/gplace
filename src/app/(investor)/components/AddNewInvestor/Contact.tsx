@@ -1,4 +1,5 @@
 "use client";
+import LoaderComponent from "@/components/LoaderComponent";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -106,7 +107,7 @@ const Contact = () => {
       });
       console.log(res);
       dispatch(resetPayload());
-      // window.location.reload();
+      window.location.reload();
       // if (response.status !== 200) {
       //   throw new Error("Failed to submit the data");
       // }
@@ -232,7 +233,13 @@ const Contact = () => {
                   className="w-full h-10  rounded-md flex items-center justify-center"
                   type="submit"
                 >
-                  <p className="text-white font-bold">Done!</p>
+                  {form.formState.isSubmitting ? (
+                    <div className="w-8 h-8">
+                      <LoaderComponent className="text-white" />
+                    </div>
+                  ) : (
+                    <p className="text-white font-bold">Done!</p>
+                  )}
                 </Button>
               </div>
             </div>

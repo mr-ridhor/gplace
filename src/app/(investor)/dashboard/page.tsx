@@ -41,6 +41,7 @@ import Table from "./component/Table";
 import { fetchInvestors } from "@/lib/actions/investorActions";
 import { Investor } from "@/lib/data/mocked";
 import axios from "axios";
+import LoaderComponent from "@/components/LoaderComponent";
 
 const Page: React.FC = () => {
   const [investors, setInvestors] = useState<Investor[]>([]);
@@ -69,7 +70,12 @@ const Page: React.FC = () => {
     loadInvestors();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="w-full h-72 flex items-center justify-center">
+        <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
+      </div>
+    );
   if (error) return <div> {error}</div>;
 
   return (

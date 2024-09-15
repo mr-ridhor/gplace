@@ -12,42 +12,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { companyType } from "@/lib/zod-type/companyType";
 import { companySchema } from "@/lib/zod-schema/companySchema";
 import { useRouter } from "next/navigation";
 import { YearSelect } from "@/components/YearSelect";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfile, updateCompanyInfo } from "@/lib/slice/profileSlice";
 
 const CompanyInfoForm = () => {
   const router = useRouter(); // Initialize router
+  const dispatch = useDispatch();
+  const { company } = useSelector(getProfile);
   const form = useForm<companyType>({
     resolver: zodResolver(companySchema),
-    defaultValues: {
-      name: "",
-      country: "",
-      city: "",
-      email: "",
-      website: "",
-      industry: "",
-      foundingYear: "",
-      revenue: {
-        ltm: "",
-        previousYear: "",
-      },
-      grossProfit: {
-        ltm: "",
-        previousYear: "",
-      },
-      EBITDA: {
-        ltm: "",
-        previousYear: "",
-      },
-    },
+    defaultValues: company,
   });
-
+  useEffect(() => {
+    form.reset(company);
+  }, [company]);
+  console.log("company", company);
   const onSubmit = (data: companyType) => {
     console.log(data);
+    dispatch(updateCompanyInfo(data));
     // Navigate to the company-info step
     // router.push("/auth/register?step=team-info");
   };
@@ -55,7 +43,7 @@ const CompanyInfoForm = () => {
     <DialogContent className="h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>
         <div className="    space-y-6 flex flex-col items-center w-full">
-          <div className="w-full items-center flex flex-col mt-10  ">
+          <div className="w-full items-center flex flex-col  ">
             <div className="w-full">
               <strong className="text-sm xl:text-2xl text-left ">
                 Company Information

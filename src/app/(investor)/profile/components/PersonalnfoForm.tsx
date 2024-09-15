@@ -11,48 +11,43 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  getProfile,
+  setProfile,
+  updatePersonalInfo,
+} from "@/lib/slice/profileSlice";
 import { personalSchema } from "@/lib/zod-schema/personalSchema";
 import { personalType } from "@/lib/zod-type/personalType";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 const PersonalnfoForm = () => {
+  const dispatch = useDispatch();
+  const { bio } = useSelector(getProfile);
+  useEffect(() => {
+    form.reset(bio);
+  }, [bio]);
   const form = useForm<personalType>({
     resolver: zodResolver(personalSchema),
-    defaultValues: {
-      email: "",
-      firstName: "",
-      lastName: "",
-      address: "",
-      city: "",
-      country: "",
-      title: "",
-      linkedIn: "",
-      phone: "",
-      x: "",
-    },
+    defaultValues: bio,
   });
 
   const onSubmit = (data: personalType) => {
     console.log(data);
+    dispatch(updatePersonalInfo(data));
+
     // Navigate to the company-info step
     // router.push("/auth/register?step=company-info");
   };
-
+  console.log(bio);
   return (
-    <DialogContent className="h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
-      {/* <div className="space-y-3">
-        <p className="font-bold text-xl">Personal Information</p>
-        <p className="font-normal">
-          Complete your sign up process and get started with a 1 month free
-          trial
-        </p>
-      </div> */}
+    <DialogContent className="h-fit  max-h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
       <div className="py-4">
         <Form {...form}>
           <div className="px-2 text-sm   space-y-6 overflow-y-auto no-scrollbar flex flex-col items-center w-full">
-            <div className="w-full items-center flex flex-col mt-10  ">
+            <div className="w-full items-center flex flex-col  ">
               <div className="w-full">
                 <strong className="text-sm xl:text-2xl text-left ">
                   Personal Information
@@ -79,6 +74,7 @@ const PersonalnfoForm = () => {
                         <FormItem>
                           <FormControl>
                             <Input
+                              // value={bio?.firstName}
                               className="focus:border-0 focus-visible:ring-[#04acc2]"
                               {...field}
                             />

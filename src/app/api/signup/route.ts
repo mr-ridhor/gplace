@@ -1,7 +1,7 @@
 import connectDB from "../../../../config/db";
 import User from "../../../../models/User";
 // import transporter from "../../../../utils/transporter"; // Adjust the path if needed
-import mg from "../../../../utils/mailgun";
+// import mg from "../../../../utils/mailgun";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -32,15 +32,16 @@ export async function POST(req: NextRequest) {
     //   text: `Your verification code is: ${verificationCode}`, // Plain text body
     // };
 
-    mg.messages.create('sandbox011c4bce2719422796e9147ba253b308.mailgun.org', {
-      from: "GoodPlace CRM <mailgun@sandbox011c4bce2719422796e9147ba253b308.mailgun.org>",
-      to: newUser.credentials.email,
-      subject: "Verification Code",
-      text: "Testing some Mailgun awesomness!",
-      html: `<h1>Your verification code is: ${verificationCode}</h1>`
-    })
-    .then(msg => console.log(msg)) // logs response data
-    .catch(err => console.error(err));
+    // mg.messages
+    //   .create("sandbox011c4bce2719422796e9147ba253b308.mailgun.org", {
+    //     from: "GoodPlace CRM <mailgun@sandbox011c4bce2719422796e9147ba253b308.mailgun.org>",
+    //     to: newUser.credentials.email,
+    //     subject: "Verification Code",
+    //     text: "Testing some Mailgun awesomness!",
+    //     html: `<h1>Your verification code is: ${verificationCode}</h1>`,
+    //   })
+    //   .then((msg: any) => console.log(msg)) // logs response data
+    //   .catch((err: any) => console.error(err));
 
     // Send the verification email
     // transporter.sendMail(mailOptions, (error: any, info: any) => {
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
     //     );
     //   }
 
-      // console.log(info);
+    // console.log(info);
     // });
 
     return NextResponse.json(
