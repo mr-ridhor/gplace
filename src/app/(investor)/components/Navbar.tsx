@@ -38,7 +38,7 @@ const Navbar = () => {
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
   const [showPanel, setShowPanel] = React.useState<Checked>(false);
   const session = useSession();
-  console.log(session);
+  // console.log(session);
   const dispatch = useDispatch();
   const router = useRouter();
   const selectedRow = useSelector(getSelectedRow);
