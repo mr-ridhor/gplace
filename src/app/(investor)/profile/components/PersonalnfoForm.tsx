@@ -43,7 +43,7 @@ const PersonalnfoForm = () => {
   };
   console.log(bio);
   return (
-    <DialogContent className="h-fit  max-h-[550px] w-[600px] my-3 overflow-auto no-scrollbar">
+    <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar">
       <div className="py-4">
         <Form {...form}>
           <div className="px-2 text-sm   space-y-6 overflow-y-auto no-scrollbar flex flex-col items-center w-full">
