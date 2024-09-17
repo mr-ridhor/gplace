@@ -1,39 +1,3 @@
-// import React from "react";
-// import Table from "./component/Table";
-// import { fetchInvestors } from "@/lib/actions/investorActions";
-
-// const page = async () => {
-//   return (
-//     <div className="h-[80%] my-4 no-scrollbar overflow-y-auto">
-//       <Table />
-//     </div>
-//   );
-// };
-
-// export default page;
-// import React from "react";
-// import Table from "./component/Table";
-// import { fetchInvestors } from "@/lib/actions/investorActions";
-// import { Investor } from "@/lib/data/mocked";
-
-// const Page: React.FC = async () => {
-//   let investors: Investor[] = [];
-
-//   try {
-//     investors = await fetchInvestors();
-//     console.log(investors);
-//   } catch (error) {
-//     console.error("Failed to fetch investors:", error);
-//   }
-
-//   return (
-//     <div className="h-[80%] my-4 no-scrollbar overflow-y-auto">
-//       <Table investors={investors ?? []} />
-//     </div>
-//   );
-// };
-
-// export default Page;
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -42,12 +6,21 @@ import { fetchInvestors } from "@/lib/actions/investorActions";
 import { Investor } from "@/lib/data/mocked";
 import axios from "axios";
 import LoaderComponent from "@/components/LoaderComponent";
+import { getPanel } from "@/lib/slice/panelSlice";
+import { useSelector } from "react-redux";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const Page: React.FC = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const detail = searchParams.get("detail");
+  const tab = searchParams.get("tab");
   const [investors, setInvestors] = useState<Investor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const { showFilter, showSearch } = useSelector(getPanel);
+  // const isDashboard = pathname === "/dashboard";
+  // const isDash = pathname === "/dashboard" && detail === "" && tab === "detail";
   useEffect(() => {
     const loadInvestors = async () => {
       try {
@@ -79,8 +52,26 @@ const Page: React.FC = () => {
   if (error) return <div> {error}</div>;
 
   return (
-    <div className="h-[80%] my-4 no-scrollbar overflow-y-auto">
-      <Table investors={investors} />
+    <div className="relative h-[80%] my-4 no-scrollbar overflow-y-auto ">
+      {showFilter && (
+        <div className="absolute left-0 w-1/4 h-full bg-gray-200 p-4">
+          {/* Filter panel content */}
+          <p>Filter Panel</p>
+        </div>
+      )}
+      <div
+        className={`h-full  ${showFilter ? "ml-[5%]" : ""} ${
+          showSearch ? "mr-[25%]" : ""
+        }`}
+      >
+        <Table investors={investors} />
+      </div>
+      {showSearch && (
+        <div className="absolute right-0 w-1/4 h-full bg-blue-200 p-4 top-0 ">
+          {/* Search panel content */}
+          <p>Search Panel</p>
+        </div>
+      )}
     </div>
   );
 };
