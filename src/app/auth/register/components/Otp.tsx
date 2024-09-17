@@ -25,6 +25,7 @@ import {
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { getRegister } from "@/lib/slice/registerSlice";
+import LoaderComponent from "@/components/LoaderComponent";
 
 interface Props {
   onNext: () => void;
@@ -56,9 +57,10 @@ const Otp: React.FC<Props> = ({ onNext }) => {
 
       if (response.status === 200) {
         // OTP is valid, proceed to the next step (e.g., login or dashboard)
-        alert("OTP verified successfully!");
-        onNext();
-        router.push("/auth/register?step=plan");
+        // alert("OTP verified successfully!");
+        // onNext();
+        router.push("login");
+        // router.push("/auth/register?step=plan");
       } else {
         throw new Error("Invalid OTP");
       }
@@ -76,7 +78,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
               Email Verification
             </strong>
             <p className="font-light text-sm xl:text-lg">
-              Check your email for a 4 digits OTP , input them in the field
+              Check your email for a 5 digits OTP , input them in the field
               below and verify your email
             </p>
           </div>
@@ -102,7 +104,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
                         className="flex w-full justify-between "
                         {...field}
                       >
-                        {[...Array(4)].map((_, index) => (
+                        {[...Array(5)].map((_, index) => (
                           <InputOTPGroup key={index} className="">
                             <InputOTPSlot
                               className="text-center  focus:border-0 focus-visible:ring-[#04acc2]   border rounded-md p-2"
@@ -123,19 +125,27 @@ const Otp: React.FC<Props> = ({ onNext }) => {
                 className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
                 type="submit"
               >
-                <p className="text-white font-bold">Complete</p>
+                {form.formState.isSubmitting ? (
+                  <div className="w-8 h-8">
+                    <LoaderComponent className="text-white" />
+                  </div>
+                ) : (
+                  // <p className="text-black font-bold">Sign in1</p>
+                  <p className="text-white font-bold">Complete</p>
+                )}
+                {/* <p className="text-white font-bold">Complete</p> */}
               </Button>
             </div>
           </div>
         </form>
-        <div className="w-full flex items-center justify-start gap-x-4">
+        {/* <div className="w-full flex items-center justify-start gap-x-4">
           <button
             className="w-ful h-0 mt- bg-transparent hover:bg-transparent rounded-md flex items-center justify-center"
             // type="submit"
           >
             <p className=" font-bold">Resend otp</p>
           </button>
-        </div>
+        </div> */}
       </div>
     </Form>
     //   </div>

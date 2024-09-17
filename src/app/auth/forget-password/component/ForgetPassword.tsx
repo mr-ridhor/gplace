@@ -1,3 +1,90 @@
+// "use client";
+
+// import { useRouter, useSearchParams } from "next/navigation";
+// import ResetPassword from "./ResetPassword";
+// import Link from "next/link";
+// import Email from "./Email";
+// import Otp from "./Otp";
+// import { pinType } from "@/lib/zod-type/pinType";
+// import { resetType } from "@/lib/zod-type/resetType";
+// import { emailType } from "@/lib/zod-type/emailType";
+// import Logo from "@/app/svgComponent/Logo";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+
+// const ForgetPassword = () => {
+//   const router = useRouter();
+//   const searchParams = useSearchParams();
+//   const [otp, setOtp] = useState("");
+//   const [step, setStep] = useState("email");
+
+//   useEffect(() => {
+//     const queryStep = searchParams.get("step");
+//     setStep(queryStep || "email"); // Default to "email" if no step is found
+//   }, [searchParams]);
+
+//   const handleNextStep = (nextStep: "email" | "otp" | "reset") => {
+//     router.push(`/auth/forget-password?step=${nextStep}`);
+//   };
+
+//   const handleEmailSubmit = async (data: emailType) => {
+//     const { email } = data;
+//     const response = await axios.post("/api/password", { email });
+//     if (response.status == 200) {
+//       localStorage.setItem("email", email);
+//       handleNextStep("otp");
+//     }
+//     // console.log(email);
+//   };
+
+//   const handleOtpSubmit = async (data: pinType) => {
+//     const otp = data.otpCode;
+//     // const response = await axios.post('/api/password/verify', { otp })
+//     // if(response.status == 200) {
+//     // }
+//     handleNextStep("reset");
+//     setOtp(otp);
+//     console.log(otp);
+//   };
+
+//   const handlePasswordReset = (data: resetType) => {
+//     const { newPassword } = data;
+//     let mail = localStorage.getItem("email");
+//     console.log(newPassword, otp, mail);
+//     alert("Password successfully reset!");
+//     // router.push("/auth/login"); // Redirect to login or another page as needed
+//   };
+
+//   const renderContent = () => {
+//     switch (step) {
+//       case "otp":
+//         return <Otp onSubmit={handleOtpSubmit} />;
+//       case "reset":
+//         return <ResetPassword onSubmit={handlePasswordReset} />;
+//       case "email":
+//       default:
+//         return <Email onSubmit={handleEmailSubmit} />;
+//     }
+//   };
+
+//   return (
+//     <div className="h-screen overflow-hidden">
+//       <div className="sticky top-0 w-full flex-1 flex justify-end  px-5 items-center h-16 z-10">
+//         <Link href="/auth/register">Not a customer? Sign up</Link>
+//       </div>
+//       <div className="h-full overflow-hidden  w-full flex items-center justify-center">
+//         <div className=" w-[300px] lg:w-[500px] h-[550px] space-y-4">
+//           <div className="flex w-full justify-center my-4">
+//             <Logo />
+//           </div>
+//           {renderContent()}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ForgetPassword;
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -15,7 +102,7 @@ import axios from "axios";
 const ForgetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [otp, setOtp] = useState('')
+  const [otp, setOtp] = useState("");
   const [step, setStep] = useState("email");
 
   useEffect(() => {
@@ -29,28 +116,52 @@ const ForgetPassword = () => {
 
   const handleEmailSubmit = async (data: emailType) => {
     const { email } = data;
-    const response = await axios.post('/api/password', { email })
-    if(response.status == 200) {
-      handleNextStep("otp");
+    try {
+      const response = await axios.post("/api/password", { email });
+      if (response.status === 200) {
+        localStorage.setItem("email", email);
+        handleNextStep("otp");
+      }
+    } catch (error) {
+      console.error("Failed to submit email:", error);
     }
-    // console.log(email);
   };
 
   const handleOtpSubmit = async (data: pinType) => {
-    const otp = data.otpCode;
-    // const response = await axios.post('/api/password/verify', { otp })
-    // if(response.status == 200) {
-    // }
+    const otpCode = data.otpCode;
+    setOtp(otpCode);
+    // console.log("OTP:", otpCode);
     handleNextStep("reset");
-    setOtp(otp);
-    console.log(otp);
+    // Optionally, you might want to verify OTP with the server here
+    // try {
+    //   const response = await axios.post('/api/password/verify', { otp: otpCode });
+    //   if (response.status === 200) {
+    //     handleNextStep("reset");
+    //   }
+    // } catch (error) {
+    //   console.error("Failed to verify OTP:", error);
+    // }
   };
 
-  const handlePasswordReset = (data: resetType) => {
+  const handlePasswordReset = async (data: resetType) => {
     const { newPassword } = data;
-    console.log(newPassword, otp);
-    alert("Password successfully reset!");
-    // router.push("/auth/login"); // Redirect to login or another page as needed
+    const email = localStorage.getItem("email");
+    console.log("Email:", email);
+    console.log("New Password:", newPassword);
+    console.log("OTP:", otp);
+    try {
+      const response = await axios.post("/api/password/verify", {
+        email,
+        newPassword,
+        otp,
+      });
+      if (response.status === 200) {
+        alert("Password successfully reset!");
+        router.push("/auth/login"); // Redirect to login or another page as needed
+      }
+    } catch (error) {
+      console.error("Failed to reset password:", error);
+    }
   };
 
   const renderContent = () => {
@@ -67,11 +178,11 @@ const ForgetPassword = () => {
 
   return (
     <div className="h-screen overflow-hidden">
-      <div className="sticky top-0 w-full flex-1 flex justify-end  px-5 items-center h-16 z-10">
+      <div className="sticky top-0 w-full flex-1 flex justify-end px-5 items-center h-16 z-10">
         <Link href="/auth/register">Not a customer? Sign up</Link>
       </div>
-      <div className="h-full overflow-hidden  w-full flex items-center justify-center">
-        <div className=" w-[300px] lg:w-[500px] h-[550px] space-y-4">
+      <div className="h-full overflow-hidden w-full flex items-center justify-center">
+        <div className="w-[300px] lg:w-[500px] h-[550px] space-y-4">
           <div className="flex w-full justify-center my-4">
             <Logo />
           </div>

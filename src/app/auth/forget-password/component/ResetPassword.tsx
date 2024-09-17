@@ -64,7 +64,14 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ onSubmit }) => {
             )}
           />
           <Button className="w-full text-white" type="submit">
-            Continue
+            {form.formState.isSubmitting ? (
+              <div className="w-8 h-8">
+                <LoaderComponent className="text-white" />
+              </div>
+            ) : (
+              // <p className="text-black font-bold">Sign in1</p>
+              <p className="text-white font-bold"> Complete!</p>
+            )}
           </Button>
         </div>
       </form>
