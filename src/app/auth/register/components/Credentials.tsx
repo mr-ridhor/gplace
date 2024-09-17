@@ -67,7 +67,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
         const load = {
           email: data.email,
         };
-        router.push("login");
+        // router.push("login");
         // console.log(load);
         const verificationResponse = await axios.post(
           `/api/email/verification`,
