@@ -25,7 +25,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }
 
     // Check if the verification code matches
-    if (user.credentials.verificationCode?.toString() === verificationCode.toString()) {
+    if (user.credentials.verificationCode == verificationCode) {
       user.credentials.isVerified = true;
       user.credentials.verificationCode = undefined;
       await user.save();

@@ -1,5 +1,5 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
-import crypto from 'crypto';
+import bcrypt from 'bcrypt'
 
 export interface IUser extends Document {
   bio: {
@@ -106,28 +106,17 @@ const userSchema = new Schema<IUser>({
   },
 }, { timestamps: true });
 
-// Helper function to hash the password
-const hashPassword = (password: string): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const salt = crypto.randomBytes(16).toString('hex');
-    crypto.pbkdf2(password, salt, 1000, 64, 'sha512', (err, derivedKey) => {
-      if (err) reject(err);
-      resolve(`${salt}:${derivedKey.toString('hex')}`);
-    });
-  });
-};
-
 
 // Pre-save hook to hash passwords
-userSchema.pre('save', async function (next) {
-  try {
-    if (!this.isModified('credentials.password')) return next();
-    this.credentials.password = await hashPassword(this.credentials.password);
-    next();
-  } catch (error) {
-    next(error as Error); // Type-cast error to Error or CallbackError
-  }
-});
+// userSchema.pre('save', async function (next) {
+//   try {
+//     if (!this.isModified('credentials.password')) return next();
+//     this.credentials.password = await bcrypt.hash(this.credentials.password, 10);
+//     next();
+//   } catch (error) {
+//     next(error as Error); // Type-cast error to Error or CallbackError
+//   }
+// });
 
 // export interface IUserMethods {
 //     revenue: number;

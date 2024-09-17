@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from "../../../../../config/db";
 import User, { IUser } from "../../../../../models/User";
+// import hashPassword from '../../../../../utils/hashPassword';
+import bcrypt from 'bcrypt'
 
 
 export async function POST(request: NextRequest) {
@@ -9,9 +11,9 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     // Parse the JSON body of the request
-    const { email, verificationCode } = await request.json();
+    const { email, verificationCode, newPassword } = await request.json();
 
-    
+
     // Find the user by email in the nested credentials object
     const user: IUser | any = await User.findOne({ 'credentials.email': email });
 
@@ -19,14 +21,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    const currentTime = new Date()
-
-    // Check if the verification code matches
-    if (user.credentials.passwordReset?.code == verificationCode && currentTime < user.credentials.passwordReset?.expiryDate) {
-      return NextResponse.json({ message: 'Otp Verified' }, { status: 200 });
-    } else {
-      return NextResponse.json({ message: 'Invalid verification code' }, { status: 400 });
+    const validCode = new Date() < user.credentials.passwordReset?.expiryDate
+    if (!user.credentials.passwordReset?.code == verificationCode && !validCode) {
+      return NextResponse.json({ message: 'Invalid Verification Code' }, { status: 400 });
     }
+
+    user.credentials.passwordReset.expiryDate = undefined;
+    user.credentials.passwordReset.code = undefined;
+    user.credentials.password = await bcrypt.hash(newPassword, 10)
+    await user.save();
+
+    return NextResponse.json({ message: 'Password reset Successful' }, { status: 200 });
+
   } catch (error: any) {
     return NextResponse.json({ message: 'Error verifying code', error: error.message }, { status: 500 });
   }
