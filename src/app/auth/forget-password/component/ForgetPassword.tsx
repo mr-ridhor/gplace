@@ -103,6 +103,7 @@ const ForgetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [otp, setOtp] = useState("");
+  const [userEmail, setUserEmail] = useState('')
   const [step, setStep] = useState("email");
 
   useEffect(() => {
@@ -119,7 +120,8 @@ const ForgetPassword = () => {
     try {
       const response = await axios.post("/api/password", { email });
       if (response.status === 200) {
-        localStorage.setItem("email", email);
+        // localStorage.setItem("email", email);
+        setUserEmail(email)
         handleNextStep("otp");
       }
     } catch (error) {
@@ -131,13 +133,14 @@ const ForgetPassword = () => {
     const otpCode = data.otpCode;
     setOtp(otpCode);
     // console.log("OTP:", otpCode);
-    handleNextStep("reset");
+    // handleNextStep("reset");
+    const response = await axios.post('/api/password/verify', { verificationCode: otpCode, email: userEmail });
+      if (response.status === 200) {
+        handleNextStep("reset");
+      }
     // Optionally, you might want to verify OTP with the server here
     // try {
-    //   const response = await axios.post('/api/password/verify', { otp: otpCode });
-    //   if (response.status === 200) {
-    //     handleNextStep("reset");
-    //   }
+    //   
     // } catch (error) {
     //   console.error("Failed to verify OTP:", error);
     // }
@@ -145,17 +148,17 @@ const ForgetPassword = () => {
 
   const handlePasswordReset = async (data: resetType) => {
     const { newPassword } = data;
-    const email = localStorage.getItem("email");
-    console.log("Email:", email);
-    console.log("New Password:", newPassword);
-    console.log("OTP:", otp);
+    // const email = localStorage.getItem("email");
+    // console.log("Email:", email);
+    // console.log("New Password:", newPassword);
+    // console.log("OTP:", otp);
     try {
-      const response = await axios.post("/api/password/verify", {
-        email,
+      const response = await axios.post("/api/password/reset", {
+        email: userEmail,
         newPassword,
-        otp,
+        verificationCode: otp,
       });
-      if (response.status === 200) {
+      if (response.status == 200) {
         alert("Password successfully reset!");
         router.push("login"); // Redirect to login or another page as needed
       }

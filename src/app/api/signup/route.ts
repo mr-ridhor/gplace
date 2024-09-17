@@ -2,6 +2,7 @@ import connectDB from "../../../../config/db";
 import User from "../../../../models/User";
 import transporter from "../../../../utils/transporter"; // Adjust the path if needed
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from 'bcrypt'
 
 export async function POST(req: NextRequest) {
   try {
@@ -14,6 +15,7 @@ export async function POST(req: NextRequest) {
 
     // Add the verification code to credentials before creating the user
     credentials.verificationCode = verificationCode;
+    credentials.password = await bcrypt.hash(credentials.password, 10);
 
     // Create a new user with the verification code included
     const newUser = await User.create({

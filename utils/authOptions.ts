@@ -3,7 +3,7 @@ import connectDB from "../config/db";
 import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
 // import mongoose from "mongoose";
-// import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 import verifyPassword from "./verifyPassword";
 
 interface IUserResponse {
@@ -46,8 +46,8 @@ export const authOptions: NextAuthOptions = {
         }
 
         const hashedPassword = user.credentials.password;
-        // const isPasswordValid = bcrypt.compare(hashedPassword, password);
-        const isPasswordValid = await verifyPassword(password, hashedPassword);
+        const isPasswordValid = bcrypt.compare(password, hashedPassword);
+        // const isPasswordValid2 = verifyPassword(password, hashedPassword);
 
         if (!isPasswordValid) {
           throw Error("Invalid Password");
