@@ -102,7 +102,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
                         className="flex w-full justify-between "
                         {...field}
                       >
-                        {[...Array(5)].map((_, index) => (
+                        {[...Array(4)].map((_, index) => (
                           <InputOTPGroup key={index} className="">
                             <InputOTPSlot
                               className="text-center  focus:border-0 focus-visible:ring-[#04acc2]   border rounded-md p-2"
