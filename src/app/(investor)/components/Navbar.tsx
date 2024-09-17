@@ -135,7 +135,7 @@ const Navbar = () => {
           <>
             <div
               className="flex gap-x-2 items-center h-full"
-              onClick={() => dispatch(toggleFilterPanel())}
+              // onClick={() => dispatch(toggleFilterPanel())}
             >
               <Filter />
               <p>Filter</p>
@@ -143,7 +143,7 @@ const Navbar = () => {
 
             <div
               className="h-1/2 items-center flex gap-x bordr w-1/4"
-              onClick={() => dispatch(toggleSearchPanel())}
+              // onClick={() => dispatch(toggleSearchPanel())}
             >
               <Search size={14} />
               <input
