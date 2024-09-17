@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Leftbar from "./Leftbar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Detailed from "./Detailed";
@@ -15,10 +15,11 @@ import LoaderComponent from "@/components/LoaderComponent";
 
 const SelectedRow = () => {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const router = useRouter();
   const [selectedItem, setSelectedItem] = useState<Investor | null>(null); // State for the investor
   const [activeTab, setActiveTab] = useState<string>("detail");
-
+  console.log("path", pathname);
   const detail = searchParams.get("detail"); // Get the 'detail' parameter from the URL
   const { data: session } = useSession(); // Get the session data (assuming you're using next-auth)
 

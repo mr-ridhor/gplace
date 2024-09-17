@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import axiosService from "@/lib/services/axiosService";
 import axios from "axios";
 import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
+import LoaderComponent from "@/components/LoaderComponent";
 
 interface CredentialsProps {
   onNext: () => void;
@@ -63,26 +64,25 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
       console.log("res", response);
 
       if (response.status === 201) {
-        // const load = {
-        //   email: data.email,
-        // };
+        const load = {
+          email: data.email,
+        };
         router.push("login");
         // console.log(load);
-        // const verificationResponse = await axios.post(
-        //   `/api/email/verification`,
-
-        //   load,
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //   }
-        // );
-        // console.log("otp", verificationResponse);
-        // if (verificationResponse.status === 200) {
-        //   router.push(`/auth/register?step=otp`);
-        //   onNext();
-        // }
+        const verificationResponse = await axios.post(
+          `/api/email/verification`,
+          load,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("otp", verificationResponse);
+        if (verificationResponse.status === 200) {
+          router.push(`/auth/register?step=otp`);
+          onNext();
+        }
       }
       if (response.status !== 201) {
         throw new Error("Failed to submit the data");
@@ -182,7 +182,15 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
                 className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
                 type="submit"
               >
-                <p className="text-white font-bold">Complete</p>
+                {form.formState.isSubmitting ? (
+                  <div className="w-8 h-8">
+                    <LoaderComponent className="text-white" />
+                  </div>
+                ) : (
+                  // <p className="text-black font-bold">Sign in1</p>
+                  <p className="text-white font-bold">Complete</p>
+                )}
+                {/* <p className="text-white font-bold">Complete</p> */}
               </Button>
             </div>
           </div>

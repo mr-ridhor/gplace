@@ -30,6 +30,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut, useSession } from "next-auth/react";
+import {
+  getPanel,
+  toggleFilterPanel,
+  toggleSearchPanel,
+} from "@/lib/slice/panelSlice";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
@@ -38,7 +43,7 @@ const Navbar = () => {
   const [showActivityBar, setShowActivityBar] = React.useState<Checked>(false);
   const [showPanel, setShowPanel] = React.useState<Checked>(false);
   const { data: session } = useSession();
-
+  const { showFilter, showSearch } = useSelector(getPanel);
   const dispatch = useDispatch();
   const router = useRouter();
   const selectedRow = useSelector(getSelectedRow);
@@ -51,6 +56,7 @@ const Navbar = () => {
   const detail = searchParams.get("detail"); // Get the 'detail' parameter from the URL
   console.log(tab);
   const pathname = usePathname();
+
   console.log(pathname);
   React.useEffect(() => {
     if (pathname === "/profile") {
@@ -127,12 +133,18 @@ const Navbar = () => {
         {pathname !== "/profile" &&
         ((tab as string) !== "contact" || (tab as string) === "detail") ? (
           <>
-            <div className="flex gap-x-2 items-center h-full">
+            <div
+              className="flex gap-x-2 items-center h-full"
+              // onClick={() => dispatch(toggleFilterPanel())}
+            >
               <Filter />
               <p>Filter</p>
             </div>
 
-            <div className="h-1/2 items-center flex gap-x bordr w-1/4">
+            <div
+              className="h-1/2 items-center flex gap-x bordr w-1/4"
+              // onClick={() => dispatch(toggleSearchPanel())}
+            >
               <Search size={14} />
               <input
                 placeholder="Search"

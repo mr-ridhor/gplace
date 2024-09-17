@@ -1,5 +1,6 @@
 "use client";
 
+import LoaderComponent from "@/components/LoaderComponent";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -73,7 +74,15 @@ const Otp: React.FC<OtpProps> = ({ onSubmit }) => {
             )}
           />
           <Button className="w-full text-white" type="submit">
-            Submit OTP
+            {/* Submit OTP */}
+            {form.formState.isSubmitting ? (
+              <div className="w-8 h-8">
+                <LoaderComponent className="text-white" />
+              </div>
+            ) : (
+              // <p className="text-black font-bold">Sign in1</p>
+              <p className="text-white font-bold">Submit OTP </p>
+            )}
           </Button>
         </div>
       </form>
