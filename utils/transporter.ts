@@ -13,10 +13,7 @@ const transporter: Transporter = createTransport({
     user: ADMIN_MAIL,
     pass: MAIL_PASS,
   },
-  tls: {
-    rejectUnauthorized: false,
-  },
-  logger: true,
+  // logger: true,
   debug: true,
 });
 

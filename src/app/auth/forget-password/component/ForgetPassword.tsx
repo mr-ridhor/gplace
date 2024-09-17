@@ -10,10 +10,12 @@ import { resetType } from "@/lib/zod-type/resetType";
 import { emailType } from "@/lib/zod-type/emailType";
 import Logo from "@/app/svgComponent/Logo";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ForgetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [otp, setOtp] = useState('')
   const [step, setStep] = useState("email");
 
   useEffect(() => {
@@ -25,23 +27,30 @@ const ForgetPassword = () => {
     router.push(`/auth/forget-password?step=${nextStep}`);
   };
 
-  const handleEmailSubmit = (data: emailType) => {
+  const handleEmailSubmit = async (data: emailType) => {
     const { email } = data;
-    console.log(email);
-    handleNextStep("otp");
+    const response = await axios.post('/api/password', { email })
+    if(response.status == 200) {
+      handleNextStep("otp");
+    }
+    // console.log(email);
   };
 
-  const handleOtpSubmit = (data: pinType) => {
+  const handleOtpSubmit = async (data: pinType) => {
     const otp = data.otpCode;
-    console.log(otp);
+    // const response = await axios.post('/api/password/verify', { otp })
+    // if(response.status == 200) {
+    // }
     handleNextStep("reset");
+    setOtp(otp);
+    console.log(otp);
   };
 
   const handlePasswordReset = (data: resetType) => {
     const { newPassword } = data;
-    console.log(newPassword);
+    console.log(newPassword, otp);
     alert("Password successfully reset!");
-    router.push("/auth/login"); // Redirect to login or another page as needed
+    // router.push("/auth/login"); // Redirect to login or another page as needed
   };
 
   const renderContent = () => {
