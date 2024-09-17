@@ -157,7 +157,7 @@ const ForgetPassword = () => {
       });
       if (response.status === 200) {
         alert("Password successfully reset!");
-        router.push("/auth/login"); // Redirect to login or another page as needed
+        router.push("login"); // Redirect to login or another page as needed
       }
     } catch (error) {
       console.error("Failed to reset password:", error);
