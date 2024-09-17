@@ -49,7 +49,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
     };
     console.log(payload);
     try {
-      const response = await axios.post(`/api/email/otp`, payload, {
+      const response = await axios.post(`/api/email/verification`, payload, {
         headers: {
           "Content-Type": "application/json",
         },
