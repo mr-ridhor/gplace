@@ -37,7 +37,6 @@ const Login = () => {
   });
 
   const onSubmit = async (data: loginType) => {
-    console.log(data);
     try {
       const result = await signIn("credentials", {
         ...data,
