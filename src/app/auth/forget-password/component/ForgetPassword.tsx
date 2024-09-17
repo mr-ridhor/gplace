@@ -103,7 +103,7 @@ const ForgetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [otp, setOtp] = useState("");
-  const [userEmail, setUserEmail] = useState('')
+  const [userEmail, setUserEmail] = useState("");
   const [step, setStep] = useState("email");
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const ForgetPassword = () => {
       const response = await axios.post("/api/password", { email });
       if (response.status === 200) {
         // localStorage.setItem("email", email);
-        setUserEmail(email)
+        setUserEmail(email);
         handleNextStep("otp");
       }
     } catch (error) {
@@ -134,13 +134,16 @@ const ForgetPassword = () => {
     setOtp(otpCode);
     // console.log("OTP:", otpCode);
     // handleNextStep("reset");
-    const response = await axios.post('/api/password/verify', { verificationCode: otpCode, email: userEmail });
-      if (response.status === 200) {
-        handleNextStep("reset");
-      }
+    const response = await axios.post("/api/password/verify", {
+      verificationCode: otpCode,
+      email: userEmail,
+    });
+    if (response.status === 200) {
+      handleNextStep("reset");
+    }
     // Optionally, you might want to verify OTP with the server here
     // try {
-    //   
+    //
     // } catch (error) {
     //   console.error("Failed to verify OTP:", error);
     // }
@@ -159,7 +162,7 @@ const ForgetPassword = () => {
         verificationCode: otp,
       });
       if (response.status == 200) {
-        alert("Password successfully reset!");
+        // alert("Password successfully reset!");
         router.push("login"); // Redirect to login or another page as needed
       }
     } catch (error) {
