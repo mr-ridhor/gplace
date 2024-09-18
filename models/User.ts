@@ -34,8 +34,8 @@ export interface IUser extends Document {
     };
   };
   team: {
-    team1?: { fullName: string; email: string };
-    team2?: { fullName: string; email: string };
+    team1?: { fullName: string; role: string };
+    team2?: { fullName: string; role: string };
   };
   credentials: {
     email: string;
@@ -83,8 +83,8 @@ const userSchema = new Schema<IUser>({
     },
   },
   team: {
-    team1: { fullName: String, email: String },
-    team2: { fullName: String, email: String },
+    team1: { fullName: String, role: String },
+    team2: { fullName: String, role: String },
   },
   credentials: {
     email: {
