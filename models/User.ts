@@ -1,5 +1,4 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
-import bcrypt from 'bcrypt'
 
 export interface IUser extends Document {
   bio: {
@@ -35,8 +34,8 @@ export interface IUser extends Document {
     };
   };
   team: {
-    team1?: { fullName: string; email: string };
-    team2?: { fullName: string; email: string };
+    team1?: { fullName: string; role: string };
+    team2?: { fullName: string; role: string };
   };
   credentials: {
     email: string;
@@ -106,38 +105,6 @@ const userSchema = new Schema<IUser>({
   },
 }, { timestamps: true });
 
-
-// Pre-save hook to hash passwords
-// userSchema.pre('save', async function (next) {
-//   try {
-//     if (!this.isModified('credentials.password')) return next();
-//     this.credentials.password = await bcrypt.hash(this.credentials.password, 10);
-//     next();
-//   } catch (error) {
-//     next(error as Error); // Type-cast error to Error or CallbackError
-//   }
-// });
-
-// export interface IUserMethods {
-//     revenue: number;
-//     EBITDA: number;
-//     industry: string;
-// }
-
-// userSchema.statics.getClientMetrics = async function (userId: string) {
-//   const user = await this.findById(userId).select('company');
-//   if (!user) throw new Error('User not found');
-
-//   const { revenue, EBITDA, industry } = user.company;
-//   const response : IUserMethods = {
-//     revenue: revenue.ltm, // Client's latest revenue
-//     EBITDA: EBITDA.ltm,   // Client's latest EBITDA
-//     industry,
-//   }
-//   return response
-// };
-
-// Export the model
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', userSchema);
 
 export default User;

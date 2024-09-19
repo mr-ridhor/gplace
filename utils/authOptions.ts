@@ -46,8 +46,9 @@ export const authOptions: NextAuthOptions = {
         }
 
         const hashedPassword = user.credentials.password;
-        const isPasswordValid = bcrypt.compare(password, hashedPassword);
+        const isPasswordValid = await bcrypt.compare(password, hashedPassword);
         // const isPasswordValid2 = verifyPassword(password, hashedPassword);
+        console.log(isPasswordValid)
 
         if (!isPasswordValid) {
           throw Error("Invalid Password");

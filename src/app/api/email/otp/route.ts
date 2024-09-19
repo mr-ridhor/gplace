@@ -5,14 +5,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(req: NextRequest) {
   try {
-    const { email, userId } = await req.json();
+    const { email } = await req.json();
 
     await connectDB();
 
     // Generate a verification code
     const user = await User.findOne({
-      "credentials.email": email,
-      _id: userId,
+      "credentials.email": email
     });
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
@@ -37,7 +36,7 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Verification code sent" },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error: any) {
     console.error("Error:", error);
