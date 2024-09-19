@@ -27,10 +27,18 @@ const panelSlice = createSlice({
       state.showFilter = false;
       state.showSearch = false;
     },
+    setShowFilter: (state, action: PayloadAction<boolean>) => {
+      state.showFilter = action.payload;
+      if (action.payload) state.showSearch = false; // Close search if filter is opened
+    },
   },
 });
 
-export const { toggleFilterPanel, toggleSearchPanel, closeAllPanels } =
-  panelSlice.actions;
+export const {
+  toggleFilterPanel,
+  toggleSearchPanel,
+  closeAllPanels,
+  setShowFilter,
+} = panelSlice.actions;
 export const getPanel = (state: any) => state.panel;
 export default panelSlice.reducer;

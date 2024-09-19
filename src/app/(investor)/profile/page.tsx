@@ -56,7 +56,7 @@ const page = () => {
           </div>
           <div className="grid-cols-1 grid gap-y-2 md:flex gap-x-2 ">
             <Link href={""}>
-              <Button className="text-sm text-white">
+              <Button className="text-sm text-white hover:bg-[#0691A5]">
                 Click here to update plan
               </Button>
             </Link>
@@ -66,7 +66,7 @@ const page = () => {
               </Button>
             </Link>
             <Link href={""}>
-              <Button className="bg-transparent hover:bg-transparent text-sm ">
+              <Button className="bg-transparent hover:border hover:border-[#D9D9D9] hover:bg-transparent text-sm ">
                 Cancel current plan
               </Button>
             </Link>

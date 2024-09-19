@@ -36,6 +36,7 @@ const Contact = () => {
     useSelector(getInvestor);
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
+    mode: "onChange",
     defaultValues: contact,
   });
   const onSubmit = async (data: contType) => {
@@ -229,7 +230,7 @@ const Contact = () => {
                 />
               </div>
               <div className="w-full flex items-center gap-x-4">
-                <Button
+                {/* <Button
                   className="w-full h-10  rounded-md flex items-center justify-center"
                   type="submit"
                 >
@@ -239,6 +240,26 @@ const Contact = () => {
                     </div>
                   ) : (
                     <p className="text-white font-bold">Done!</p>
+                  )}
+                </Button> */}
+                <Button
+                  disabled={!form.formState.isValid}
+                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                        `}
+                  type="submit"
+                >
+                  {form.formState.isSubmitting ? (
+                    <div className="w-8 h-8">
+                      <LoaderComponent className="text-white" />
+                    </div>
+                  ) : (
+                    <p
+                      className={`${
+                        !form.formState.isValid ? "" : "text-white"
+                      } font-bold`}
+                    >
+                      Done!
+                    </p>
                   )}
                 </Button>
               </div>

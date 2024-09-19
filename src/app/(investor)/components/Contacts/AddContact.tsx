@@ -19,6 +19,8 @@ import { Investor } from "@/lib/data/mocked";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { LuLoader } from "react-icons/lu";
+import moment from "moment";
+import { toast } from "sonner";
 
 interface Props {
   selectedItem?: Investor;
@@ -27,6 +29,7 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
   const router = useRouter();
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
       surname: "",
@@ -56,8 +59,14 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
       // Refresh the data or reload the page
       router.refresh();
       console.log("Contact added successfully"); // Handle success message
+      toast("Contact added successfully", {
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
     } catch (error: any) {
-      console.error(error.message); // Handle error
+      console.error(error.message);
+      toast("All fields must be filled", {
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
     }
   };
 
@@ -196,7 +205,9 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
                   <p className="text-white font-bold">Done!</p>
                 </Button> */}
                 <Button
-                  className="w-full h-10  rounded-md flex items-center justify-center"
+                  disabled={!form.formState.isValid}
+                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                        `}
                   type="submit"
                 >
                   {form.formState.isSubmitting ? (
@@ -205,7 +216,13 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
                       {/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
                     </div>
                   ) : (
-                    <p className="text-white font-bold">Done!</p>
+                    <p
+                      className={`${
+                        !form.formState.isValid ? "" : "text-white"
+                      } font-bold`}
+                    >
+                      Done!
+                    </p>
                   )}
                 </Button>
               </div>

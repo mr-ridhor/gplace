@@ -42,7 +42,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
           y="50%"
           dy="0.2rem"
           textAnchor="middle"
-          fill="#ddd"
+          fill="#fff"
           className="circle-text text-red-200"
         >
           {percentage}

@@ -2,36 +2,49 @@
 
 import React, { useEffect, useState } from "react";
 import Table from "./component/Table";
-import { fetchInvestors } from "@/lib/actions/investorActions";
-import { Investor } from "@/lib/data/mocked";
 import axios from "axios";
 import LoaderComponent from "@/components/LoaderComponent";
-import { getPanel } from "@/lib/slice/panelSlice";
-import { useSelector } from "react-redux";
-import { usePathname, useSearchParams } from "next/navigation";
+import { SearchIcon } from "lucide-react";
+import { GrClose } from "react-icons/gr";
+import Filter from "@/app/svgComponent/Filter";
+import { useDispatch, useSelector } from "react-redux";
+import { getPanel, setShowFilter } from "@/lib/slice/panelSlice";
+import { Investor } from "@/lib/data/mocked";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const Page: React.FC = () => {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const detail = searchParams.get("detail");
-  const tab = searchParams.get("tab");
+  const dispatch = useDispatch();
+  const { showFilter, showSearch } = useSelector(getPanel);
   const [investors, setInvestors] = useState<Investor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { showFilter, showSearch } = useSelector(getPanel);
-  // const isDashboard = pathname === "/dashboard";
-  // const isDash = pathname === "/dashboard" && detail === "" && tab === "detail";
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  // Handle search input
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  // Clear input field
+  const handleClearInput = () => {
+    setSearchValue("");
+  };
+
+  // Fetch investors data
   useEffect(() => {
     const loadInvestors = async () => {
       try {
-        // const data = await fetchInvestors();
-        const data = await axios.get(`/api/investors`, {
+        const { data } = await axios.get(`/api/investors`, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        console.log(data.data);
-        setInvestors(data.data);
+        setInvestors(data);
       } catch (error) {
         console.error("Failed to fetch investors:", error);
         setError("No investor found");
@@ -43,35 +56,211 @@ const Page: React.FC = () => {
     loadInvestors();
   }, []);
 
+  // Filter investors based on primary contact name, email, or phone
+  const filteredInvestors = investors.filter((investor) => {
+    const { name, surname } = investor.primaryContact || {};
+    const fullName = `${name} ${surname}`.toLowerCase();
+
+    return fullName.includes(searchValue.toLowerCase());
+  });
+
   if (loading)
     return (
       <div className="w-full h-72 flex items-center justify-center">
         <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
       </div>
     );
-  if (error) return <div> {error}</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <div className="relative h-[80%] my-4 no-scrollbar overflow-y-auto ">
+    <div className="relative h-[80%] my-4 no-scrollbar overflow-y-auto flex gap-x-4">
       {showFilter && (
-        <div className="absolute left-0 w-1/4 h-full bg-gray-200 p-4">
-          {/* Filter panel content */}
-          <p>Filter Panel</p>
+        <div className="w-[200px] space-y-2 border rounded-md h-full bg p-">
+          <div className="h-[5%] justify-between flex items-center gap-x-3 bg-[#DEDEDE] px-4 w-full">
+            <div className="flex gap-x-2 h-full items-center">
+              <Filter />
+              <p>Filter</p>
+            </div>
+            <GrClose
+              className="cursor-pointer"
+              onClick={() => dispatch(setShowFilter(false))}
+            />
+          </div>
+          <div className="px-4 h-[90%]">
+            <div className="h-[30%] bg-[#F5F8FA] rounded-md overflow-y-auto no-scrollbar">
+              <div className="gap-x-4 h-10 px-3 w-full flex items-center">
+                <input
+                  className="w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit"
+                  placeholder="Type name to search"
+                  value={searchValue}
+                  onChange={handleInputChange}
+                />
+
+                <SearchIcon className="h-4 w-4 text-[#3F3F3F]" />
+              </div>
+              <hr className="bg-black" />
+              <div className="p-2 flex w-full justify-cente flex-col ites-center">
+                {filteredInvestors.map((investor) => {
+                  const { name, surname } = investor.primaryContact;
+                  const fullName = `${name} ${surname}`;
+                  return (
+                    <div
+                      key={investor._id}
+                      className="text-sm w-[90%] truncate text-[#3F3F3F]"
+                    >
+                      {fullName}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="h-[60%] overflow-y-auto no-scrollbar">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-companies-country">
+                  <AccordionTrigger className="text-[10px]">
+                    Country
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.companyInfo.country}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-websites">
+                  <AccordionTrigger className="text-[10px]">
+                    Websites
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {/* <a
+                            href={investor.companyInfo.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          > */}
+                          {investor.companyInfo.website}
+                          {/* </a> */}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-investmentBio">
+                  <AccordionTrigger className="text-[10px]">
+                    Investment Industry
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.investmentBio.industry}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-investmentBio-geo">
+                  <AccordionTrigger className="text-[10px]">
+                    Investment geo.
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.investmentBio.geography}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-investmentBio-5y">
+                  <AccordionTrigger className="text-[10px]">
+                    # Deals in 5 years
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.investmentBio.dealsIn5Y}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-investmentBio-dSizes">
+                  <AccordionTrigger className="text-[10px]">
+                    Deal Size ($M)
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.investmentBio.medianDealSize}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-primarycontact-ti">
+                  <AccordionTrigger className="text-[10px]">
+                    Primary Contact
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.primaryContact.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-statusi">
+                  <AccordionTrigger className="text-[10px]">
+                    Status
+                  </AccordionTrigger>
+                  {/* <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.primaryContact.title}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent> */}
+                </AccordionItem>
+                <AccordionItem value="item-match">
+                  <AccordionTrigger className="text-[10px]">
+                    Match
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul>
+                      {filteredInvestors.map((investor) => (
+                        <li key={investor._id}>
+                          {investor.matchScore.totalScore}
+                        </li>
+                      ))}
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </div>
         </div>
       )}
+
       <div
-        className={`h-full  ${showFilter ? "ml-[5%]" : ""} ${
-          showSearch ? "mr-[25%]" : ""
+        className={`h-full flex ${
+          showFilter || showSearch ? "flex-1 overflow-x-auto" : ""
         }`}
       >
-        <Table investors={investors} />
+        <Table investors={filteredInvestors} />
       </div>
-      {showSearch && (
-        <div className="absolute right-0 w-1/4 h-full bg-blue-200 p-4 top-0 ">
-          {/* Search panel content */}
-          <p>Search Panel</p>
-        </div>
-      )}
     </div>
   );
 };

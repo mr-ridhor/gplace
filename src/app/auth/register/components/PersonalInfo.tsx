@@ -47,6 +47,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
   const personalInfo = useSelector(getRegister);
 
   const form = useForm<personalType>({
+    mode: "onChange",
     resolver: zodResolver(personalSchema),
     defaultValues: personalInfo,
   });
@@ -335,17 +336,21 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
           </div>
           <div className="w-full">
             <Button
-              // onClick={nextForm}
-              className="w-[50%] h-12 mt-3   gap-x-1 rounded-md "
+              disabled={!form.formState.isValid || form.formState.isSubmitting}
+              className="w-[50%] h-10 mt-3   gap-x-1 rounded-md "
               type="submit"
             >
-              {/* {form.formState.isSubmitting ? (
-                        <div className="w-8 h-8">
-                          <LoaderComponent />
-                        </div>
-                      ) : ( */}
-              <p className="text-white font-bold">Next</p>
-              <MoveRight color="white" />
+              <p
+                className={`${
+                  !form.formState.isValid ? "" : "text-white"
+                } font-bold`}
+              >
+                Next
+              </p>
+              <p className="text-white font-bold"></p>
+              <MoveRight
+                color={`${!form.formState.isValid ? "#B3B3B3" : "white"}`}
+              />
               {/* )} */}
             </Button>
           </div>

@@ -26,6 +26,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { getRegister } from "@/lib/slice/registerSlice";
 import LoaderComponent from "@/components/LoaderComponent";
+import { toast } from "sonner";
+import moment from "moment";
 
 interface Props {
   onNext: () => void;
@@ -59,19 +61,28 @@ const Otp: React.FC<Props> = ({ onNext }) => {
         // OTP is valid, proceed to the next step (e.g., login or dashboard)
         // alert("OTP verified successfully!");
         // onNext();
+        toast(response.data.message, {
+          description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+        });
         router.push("login");
         // router.push("/auth/register?step=plan");
       } else {
         throw new Error("Invalid OTP");
       }
-    } catch (error) {
-      console.error("OTP submission error:", error);
-      alert("OTP verification failed. Please try again.");
+    } catch (error: any) {
+      // console.error("OTP submission error:", error);
+      toast(error.response.data.message, {
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
+      // alert("OTP verification failed. Please try again.");
     }
+  };
+  const handleResend = () => {
+    alert("Resend");
   };
   return (
     <Form {...form}>
-      <div className=" h-[70%]   space-y-6 overflow-y-auto no-scrollbar flex flex-col items-center w-full">
+      <div className="overflow-y-auto no-scrollbar flex flex-col items-center w-full">
         <div className="w-[90%] md:w-[85%] lg:w-[55%] xl:w-[500px] items-center flex flex-col mt-14  ">
           <div className="w-full">
             <strong className="text-sm xl:text-2xl text-left ">
@@ -86,7 +97,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
         <form
           action=""
           onSubmit={form.handleSubmit(onSubmit)}
-          className=" w-[90%] md:w-[80%] lg:w-[55%] xl:w-[500px]   items-center flex flex-col h-full "
+          className=" w-[90%] md:w-[80%] lg:w-[55%] xl:w-[500px]   items-center flex flex-col  mt-6"
         >
           <div className="space-y-5 w-full ">
             <FormLabel className="text-center">Enter OTP</FormLabel>
@@ -121,7 +132,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
             />
 
             <div className="w-full flex items-center justify-center gap-x-4">
-              <Button
+              {/* <Button
                 className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
                 type="submit"
               >
@@ -130,26 +141,44 @@ const Otp: React.FC<Props> = ({ onNext }) => {
                     <LoaderComponent className="text-white" />
                   </div>
                 ) : (
-                  // <p className="text-black font-bold">Sign in1</p>
+               
                   <p className="text-white font-bold">Complete</p>
                 )}
-                {/* <p className="text-white font-bold">Complete</p> */}
+                
+              </Button> */}
+              <Button
+                disabled={!form.formState.isValid}
+                className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                        `}
+                type="submit"
+              >
+                {form.formState.isSubmitting ? (
+                  <div className="w-8 h-8">
+                    <LoaderComponent className="text-white" />
+                  </div>
+                ) : (
+                  <p
+                    className={`${
+                      !form.formState.isValid ? "" : "text-white"
+                    } font-bold`}
+                  >
+                    Complete
+                  </p>
+                )}
               </Button>
             </div>
           </div>
         </form>
-        {/* <div className="w-full flex items-center justify-start gap-x-4">
+        {/* <div className="  w-[90%] md:w-[85%] lg:w-[55%] xl:w-[500px] flex  justify-end mt-2 gap-x-4">
           <button
-            className="w-ful h-0 mt- bg-transparent hover:bg-transparent rounded-md flex items-center justify-center"
-            // type="submit"
+            className="w-ful  bg-transparent hover:bg-transparent rounded-md flex items-center justify-center"
+            onClick={handleResend}
           >
-            <p className=" font-bold">Resend otp</p>
+            <p className=" font-bold">Resend code</p>
           </button>
         </div> */}
       </div>
     </Form>
-    //   </div>
-    // </div>
   );
 };
 

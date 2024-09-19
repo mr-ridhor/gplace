@@ -30,6 +30,7 @@ const Target: React.FC<Props> = ({ handleClick }) => {
   const target = useSelector(getInvestor);
   const form = useForm<tragetType>({
     resolver: zodResolver(targetSchema),
+    mode: "onChange",
     defaultValues: target,
   });
   const onSubmit = (data: tragetType) => {
@@ -110,10 +111,18 @@ const Target: React.FC<Props> = ({ handleClick }) => {
               <div className="w-full flex items-center gap-x-4">
                 <Button
                   // onClick={handleClick}
-                  className="w-full h-10  rounded-md flex items-center justify-center"
+                  disabled={!form.formState.isValid}
+                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                    `}
                   type="submit"
                 >
-                  <p className="text-white font-bold">Next</p>
+                  <p
+                    className={`${
+                      !form.formState.isValid ? "" : "text-white"
+                    } font-bold`}
+                  >
+                    Next
+                  </p>
                 </Button>
               </div>
             </div>
