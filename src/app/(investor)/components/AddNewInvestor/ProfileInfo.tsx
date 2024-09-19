@@ -31,6 +31,7 @@ const ProfileInfo: React.FC<Props> = ({ onNext }) => {
   const profile = useSelector(getInvestor);
   const form = useForm<invproType>({
     resolver: zodResolver(invproSchema),
+    mode: "onChange",
     defaultValues: profile,
   });
   const onSubmit = (data: invproType) => {
@@ -116,10 +117,18 @@ const ProfileInfo: React.FC<Props> = ({ onNext }) => {
               <div className="w-full flex items-center gap-x-4">
                 <Button
                   // onClick={handleClick}
-                  className="w-full h-10  rounded-md flex items-center justify-center"
+                  disabled={!form.formState.isValid}
+                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                    `}
                   type="submit"
                 >
-                  <p className="text-white font-bold">Next</p>
+                  <p
+                    className={`${
+                      !form.formState.isValid ? "" : "text-white"
+                    } font-bold`}
+                  >
+                    Next
+                  </p>
                 </Button>
               </div>
             </div>

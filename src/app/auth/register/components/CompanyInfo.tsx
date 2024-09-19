@@ -29,6 +29,8 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
   const countryList = Country.getAllCountries();
   const [cityList, setCityList] = useState<ICity[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [isCountrySelected, setIsCountrySelected] = useState(false);
+  const [isCitySelected, setIsCitySelected] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const companyInfo = useSelector(getRegister);
@@ -38,6 +40,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
   });
   const handleCountryChange = (countryName: string) => {
     setSelectedCountry(countryName);
+    setIsCountrySelected(!!countryName);
     // Find the country by name to get the correct ISO code
     const selectedCountry = Country.getAllCountries().find(
       (country) => country.name === countryName
@@ -49,7 +52,9 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
       setCityList([]); // Clear cities if no country found
     }
   };
-
+  const handleCityChange = (cityName: string) => {
+    setIsCitySelected(!!cityName); // Update the state based on selection
+  };
   const onSubmit = (data: companyType) => {
     dispatch(setCompanyInfo(data));
 
@@ -115,7 +120,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                             field.onChange(value);
                             handleCountryChange(value); // Pass the country name to handleCountryChange
                           }}
-                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          className="focus:border-0  focus-visible:ring-[#04acc2] "
                           placeholder="Select a country"
                           options={countryList.map((country) => ({
                             value: country.name, // Use country.name as the value
@@ -141,8 +146,11 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                       <FormControl>
                         <Selects
                           value={field.value}
-                          onChange={field.onChange} // Pass the city name to form control
-                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          onChange={(value) => {
+                            field.onChange(value);
+                            handleCityChange(value); // Handle city change
+                          }} // Pass the city name to form control
+                          className={` focus:border-0 focus-visible:ring-[#04acc2] `}
                           placeholder="Select a city"
                           options={cityList.map((city) => ({
                             value: city.name, // Use city.name as the value
@@ -379,12 +387,32 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
 
               {/* Button Container */}
               <div className="w-1/2 flex items-center justify-center">
-                <Button
+                {/* <Button
                   className="w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center"
                   type="submit"
                 >
                   <p className="text-white font-bold">Next</p>
                   <MoveRight color="white" className="ml-2" />
+                </Button> */}
+                <Button
+                  disabled={
+                    !form.formState.isValid || form.formState.isSubmitting
+                  }
+                  className="w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center "
+                  type="submit"
+                >
+                  <p
+                    className={`${
+                      !form.formState.isValid ? "" : "text-white"
+                    } font-bold`}
+                  >
+                    Next
+                  </p>
+                  <p className="text-white font-bold"></p>
+                  <MoveRight
+                    color={`${!form.formState.isValid ? "#B3B3B3" : "white"}`}
+                  />
+                  {/* )} */}
                 </Button>
               </div>
             </div>

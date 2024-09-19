@@ -90,7 +90,13 @@ export const Column: ColumnDef<Investor>[] = [
     accessorKey: "Investment Industry",
     header: "Investment Industry",
     cell: ({ row }) => (
-      <Button className="badge badge-purple bg-[#E4DAF4] hover:bg-[#E4DAF4]/60 rounded-md h-8">
+      <Button
+        className={`text-black ${
+          row.original.investmentBio.industry === "Strategic"
+            ? "bg-[#F5E2B7]"
+            : "#69E7A8"
+        } hover:bg-[#F5E2B7]/60 rounded-md h-8`}
+      >
         {row.original.investmentBio.industry}
       </Button>
     ),
@@ -195,7 +201,7 @@ export const Column: ColumnDef<Investor>[] = [
     },
     cell: ({ row }) => (
       <div className="flex items-center">
-        <div className="ml-2 rounded-full border bg-[#58d18e]  text-gren-600">
+        <div className="ml-2 rounded-full border bg-[#57D08D]  text-gren-600">
           <CircularProgress
             // percentage={10}
             percentage={row.original.matchScore.totalScore}

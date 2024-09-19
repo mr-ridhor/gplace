@@ -79,11 +79,11 @@
 }
 .circle-b {
   fill: none;
-  stroke: #ddd;
+  stroke: #fff;
 }
 .circle-pr {
   fill: none;
-  stroke: #ddd;
+  stroke: #fff;
   stroke-linecap: round;
   stroke-linejoin: round;
 }

@@ -25,6 +25,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
 import LoaderComponent from "@/components/LoaderComponent";
+import { toast } from "sonner";
+import moment from "moment";
 
 interface CredentialsProps {
   onNext: () => void;
@@ -80,8 +82,11 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
         // );
         // console.log("otp", verificationResponse);
         // if (verificationResponse.status === 200) {
-          router.push(`/auth/register?step=otp`);
-          onNext();
+        toast(response.data.message, {
+          description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+        });
+        router.push(`/auth/register?step=otp`);
+        onNext();
         // }
       }
       if (response.status !== 201) {
@@ -89,6 +94,9 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
       }
     } catch (error) {
       console.error("Error submitting data:", error);
+      toast("All fields must be filled", {
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
     }
   };
 
@@ -178,7 +186,7 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
             </div>
 
             <div className="w-full flex items-center justify-center gap-x-4">
-              <Button
+              {/* <Button
                 className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
                 type="submit"
               >
@@ -187,10 +195,28 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
                     <LoaderComponent className="text-white" />
                   </div>
                 ) : (
-                  // <p className="text-black font-bold">Sign in1</p>
                   <p className="text-white font-bold">Complete</p>
                 )}
-                {/* <p className="text-white font-bold">Complete</p> */}
+              </Button> */}
+              <Button
+                disabled={!form.formState.isValid}
+                className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                        `}
+                type="submit"
+              >
+                {form.formState.isSubmitting ? (
+                  <div className="w-8 h-8">
+                    <LoaderComponent className="text-white" />
+                  </div>
+                ) : (
+                  <p
+                    className={`${
+                      !form.formState.isValid ? "" : "text-white"
+                    } font-bold`}
+                  >
+                    Complete
+                  </p>
+                )}
               </Button>
             </div>
           </div>

@@ -30,6 +30,7 @@ const Login = () => {
   const router = useRouter();
   const form = useForm<loginType>({
     resolver: zodResolver(loginSchema),
+    mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
@@ -125,14 +126,10 @@ const Login = () => {
                   </div>
 
                   <div className="w-full flex items-center justify-center gap-x-4">
-                    {/* <Button
-                      className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
-                      type="submit"
-                    >
-                      <p className="text-white font-bold">Complete</p>
-                    </Button> */}
                     <Button
-                      className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
+                      disabled={!form.formState.isValid}
+                      className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                        `}
                       type="submit"
                     >
                       {form.formState.isSubmitting ? (
@@ -140,8 +137,13 @@ const Login = () => {
                           <LoaderComponent className="text-white" />
                         </div>
                       ) : (
-                        // <p className="text-black font-bold">Sign in1</p>
-                        <p className="text-white font-bold">Complete</p>
+                        <p
+                          className={`${
+                            !form.formState.isValid ? "" : "text-white"
+                          } font-bold`}
+                        >
+                          Complete
+                        </p>
                       )}
                     </Button>
                   </div>

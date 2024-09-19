@@ -34,6 +34,7 @@ import {
   getPanel,
   toggleFilterPanel,
   toggleSearchPanel,
+  closeAllPanels,
 } from "@/lib/slice/panelSlice";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
@@ -52,7 +53,31 @@ const Navbar = () => {
   const selectedRowId = localStorage.getItem("selectedRowId");
 
   const activeTab = useSelector(getActiveTab);
-
+  const shouldClosePanels = () => {
+    return (
+      pathname === "/dashboard" &&
+      detail !== "" &&
+      detail !== null &&
+      tab === "detail"
+    );
+  };
+  const shouldRender = () => {
+    // Check if the path is "/dashboard"
+    if (pathname === "/dashboard") {
+      // If 'detail' query param is empty and 'tab' is 'detail'
+      if (
+        searchParams.get("detail") === "" &&
+        searchParams.get("tab") === "detail"
+      ) {
+        return true;
+      }
+      // If no query params, treat it as /dashboard
+      if (!searchParams.get("detail") && !searchParams.get("tab")) {
+        return true;
+      }
+    }
+    return false;
+  };
   const detail = searchParams.get("detail"); // Get the 'detail' parameter from the URL
   console.log(tab);
   const pathname = usePathname();
@@ -63,6 +88,11 @@ const Navbar = () => {
       dispatch(setActiveTab(""));
     }
   }, [pathname, dispatch]);
+  React.useEffect(() => {
+    if (shouldClosePanels()) {
+      dispatch(closeAllPanels());
+    }
+  }, [pathname, detail, tab, dispatch]);
   const handleInvestorsClick = () => {
     router.push(`/dashboard?detail=&tab=detail`);
     dispatch(setActiveTab("investors"));
@@ -135,7 +165,9 @@ const Navbar = () => {
           <>
             <div
               className="flex gap-x-2 items-center h-full"
-              // onClick={() => dispatch(toggleFilterPanel())}
+              onClick={() => {
+                shouldRender() && dispatch(toggleFilterPanel());
+              }}
             >
               <Filter />
               <p>Filter</p>
@@ -143,7 +175,9 @@ const Navbar = () => {
 
             <div
               className="h-1/2 items-center flex gap-x bordr w-1/4"
-              // onClick={() => dispatch(toggleSearchPanel())}
+              onClick={() => {
+                shouldRender() && dispatch(toggleSearchPanel());
+              }}
             >
               <Search size={14} />
               <input
@@ -153,7 +187,7 @@ const Navbar = () => {
             </div>
             <Dialog>
               <DialogTrigger className="flex gap-x-2 text-sm h-14 items-center">
-                <Button className="bg-[#03AAC1] text-white h-10 items-center gap-x-2">
+                <Button className="hover:bg-[#0691A5] text-white h-10 items-center gap-x-2">
                   <FaPlus />
                   Add New
                 </Button>
@@ -163,7 +197,7 @@ const Navbar = () => {
           </>
         ) : (
           <Link href={"profile"}>
-            <Button className="bg-[#dcf8fc] hover:bg-[#dcf8fc]/10 flex items-center gap-x-1">
+            <Button className="bg-[#dcf8fc] hover:bg-[#B9E5EB] text-[#1E1E1E] flex items-center gap-x-1">
               <FaPen />
               Edit
             </Button>
