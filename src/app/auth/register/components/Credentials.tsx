@@ -27,11 +27,13 @@ import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
 import LoaderComponent from "@/components/LoaderComponent";
 import { toast } from "sonner";
 import moment from "moment";
+import { MoveLeft } from "lucide-react";
 
 interface CredentialsProps {
   onNext: () => void;
+  onBack: () => void;
 }
-const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
+const Credentials: React.FC<CredentialsProps> = ({ onNext, onBack }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -85,8 +87,8 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
         toast(response.data.message, {
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
-        router.push(`/auth/register?step=otp`);
         onNext();
+        router.push(`/auth/register?step=otp`);
         // }
       }
       if (response.status !== 201) {
@@ -186,21 +188,19 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
             </div>
 
             <div className="w-full flex items-center justify-center gap-x-4">
-              {/* <Button
-                className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
-                type="submit"
+              <Button
+                type="button"
+                onClick={onBack}
+                className="w-1/2 h-10    gap-x-1 rounded-md "
               >
-                {form.formState.isSubmitting ? (
-                  <div className="w-8 h-8">
-                    <LoaderComponent className="text-white" />
-                  </div>
-                ) : (
-                  <p className="text-white font-bold">Complete</p>
-                )}
-              </Button> */}
+                <MoveLeft color={`${"white"}`} />
+                <p className={`${"text-white"} font-bold`}>Back</p>
+
+                {/* )} */}
+              </Button>
               <Button
                 disabled={!form.formState.isValid}
-                className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                className={`w-1/2 h-10 rounded-md flex items-center justify-center
                         `}
                 type="submit"
               >

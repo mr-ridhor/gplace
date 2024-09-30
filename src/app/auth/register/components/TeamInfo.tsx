@@ -10,10 +10,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { MoveRight } from "lucide-react";
-import React from "react";
+import { MoveLeft, MoveRight } from "lucide-react";
+import React, { useEffect } from "react";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
@@ -25,16 +25,20 @@ import { getRegister, setTeamInfo } from "@/lib/slice/registerSlice";
 
 interface TeamInfoProps {
   onNext: () => void;
+  onBack: () => void;
 }
-const TeamInfo: React.FC<TeamInfoProps> = ({ onNext }) => {
+const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const teamInfo = useSelector(getRegister);
+  const { teamInfo } = useSelector(getRegister);
   const form = useForm<teamType>({
     resolver: zodResolver(teamSchema),
-    defaultValues: teamInfo,
+    defaultValues: { team1: teamInfo.team1, team2: teamInfo.team2 },
   });
-
+  const formValues = useWatch({ control: form.control });
+  useEffect(() => {
+    dispatch(setTeamInfo(formValues));
+  }, [formValues, dispatch]);
   const onSubmit = (data: teamType) => {
     dispatch(setTeamInfo(data));
     console.log(data);
@@ -163,13 +167,24 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ onNext }) => {
 
             <div className="w-full flex items-center gap-x-4">
               {/* Button Container */}
+              <Button
+                onClick={onBack}
+                type="button"
+                // onClick={() => router.push("/auth/register?step=company-info")}
+                className="w-1/2 h-10    gap-x-1 rounded-md "
+              >
+                <MoveLeft color={`${"white"}`} />
+                <p className={`${"text-white"} font-bold`}>Back</p>
+
+                {/* )} */}
+              </Button>
               <div className="w-1/2 flex items-center justify-center">
                 <Button
-                  className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
+                  className="w-full h-10  gap-x-1 rounded-md flex items-center justify-center"
                   type="submit"
                 >
                   <p className="text-white font-bold">Next</p>
-                  <MoveRight color="white" className="ml-2" />
+                  <MoveRight color="white" className="" />
                 </Button>
               </div>
             </div>

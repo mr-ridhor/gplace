@@ -22,15 +22,15 @@ export type companyType = {
   website?: string;
   industry: string;
   foundingYear: string;
-  revenue: {
+  revenue?: {
     ltm: string;
     previousYear: string;
   };
-  grossProfit: {
+  grossProfit?: {
     ltm: string;
     previousYear: string;
   };
-  EBITDA: {
+  EBITDA?: {
     ltm: string;
     previousYear: string;
   };

@@ -24,27 +24,21 @@ export const companySchema = z.object({
   country: z.string().min(1, "Country is required"),
   city: z.string().min(1, "City is required"),
   email: z.string().email("Invalid email address"),
-  website: z.string().url("Invalid website URL").optional(),
+  website: z.string(),
   industry: z.string().min(1, "Industry is required"),
   foundingYear: z
     .string()
     .regex(/^\d{4}$/, "Founding year must be a valid 4-digit year"),
   revenue: z.object({
-    ltm: z.string().min(0, "Revenue must be a positive string"),
-    previousYear: z
-      .string()
-      .min(0, "Previous year revenue must be a positive string"),
+    ltm: z.string(),
+    previousYear: z.string(),
   }),
   grossProfit: z.object({
-    ltm: z.string().min(0, "Gross profit must be a positive string"),
-    previousYear: z
-      .string()
-      .min(0, "Previous year gross profit must be a positive string"),
+    ltm: z.string(),
+    previousYear: z.string(),
   }),
   EBITDA: z.object({
-    ltm: z.string().min(0, "EBITDA must be a positive string"),
-    previousYear: z
-      .string()
-      .min(0, "Previous year EBITDA must be a positive number"),
+    ltm: z.string(),
+    previousYear: z.string(),
   }),
 });

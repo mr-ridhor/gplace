@@ -50,7 +50,9 @@ const Login = () => {
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
         console.log(result);
-        router.push(result.url ?? "/dashboard"); // Redirect to callback URL or default to /dashboard
+        router.replace(result.url ?? "/dashboard"); // Redirect to callback URL or default to /dashboard
+
+        // router.push(result.url ?? "/dashboard"); // Redirect to callback URL or default to /dashboard
       } else {
         throw new Error(result?.error || "Login failed");
       }
