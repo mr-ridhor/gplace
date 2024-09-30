@@ -10,7 +10,7 @@ interface IUserResponse {
   email: string;
   firstName: string;
   lastName: string;
-  remember: any
+  maxAge: number
 }
 
 export const authOptions: NextAuthOptions = {
@@ -61,8 +61,9 @@ export const authOptions: NextAuthOptions = {
           email: user.credentials.email,
           firstName: user.bio.firstName,
           lastName: user.bio.lastName,
-          remember,
+          maxAge: remember ? 30 * 24 * 60 * 60 : 60 * 1
         };
+        console.log(response)
         return response;
       },
     }),
@@ -72,11 +73,6 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60
-  },
-  jwt: {
-    // maxAge: 30 * 24 * 60 * 60, // Example: 30 days
-    maxAge: 60 * 60
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -85,26 +81,18 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
-        token.remember = user.remember; 
-      }
-
-      if (token.remember) {
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
+        token["maxAge"] = user.maxAge;
       }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      console.log(token?.remember)
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
-        session.user.remember = token.remember; // Add 'remember' to the session
-      }
-
-      if (token.remember) {
-        session.maxAge = 60 * 60 * 24 * 30; 
+        session.maxAge = token["maxAge"] as number;
+        session.expires = new Date(Date.now() + session.maxAge * 1000).toISOString(); 
       }
       return session;
     },
