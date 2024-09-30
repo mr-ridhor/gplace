@@ -16,6 +16,7 @@ declare module "next-auth" {
     id: string;
     firstName: string;
     lastName: string;
+    remember: boolean
   }
 }
 

@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -26,6 +26,7 @@ import LoaderComponent from "@/components/LoaderComponent";
 
 const Login = () => {
   const searchParams = useSearchParams();
+  const [remember, setRemember] = useState<boolean>(false)
 
   const router = useRouter();
   const form = useForm<loginType>({
@@ -39,8 +40,10 @@ const Login = () => {
 
   const onSubmit = async (data: loginType) => {
     try {
+      console.log(remember)
       const result = await signIn("credentials", {
         ...data,
+        remember,
         redirect: false,
         callbackUrl: "/dashboard",
       });
@@ -49,14 +52,14 @@ const Login = () => {
         toast("Login successful", {
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
-        console.log(result);
+        // console.log(result);
         router.push(result.url ?? "/dashboard"); // Redirect to callback URL or default to /dashboard
       } else {
         throw new Error(result?.error || "Login failed");
       }
     } catch (error: any) {
       console.log(error);
-      toast("Something went wrong", {
+      toast(error.toString(), {
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
     }
@@ -153,7 +156,8 @@ const Login = () => {
           </div>
           <div className="flex w-full justify-between">
             <div className="flex items-center gap-x-3">
-              <Checkbox id="remember" className="text-white" />
+              <Checkbox id="remember" className="text-white" checked={remember}
+                onCheckedChange={(checked: boolean) => setRemember(!!checked)} />
               <label
                 htmlFor="remember"
                 className="text-[10px] md:text-sm lg:text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

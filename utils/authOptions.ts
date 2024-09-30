@@ -4,13 +4,13 @@ import User, { IUser } from "../models/User"; // Adjust the path according to yo
 import { NextAuthOptions } from "next-auth";
 // import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import verifyPassword from "./verifyPassword";
 
 interface IUserResponse {
   id: any; // Ensure mongoose Types are imported if needed
   email: string;
   firstName: string;
   lastName: string;
+  remember: any
 }
 
 export const authOptions: NextAuthOptions = {
@@ -27,6 +27,10 @@ export const authOptions: NextAuthOptions = {
           type: "password",
           placeholder: "password",
         },
+        remember: {
+          label: "remember",
+          type: "checkbox",
+        }
       },
       authorize: async (credentials) => {
         await connectDB();
@@ -34,7 +38,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const { email, password } = credentials;
+        const { email, password, remember } = credentials;
 
         const user: IUser | any = await User.findOne({
           "credentials.email": email,
@@ -47,21 +51,18 @@ export const authOptions: NextAuthOptions = {
 
         const hashedPassword = user.credentials.password;
         const isPasswordValid = await bcrypt.compare(password, hashedPassword);
-        // const isPasswordValid2 = verifyPassword(password, hashedPassword);
-        console.log(isPasswordValid)
 
         if (!isPasswordValid) {
           throw Error("Invalid Password");
           return null;
         }
-
         const response: IUserResponse = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,
           firstName: user.bio.firstName,
           lastName: user.bio.lastName,
+          remember,
         };
-        // console.log(response);
         return response;
       },
     }),
@@ -71,9 +72,11 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60
   },
   jwt: {
-    maxAge: 30 * 24 * 60 * 60, // Example: 30 days
+    // maxAge: 30 * 24 * 60 * 60, // Example: 30 days
+    maxAge: 60 * 60
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -82,17 +85,26 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
+        token.remember = user.remember; 
       }
-      // console.log("token", token);
+
+      if (token.remember) {
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30;
+      }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      // console.log(token);
+      console.log(token?.remember)
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
+        session.user.remember = token.remember; // Add 'remember' to the session
+      }
+
+      if (token.remember) {
+        session.maxAge = 60 * 60 * 24 * 30; 
       }
       return session;
     },
