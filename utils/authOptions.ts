@@ -2,9 +2,7 @@ import Credentials from "next-auth/providers/credentials";
 import connectDB from "../config/db";
 import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
-// import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import verifyPassword from "./verifyPassword";
 
 interface IUserResponse {
   id: any; // Ensure mongoose Types are imported if needed
@@ -12,6 +10,8 @@ interface IUserResponse {
   firstName: string;
   lastName: string;
 }
+
+let rememberMe: boolean = false;
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -27,6 +27,10 @@ export const authOptions: NextAuthOptions = {
           type: "password",
           placeholder: "password",
         },
+        remember: {
+          label: "remember",
+          type: "checkbox",
+        },
       },
       authorize: async (credentials) => {
         await connectDB();
@@ -34,7 +38,11 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const { email, password } = credentials;
+        const { email, password, remember } = credentials;
+
+        if (remember === "true") {
+          rememberMe = true;
+        }
 
         const user: IUser | any = await User.findOne({
           "credentials.email": email,
@@ -47,21 +55,17 @@ export const authOptions: NextAuthOptions = {
 
         const hashedPassword = user.credentials.password;
         const isPasswordValid = await bcrypt.compare(password, hashedPassword);
-        // const isPasswordValid2 = verifyPassword(password, hashedPassword);
-        console.log(isPasswordValid);
 
         if (!isPasswordValid) {
           throw Error("Invalid Password");
           return null;
         }
-
         const response: IUserResponse = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,
           firstName: user.bio.firstName,
           lastName: user.bio.lastName,
         };
-        // console.log(response);
         return response;
       },
     }),
@@ -71,9 +75,11 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60,
   },
   jwt: {
-    maxAge: 30 * 24 * 60 * 60, // Example: 30 days
+    secret: process.env.NEXTAUTH_SECRET, // Set your JWT secret
+    maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -82,18 +88,22 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
+        // token.rememberMe = user.remember;
       }
-      // console.log("token", token);
+      console.log(token);
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
-      // console.log(token);
+    async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
+
+        // const expires : string = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        // if(token.rememberMe === true) session.expires = expires
       }
+      console.log(session);
       return session;
     },
   },

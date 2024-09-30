@@ -29,7 +29,7 @@ const Table: React.FC<Props> = ({ investors }) => {
   );
 
   const activeTab = useSelector(getActiveTab);
-  console.log(investors);
+  // console.log(investors);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     name: true,
     country: true,
