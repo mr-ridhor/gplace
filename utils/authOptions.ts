@@ -2,7 +2,6 @@ import Credentials from "next-auth/providers/credentials";
 import connectDB from "../config/db";
 import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";
-// import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 interface IUserResponse {
@@ -10,8 +9,9 @@ interface IUserResponse {
   email: string;
   firstName: string;
   lastName: string;
-  maxAge: number
 }
+
+let rememberMe: boolean = false
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -40,6 +40,10 @@ export const authOptions: NextAuthOptions = {
 
         const { email, password, remember } = credentials;
 
+        if(remember === 'true') {
+          rememberMe = true
+        }
+
         const user: IUser | any = await User.findOne({
           "credentials.email": email,
         });
@@ -61,9 +65,7 @@ export const authOptions: NextAuthOptions = {
           email: user.credentials.email,
           firstName: user.bio.firstName,
           lastName: user.bio.lastName,
-          maxAge: remember ? 30 * 24 * 60 * 60 : 60 * 1
         };
-        console.log(response)
         return response;
       },
     }),
@@ -73,6 +75,11 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60,
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET, // Set your JWT secret
+    maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -81,19 +88,23 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
-        token["maxAge"] = user.maxAge;
+        // token.rememberMe = user.remember;
       }
+      console.log(token)
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
-        session.maxAge = token["maxAge"] as number;
-        session.expires = new Date(Date.now() + session.maxAge * 1000).toISOString(); 
+
+        // const expires : string = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+        // if(token.rememberMe === true) session.expires = expires
+
       }
+      console.log(session)
       return session;
     },
   },
