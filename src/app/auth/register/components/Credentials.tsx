@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
 // import axiosService from "@/lib/services/axiosService";
 import axios from "axios";
-import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
+import { getRegister, setCredentials, reset } from "@/lib/slice/registerSlice";
 import LoaderComponent from "@/components/LoaderComponent";
 import { toast } from "sonner";
 import moment from "moment";
@@ -89,8 +89,10 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext, onBack }) => {
         });
         onNext();
         router.push(`/auth/register?step=otp`);
+        reset();
         // }
       }
+
       if (response.status !== 201) {
         throw new Error("Failed to submit the data");
       }

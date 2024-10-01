@@ -5,7 +5,7 @@ export const invcomSchema = z.object({
   country: z.string().min(1, "Country is required"),
   city: z.string().min(1, "City is required"),
   noEmp: z.string().min(1, "Number of employees is required"),
-  website: z.string().url("Invalid website URL").optional(),
+  website: z.string(),
   investorType: z.string().min(1, "Investor type is required"),
   description: z.string().min(1, "Description is required"),
   yearFounded: z

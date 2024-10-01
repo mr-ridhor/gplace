@@ -47,19 +47,19 @@ const Login = () => {
         redirect: false,
         callbackUrl: "/dashboard",
       });
-
+      console.log(result);
       if (result?.ok) {
         toast("Login successful", {
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
         // console.log(result);
-        router.push(result.url ?? "/dashboard"); // Redirect to callback URL or default to /dashboard
+        router.push(result.url ?? "/dashboard");
       } else {
         throw new Error(result?.error || "Login failed");
       }
     } catch (error: any) {
       console.log(error);
-      toast(error.toString(), {
+      toast(error.message, {
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
     }
@@ -115,7 +115,7 @@ const Login = () => {
                             <FormItem>
                               <FormControl>
                                 <Input
-                                  type="password" // Ensure the password input is type password
+                                  type="password"
                                   className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                                   {...field}
                                 />
