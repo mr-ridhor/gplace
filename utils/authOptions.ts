@@ -11,7 +11,7 @@ interface IUserResponse {
   lastName: string;
 }
 
-let rememberMe: boolean = false
+let rememberMe;
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -39,10 +39,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const { email, password, remember } = credentials;
-
-        if(remember === 'true') {
-          rememberMe = true
-        }
+        rememberMe = 'true'
 
         const user: IUser | any = await User.findOne({
           "credentials.email": email,
@@ -59,7 +56,7 @@ export const authOptions: NextAuthOptions = {
         if (!isPasswordValid) {
           throw Error("Invalid Password");
           return null;
-        }
+        }      
         const response: IUserResponse = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,
@@ -75,20 +72,18 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60,
   },
   jwt: {
-    secret: process.env.NEXTAUTH_SECRET, // Set your JWT secret
-    maxAge: rememberMe ? 30 * 24 * 60 * 60 : 24 * 60 * 60,
+    secret: process.env.NEXTAUTH_SECRET,
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
-        // token.rememberMe = user.remember;
       }
       console.log(token)
       return token;
@@ -99,12 +94,8 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email;
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
-
-        // const expires : string = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-        // if(token.rememberMe === true) session.expires = expires
-
       }
-      console.log(session)
+      console.log(session.expires)
       return session;
     },
   },
