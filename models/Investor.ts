@@ -66,7 +66,7 @@ const investorSchema = new Schema<InvestorInterface>({
         website: { type: String, required: true },
         yearFounded: { type: Number, required: true },
         employeeNumber: { type: Number, required: true },
-        investorType: { type: String, enum: ['Strategic', 'Financial'], default: 'Strategic' },
+        investorType: { type: String },
         description: { type: String, required: true },
     },
     investmentBio: {
