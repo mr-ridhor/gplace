@@ -26,7 +26,7 @@ import LoaderComponent from "@/components/LoaderComponent";
 
 const Login = () => {
   const searchParams = useSearchParams();
-  const [remember, setRemember] = useState<any>(false);
+  const [remember, setRemember] = useState<boolean>(false);
 
   const router = useRouter();
   const form = useForm<loginType>({
