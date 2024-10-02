@@ -85,31 +85,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// // GET route to fetch all Investors
-// export async function GET(req: NextRequest) {
-//   try {
-//     await connectDB();
-//     const user = await getServerSession(authOptions);
-
-//     if (!user) {
-//       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-//     }
-
-//     const investors = await Investor.find({ user: user?.user.id });
-//     if (!investors || investors.length === 0) {
-//       return NextResponse.json(
-//         { message: "No Investors found" },
-//         { status: 404 }
-//       );
-//     }
-//     return NextResponse.json(investors, { status: 200 });
-//   } catch (error: any) {
-//     console.error("Error:", error);
-//     return NextResponse.json({ message: error.message }, { status: 500 });
-//   }
-// }
-
-
 export async function GET(req: NextRequest) {
   try {
     // Ensure the database is connected
