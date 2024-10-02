@@ -26,7 +26,7 @@ import LoaderComponent from "@/components/LoaderComponent";
 
 const Login = () => {
   const searchParams = useSearchParams();
-  const [remember, setRemember] = useState<boolean>(false)
+  const [remember, setRemember] = useState<any>(false)
 
   const router = useRouter();
   const form = useForm<loginType>({
@@ -40,7 +40,9 @@ const Login = () => {
 
   const onSubmit = async (data: loginType) => {
     try {
-      console.log(remember)
+      
+      localStorage.setItem('remember', remember)
+
       const result = await signIn("credentials", {
         ...data,
         remember,
