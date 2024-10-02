@@ -14,6 +14,8 @@ export default function RegisterPage() {
   const searchParams = useSearchParams();
   const [step, setStep] = useState("personal-info");
 
+  
+
   useEffect(() => {
     const queryStep = searchParams.get("step");
     setStep(queryStep || "personal-info");
