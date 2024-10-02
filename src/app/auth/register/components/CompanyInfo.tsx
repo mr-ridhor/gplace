@@ -21,6 +21,10 @@ import { companySchema } from "@/lib/zod-schema/companySchema";
 import { YearSelect } from "@/components/YearSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegister, setCompanyInfo } from "@/lib/slice/registerSlice";
+import {
+  formatNumberWithCommas,
+  numeralFormatter,
+} from "@/lib/numeralFormatter";
 
 interface CompanyInfoProps {
   onNext: () => void;
@@ -259,6 +263,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -283,6 +291,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -305,6 +317,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -329,6 +345,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -351,6 +371,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -375,6 +399,11 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
                           {...field}
+                          {...field}
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
