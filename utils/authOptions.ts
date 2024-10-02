@@ -56,6 +56,12 @@ export const authOptions: NextAuthOptions = {
           throw Error("Invalid Password");
           return null;
         }
+
+        if (!user.credentials.isVerified) {
+          throw Error("User not verified");
+          return null;
+        }
+
         const response: IUserResponse = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,

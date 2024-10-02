@@ -15,14 +15,16 @@ export default withAuth(
       authorized: ({ token, req }) => {
         const { nextUrl: { pathname },} = req;
 
-        if (["/profile", '/dashboard'].includes(pathname) && !token) {
+        if (['/profile', '/dashboard'].includes(pathname) && !token) {
           return false;
+        } else if(['/'].includes(pathname)) {
+          return false
         } else {
           return true
         }
     
 
-        return (!token && pathname.startsWith("/auth")) || !!token;
+        // return (!token && pathname.startsWith("/auth")) || !!token;
       },
     },
   }
