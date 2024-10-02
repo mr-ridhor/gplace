@@ -20,6 +20,10 @@ import { useRouter } from "next/navigation";
 import { YearSelect } from "@/components/YearSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile, updateCompanyInfo } from "@/lib/slice/profileSlice";
+import {
+  formatNumberWithCommas,
+  numeralFormatter,
+} from "@/lib/numeralFormatter";
 
 const CompanyInfoForm = () => {
   const router = useRouter(); // Initialize router
@@ -102,7 +106,7 @@ const CompanyInfoForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Selects
+                          {/* <Selects
                             value={field.value}
                             onChange={field.onChange}
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
@@ -111,6 +115,20 @@ const CompanyInfoForm = () => {
                               { value: "fr", label: "Fr" },
                               { value: "eng", label: "Eng" },
                             ]}
+                          /> */}
+                          <Input
+                            className="focus:border-0 focus-visible:ring-[#04acc2]"
+                            {...field}
+                            placeholder="Enter country"
+                            // onChange={(e) => {
+                            //   field.onChange(e);
+                            //   dispatch(
+                            //     setCompanyInfo({
+                            //       ...companyInfo,
+                            //       city: e.target.value,
+                            //     })
+                            //   );
+                            // }}
                           />
                         </FormControl>
                         <FormMessage />
@@ -127,7 +145,7 @@ const CompanyInfoForm = () => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <Selects
+                          {/* <Selects
                             value={field.value}
                             onChange={field.onChange}
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
@@ -136,6 +154,20 @@ const CompanyInfoForm = () => {
                               { value: "s", label: "Fr" },
                               { value: "s4", label: "eng" },
                             ]}
+                          /> */}
+                          <Input
+                            className="focus:border-0 focus-visible:ring-[#04acc2]"
+                            {...field}
+                            placeholder="Enter city"
+                            // onChange={(e) => {
+                            //   field.onChange(e);
+                            //   dispatch(
+                            //     setCompanyInfo({
+                            //       ...companyInfo,
+                            //       city: e.target.value,
+                            //     })
+                            //   );
+                            // }}
                           />
                         </FormControl>
                         <FormMessage />
@@ -261,6 +293,10 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
+                              value={formatNumberWithCommas(field.value || "")}
+                              onChange={(e) =>
+                                field.onChange(numeralFormatter(e.target.value))
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -283,6 +319,10 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
+                              value={formatNumberWithCommas(field.value || "")}
+                              onChange={(e) =>
+                                field.onChange(numeralFormatter(e.target.value))
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -307,6 +347,10 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
+                              value={formatNumberWithCommas(field.value || "")}
+                              onChange={(e) =>
+                                field.onChange(numeralFormatter(e.target.value))
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -329,6 +373,10 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
+                              value={formatNumberWithCommas(field.value || "")}
+                              onChange={(e) =>
+                                field.onChange(numeralFormatter(e.target.value))
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -353,6 +401,10 @@ const CompanyInfoForm = () => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2]"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />

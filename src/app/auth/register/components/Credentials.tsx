@@ -28,6 +28,7 @@ import LoaderComponent from "@/components/LoaderComponent";
 import { toast } from "sonner";
 import moment from "moment";
 import { MoveLeft } from "lucide-react";
+import { numeralFormatter } from "@/lib/numeralFormatter";
 
 interface CredentialsProps {
   onNext: () => void;
@@ -50,15 +51,30 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext, onBack }) => {
   });
 
   const onSubmit = async (data: authType) => {
-    // Update credentials and then proceed with submission
     dispatch(setCredentials(data));
+
+    const cleanedData = {
+      ...companyInfo,
+      revenue: {
+        ltm: numeralFormatter(companyInfo.revenue.ltm),
+        previousYear: numeralFormatter(companyInfo.revenue.previousYear),
+      },
+      grossProfit: {
+        ltm: numeralFormatter(companyInfo.grossProfit.ltm),
+        previousYear: numeralFormatter(companyInfo.grossProfit.previousYear),
+      },
+      EBITDA: {
+        ltm: numeralFormatter(companyInfo.EBITDA.ltm),
+        previousYear: numeralFormatter(companyInfo.EBITDA.previousYear),
+      },
+    };
     const payload = {
       bio: personalInfo,
-      company: companyInfo,
+      company: cleanedData,
       team: teamInfo,
       credentials: data,
     };
-    // console.log("cred", payload);
+    console.log("cred", payload);
     try {
       const response = await axios.post(`/api/signup`, payload, {
         headers: {
