@@ -37,7 +37,7 @@ export async function PUT(req: NextRequest) {
       // Optionally: Fetch the updated user to return the latest data
       const updatedUser = await User.findById(currentUser?.id);
   
-      return NextResponse.json(updatedUser, { status: 200 });
+      return NextResponse.json({ message: 'User Updated Successfully' }, { status: 200 });
     } catch (error: any) {
       return NextResponse.json({ message: 'Error updating user', error: error.message }, { status: 500 });
     }
