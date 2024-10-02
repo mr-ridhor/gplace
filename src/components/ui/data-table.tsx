@@ -44,7 +44,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pageIndex, setPageIndex] = React.useState(0);
-  const [pageSize, setPageSize] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(100);
 
   const table = useReactTable({
     data: data,
