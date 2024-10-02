@@ -9,7 +9,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
   console.log("list", list);
   return (
     <div className="md:w-[350px] bg-[#F5F8FA] rounded-md h-[100%] overflow-y-auto no-scrollbar py-3 hidden md:flex items-start justify-center">
-      <div className="space-y-6 ">
+      <div className="space-y-6 bg-red-900">
         <div className="my-4">
           <p className="font-bold">{list.companyInfo.companyName}</p>
         </div>

@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         remember: {
           label: "remember",
           type: "checkbox",
-        }
+        },
       },
       authorize: async (credentials) => {
         await connectDB();

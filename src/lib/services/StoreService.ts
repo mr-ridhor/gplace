@@ -15,10 +15,12 @@ import registerReducer from "../slice/registerSlice";
 import addInverstorReducer from "../slice/addInvestorSlice";
 import profileReducer from "../slice/profileSlice";
 import panelReducer from "../slice/panelSlice";
+
+// Add "register" to the whitelist to persist its state
 const persistConfig = {
   key: "root",
   storage: storageService,
-  whitelist: ["row"],
+  whitelist: ["row", "register"], // "register" is now persisted
 };
 
 const rootReducer = combineReducers({

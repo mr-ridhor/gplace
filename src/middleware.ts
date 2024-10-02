@@ -2,7 +2,7 @@
 export { default } from "next-auth/middleware";
 
 export const config = {
-  matcher: ["/dashboard", "/", '/profile'],
+  matcher: ["/dashboard", "/", "/profile"],
 };
 
 // this is causing the login not to work

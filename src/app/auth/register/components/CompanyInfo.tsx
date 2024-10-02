@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { MoveRight } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,40 +21,44 @@ import { companySchema } from "@/lib/zod-schema/companySchema";
 import { YearSelect } from "@/components/YearSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegister, setCompanyInfo } from "@/lib/slice/registerSlice";
-import { Country, City, ICity } from "country-state-city";
+import {
+  formatNumberWithCommas,
+  numeralFormatter,
+} from "@/lib/numeralFormatter";
+
 interface CompanyInfoProps {
   onNext: () => void;
+  onBack: () => void;
 }
-const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
-  const countryList = Country.getAllCountries();
-  const [cityList, setCityList] = useState<ICity[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
-  const [isCountrySelected, setIsCountrySelected] = useState(false);
-  const [isCitySelected, setIsCitySelected] = useState(false);
+const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const companyInfo = useSelector(getRegister);
+  const { companyInfo } = useSelector(getRegister);
   const form = useForm<companyType>({
     resolver: zodResolver(companySchema),
-    defaultValues: companyInfo,
+    defaultValues: {
+      name: companyInfo.name,
+      country: companyInfo.country,
+      city: companyInfo.city,
+      email: companyInfo.email,
+      website: companyInfo.website,
+      industry: companyInfo.industry,
+      foundingYear: companyInfo.foundingYear,
+      revenue: {
+        ltm: companyInfo.revenue.ltm,
+        previousYear: companyInfo.revenue.previousYear,
+      },
+      grossProfit: {
+        ltm: companyInfo.grossProfit.ltm,
+        previousYear: companyInfo.grossProfit.previousYear,
+      },
+      EBITDA: {
+        ltm: companyInfo.EBITDA.ltm,
+        previousYear: companyInfo.EBITDA.previousYear,
+      },
+    },
   });
-  const handleCountryChange = (countryName: string) => {
-    setSelectedCountry(countryName);
-    setIsCountrySelected(!!countryName);
-    // Find the country by name to get the correct ISO code
-    const selectedCountry = Country.getAllCountries().find(
-      (country) => country.name === countryName
-    );
-    if (selectedCountry) {
-      const cities = City.getCitiesOfCountry(selectedCountry.isoCode) || [];
-      setCityList(cities);
-    } else {
-      setCityList([]); // Clear cities if no country found
-    }
-  };
-  const handleCityChange = (cityName: string) => {
-    setIsCitySelected(!!cityName); // Update the state based on selection
-  };
+
   const onSubmit = (data: companyType) => {
     dispatch(setCompanyInfo(data));
 
@@ -103,29 +107,29 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                 )}
               />
             </div>
-            <div className="w-full  flex gap-x-4">
+            <div className="w-full flex gap-x-4">
               <div className="w-1/2 space-y-2">
-                <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
-                  Country
-                </FormLabel>
+                <FormLabel className="font-normal">Country</FormLabel>
                 <FormField
                   control={form.control}
                   name="country"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Selects
-                          value={field.value}
-                          onChange={(value) => {
-                            field.onChange(value);
-                            handleCountryChange(value); // Pass the country name to handleCountryChange
-                          }}
-                          className="focus:border-0  focus-visible:ring-[#04acc2] "
-                          placeholder="Select a country"
-                          options={countryList.map((country) => ({
-                            value: country.name, // Use country.name as the value
-                            label: country.name,
-                          }))}
+                        <Input
+                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          {...field}
+                          placeholder="Enter country"
+
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setCompanyInfo({
+                          //       ...companyInfo,
+                          //       country: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -134,28 +138,26 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                 />
               </div>
               <div className="w-1/2 space-y-2">
-                <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
-                  City
-                </FormLabel>
-
+                <FormLabel className="font-normal">City</FormLabel>
                 <FormField
                   control={form.control}
                   name="city"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Selects
-                          value={field.value}
-                          onChange={(value) => {
-                            field.onChange(value);
-                            handleCityChange(value); // Handle city change
-                          }} // Pass the city name to form control
-                          className={` focus:border-0 focus-visible:ring-[#04acc2] `}
-                          placeholder="Select a city"
-                          options={cityList.map((city) => ({
-                            value: city.name, // Use city.name as the value
-                            label: city.name,
-                          }))}
+                        <Input
+                          className="focus:border-0 focus-visible:ring-[#04acc2]"
+                          {...field}
+                          placeholder="Enter city"
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setCompanyInfo({
+                          //       ...companyInfo,
+                          //       city: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -261,6 +263,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -285,6 +291,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -296,7 +306,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
               <div className="w-1/2 space-y-2">
                 <div className="w-full space-y-2">
                   <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
-                    Gross profit(LTM, $K)
+                    Gross Profit (LTM, $K)
                   </FormLabel>
                   <FormField
                     control={form.control}
@@ -307,6 +317,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -320,7 +334,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
               <div className="w-1/2 space-y-2">
                 <div className="w-full space-y-2">
                   <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
-                    Gross profit (Previous year, $K)
+                    Gross Profit (Previous year, $K)
                   </FormLabel>
                   <FormField
                     control={form.control}
@@ -331,6 +345,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -342,7 +360,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
               <div className="w-1/2 space-y-2">
                 <div className="w-full space-y-2">
                   <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
-                    EBITDA
+                    EBITDA (LTM, $K)
                   </FormLabel>
                   <FormField
                     control={form.control}
@@ -353,6 +371,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />
@@ -364,7 +386,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
             </div>
             <div className="w-full flex items-center gap-x-4">
               {/* Input Field Container */}
-              <div className="w-1/2 flex flex-col space-y-2">
+              <div className="w-full flex flex-col space-y-2">
                 <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
                   EBITDA (Previous year, $K)
                 </FormLabel>
@@ -377,6 +399,11 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
                           {...field}
+                          {...field}
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -386,35 +413,39 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext }) => {
               </div>
 
               {/* Button Container */}
-              <div className="w-1/2 flex items-center justify-center">
-                {/* <Button
-                  className="w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center"
-                  type="submit"
+            </div>
+            <div className="w-full flex items-center gap-x-2">
+              <Button
+                onClick={onBack}
+                // onClick={() => router.push("/auth/register")}
+                className="w-1/2 h-10    gap-x-1 rounded-md "
+                type="button"
+              >
+                <MoveLeft color={`${"white"}`} />
+                <p className={`${"text-white"} font-bold`}>Back</p>
+
+                {/* )} */}
+              </Button>
+              <Button
+                disabled={
+                  !form.formState.isValid || form.formState.isSubmitting
+                }
+                className="w-1/2 h-10 rounded-md flex items-center justify-center "
+                type="submit"
+              >
+                <p
+                  className={`${
+                    !form.formState.isValid ? "" : "text-white"
+                  } font-bold`}
                 >
-                  <p className="text-white font-bold">Next</p>
-                  <MoveRight color="white" className="ml-2" />
-                </Button> */}
-                <Button
-                  disabled={
-                    !form.formState.isValid || form.formState.isSubmitting
-                  }
-                  className="w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center "
-                  type="submit"
-                >
-                  <p
-                    className={`${
-                      !form.formState.isValid ? "" : "text-white"
-                    } font-bold`}
-                  >
-                    Next
-                  </p>
-                  <p className="text-white font-bold"></p>
-                  <MoveRight
-                    color={`${!form.formState.isValid ? "#B3B3B3" : "white"}`}
-                  />
-                  {/* )} */}
-                </Button>
-              </div>
+                  Next
+                </p>
+                <p className="text-white font-bold"></p>
+                <MoveRight
+                  color={`${!form.formState.isValid ? "#B3B3B3" : "white"}`}
+                />
+                {/* )} */}
+              </Button>
             </div>
           </div>
         </form>

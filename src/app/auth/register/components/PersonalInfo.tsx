@@ -20,40 +20,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegister, setPersonalInfo } from "@/lib/slice/registerSlice";
-import { Country, City, ICity } from "country-state-city";
+
 interface PersonalInfoProps {
   onNext: () => void;
 }
 const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
-  const countryList = Country.getAllCountries();
-  const [cityList, setCityList] = useState<ICity[]>([]);
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
-  const handleCountryChange = (countryName: string) => {
-    setSelectedCountry(countryName);
-    // Find the country by name to get the correct ISO code
-    const selectedCountry = Country.getAllCountries().find(
-      (country) => country.name === countryName
-    );
-    if (selectedCountry) {
-      const cities = City.getCitiesOfCountry(selectedCountry.isoCode) || [];
-      setCityList(cities);
-    } else {
-      setCityList([]); // Clear cities if no country found
-    }
-  };
-
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
   const dispatch = useDispatch();
-  const personalInfo = useSelector(getRegister);
+  const { personalInfo } = useSelector(getRegister);
 
   const form = useForm<personalType>({
     mode: "onChange",
     resolver: zodResolver(personalSchema),
-    defaultValues: personalInfo,
+    defaultValues: {
+      firstName: personalInfo.firstName,
+      lastName: personalInfo.lastName,
+      title: personalInfo.title,
+      email: personalInfo.email,
+      linkedIn: personalInfo.linkedIn,
+      x: personalInfo.x,
+      country: personalInfo.country,
+      city: personalInfo.city,
+      address: personalInfo.address,
+      phone: personalInfo.phone,
+    },
   });
 
   const onSubmit = (data: personalType) => {
-    // setPersonalInfo(data);
     console.log(data);
     dispatch(setPersonalInfo(data));
     onNext();
@@ -91,6 +84,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
                           {...field}
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setPersonalInfo({
+                          //       ...personalInfo,
+                          //       firstName: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -109,6 +111,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
                           {...field}
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setPersonalInfo({
+                          //       ...personalInfo,
+                          //       lastName: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -128,6 +139,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                       <Input
                         className="focus:border-0 focus-visible:ring-[#04acc2]"
                         {...field}
+                        // onChange={(e) => {
+                        //   field.onChange(e);
+                        //   dispatch(
+                        //     setPersonalInfo({
+                        //       ...personalInfo,
+                        //       title: e.target.value,
+                        //     })
+                        //   );
+                        // }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -146,6 +166,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                       <Input
                         className="focus:border-0 focus-visible:ring-[#04acc2]"
                         {...field}
+                        // onChange={(e) => {
+                        //   field.onChange(e);
+                        //   dispatch(
+                        //     setPersonalInfo({
+                        //       ...personalInfo,
+                        //       email: e.target.value,
+                        //     })
+                        //   );
+                        // }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -164,6 +193,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                       <Input
                         className="focus:border-0 focus-visible:ring-[#04acc2]"
                         {...field}
+                        // onChange={(e) => {
+                        //   field.onChange(e);
+                        //   dispatch(
+                        //     setPersonalInfo({
+                        //       ...personalInfo,
+                        //       phone: e.target.value,
+                        //     })
+                        //   );
+                        // }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -183,6 +221,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
                           {...field}
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setPersonalInfo({
+                          //       ...personalInfo,
+                          //       linkedIn: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -201,6 +248,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
                           {...field}
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setPersonalInfo({
+                          //       ...personalInfo,
+                          //       x: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -209,59 +265,8 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                 />
               </div>
             </div>
-            {/* <div className="w-full  flex gap-x-4">
-              <div className="w-1/2 space-y-2">
-                <FormLabel className="font-normal">Country</FormLabel>
 
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Selects
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="focus:border-0 focus-visible:ring-[#04acc2]"
-                          placeholder="Ireland"
-                          options={[
-                            { value: "fr", label: "Fr" },
-                            { value: "eng", label: "Eng" },
-                          ]}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-1/2 space-y-2">
-                <FormLabel className="font-normal">City</FormLabel>
-
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Selects
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="focus:border-0 focus-visible:ring-[#04acc2]"
-                          placeholder="Ireland"
-                          options={[
-                            { value: "s", label: "Fr" },
-                            { value: "s4", label: "eng" },
-                          ]}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div> */}
-            <div className="w-full  flex gap-x-4">
+            <div className="w-full flex gap-x-4">
               <div className="w-1/2 space-y-2">
                 <FormLabel className="font-normal">Country</FormLabel>
                 <FormField
@@ -270,18 +275,19 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Selects
-                          value={field.value}
-                          onChange={(value) => {
-                            field.onChange(value);
-                            handleCountryChange(value); // Pass the country name to handleCountryChange
-                          }}
+                        <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
-                          placeholder="Select a country"
-                          options={countryList.map((country) => ({
-                            value: country.name, // Use country.name as the value
-                            label: country.name,
-                          }))}
+                          {...field}
+                          placeholder="Enter country"
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setPersonalInfo({
+                          //       ...personalInfo,
+                          //       country: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -297,15 +303,19 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Selects
-                          value={field.value}
-                          onChange={field.onChange} // Pass the city name to form control
+                        <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2]"
-                          placeholder="Select a city"
-                          options={cityList.map((city) => ({
-                            value: city.name, // Use city.name as the value
-                            label: city.name,
-                          }))}
+                          {...field}
+                          placeholder="Enter city"
+                          // onChange={(e) => {
+                          //   field.onChange(e);
+                          //   dispatch(
+                          //     setPersonalInfo({
+                          //       ...personalInfo,
+                          //       city: e.target.value,
+                          //     })
+                          //   );
+                          // }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -326,6 +336,15 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                       <Input
                         className="focus:border-0 focus-visible:ring-[#04acc2]"
                         {...field}
+                        // onChange={(e) => {
+                        //   field.onChange(e);
+                        //   dispatch(
+                        //     setPersonalInfo({
+                        //       ...personalInfo,
+                        //       address: e.target.value,
+                        //     })
+                        //   );
+                        // }}
                       />
                     </FormControl>
                     <FormMessage />

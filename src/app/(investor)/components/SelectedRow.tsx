@@ -64,7 +64,7 @@ const SelectedRow = () => {
         <Tabs
           value={activeTab}
           onValueChange={handleTabChange}
-          className="lg:w-[90%] w-full"
+          className=" w-full"
         >
           <TabsList className="w-full bg-inherit rounded-none rounded-t-md h-10 border-b">
             <div className="flex w-full">

@@ -23,15 +23,18 @@ import { useDispatch, useSelector } from "react-redux";
 // import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
 // import axiosService from "@/lib/services/axiosService";
 import axios from "axios";
-import { getRegister, setCredentials } from "@/lib/slice/registerSlice";
+import { getRegister, setCredentials, reset } from "@/lib/slice/registerSlice";
 import LoaderComponent from "@/components/LoaderComponent";
 import { toast } from "sonner";
 import moment from "moment";
+import { MoveLeft } from "lucide-react";
+import { numeralFormatter } from "@/lib/numeralFormatter";
 
 interface CredentialsProps {
   onNext: () => void;
+  onBack: () => void;
 }
-const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
+const Credentials: React.FC<CredentialsProps> = ({ onNext, onBack }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -48,15 +51,30 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
   });
 
   const onSubmit = async (data: authType) => {
-    // Update credentials and then proceed with submission
     dispatch(setCredentials(data));
+
+    const cleanedData = {
+      ...companyInfo,
+      revenue: {
+        ltm: numeralFormatter(companyInfo.revenue.ltm),
+        previousYear: numeralFormatter(companyInfo.revenue.previousYear),
+      },
+      grossProfit: {
+        ltm: numeralFormatter(companyInfo.grossProfit.ltm),
+        previousYear: numeralFormatter(companyInfo.grossProfit.previousYear),
+      },
+      EBITDA: {
+        ltm: numeralFormatter(companyInfo.EBITDA.ltm),
+        previousYear: numeralFormatter(companyInfo.EBITDA.previousYear),
+      },
+    };
     const payload = {
       bio: personalInfo,
-      company: companyInfo,
+      company: cleanedData,
       team: teamInfo,
       credentials: data,
     };
-    // console.log("cred", payload);
+    console.log("cred", payload);
     try {
       const response = await axios.post(`/api/signup`, payload, {
         headers: {
@@ -85,10 +103,12 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
         toast(response.data.message, {
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
-        router.push(`/auth/register?step=otp`);
         onNext();
+        router.push(`/auth/register?step=otp`);
+        reset();
         // }
       }
+
       if (response.status !== 201) {
         throw new Error("Failed to submit the data");
       }
@@ -186,21 +206,19 @@ const Credentials: React.FC<CredentialsProps> = ({ onNext }) => {
             </div>
 
             <div className="w-full flex items-center justify-center gap-x-4">
-              {/* <Button
-                className="w-full h-10 mt-3 rounded-md flex items-center justify-center"
-                type="submit"
+              <Button
+                type="button"
+                onClick={onBack}
+                className="w-1/2 h-10    gap-x-1 rounded-md "
               >
-                {form.formState.isSubmitting ? (
-                  <div className="w-8 h-8">
-                    <LoaderComponent className="text-white" />
-                  </div>
-                ) : (
-                  <p className="text-white font-bold">Complete</p>
-                )}
-              </Button> */}
+                <MoveLeft color={`${"white"}`} />
+                <p className={`${"text-white"} font-bold`}>Back</p>
+
+                {/* )} */}
+              </Button>
               <Button
                 disabled={!form.formState.isValid}
-                className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                className={`w-1/2 h-10 rounded-md flex items-center justify-center
                         `}
                 type="submit"
               >
