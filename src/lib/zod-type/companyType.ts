@@ -1,19 +1,3 @@
-// export type companyType = {
-//   companyName: string;
-//   country: string;
-//   city: string;
-//   email: string;
-//   website: string;
-//   industry: string;
-//   foundingYear: string;
-//   revenue: string;
-//   prevRevenue: string;
-//   profit: string;
-//   prevProfit: string;
-//   ebitda: string;
-//   prevEbitda: string;
-// };
-// companyType.ts
 export type companyType = {
   name: string;
   country: string;
@@ -22,15 +6,15 @@ export type companyType = {
   website?: string;
   industry: string;
   foundingYear: string;
-  revenue: {
+  revenue?: {
     ltm: string;
     previousYear: string;
   };
-  grossProfit: {
+  grossProfit?: {
     ltm: string;
     previousYear: string;
   };
-  EBITDA: {
+  EBITDA?: {
     ltm: string;
     previousYear: string;
   };

@@ -1,6 +1,7 @@
 "use client";
 import LoaderComponent from "@/components/LoaderComponent";
 import { Button } from "@/components/ui/button";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -229,40 +230,32 @@ const Contact = () => {
                   )}
                 />
               </div>
-              <div className="w-full flex items-center gap-x-4">
-                {/* <Button
-                  className="w-full h-10  rounded-md flex items-center justify-center"
-                  type="submit"
-                >
-                  {form.formState.isSubmitting ? (
-                    <div className="w-8 h-8">
-                      <LoaderComponent className="text-white" />
-                    </div>
-                  ) : (
-                    <p className="text-white font-bold">Done!</p>
-                  )}
-                </Button> */}
-                <Button
-                  disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+              <DialogFooter className="sm:justify-start">
+                <DialogClose asChild>
+                  <div className="w-full flex items-center gap-x-4">
+                    <Button
+                      disabled={!form.formState.isValid}
+                      className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
                         `}
-                  type="submit"
-                >
-                  {form.formState.isSubmitting ? (
-                    <div className="w-8 h-8">
-                      <LoaderComponent className="text-white" />
-                    </div>
-                  ) : (
-                    <p
-                      className={`${
-                        !form.formState.isValid ? "" : "text-white"
-                      } font-bold`}
+                      type="submit"
                     >
-                      Done!
-                    </p>
-                  )}
-                </Button>
-              </div>
+                      {form.formState.isSubmitting ? (
+                        <div className="w-8 h-8">
+                          <LoaderComponent className="text-white" />
+                        </div>
+                      ) : (
+                        <p
+                          className={`${
+                            !form.formState.isValid ? "" : "text-white"
+                          } font-bold`}
+                        >
+                          Done!
+                        </p>
+                      )}
+                    </Button>
+                  </div>
+                </DialogClose>
+              </DialogFooter>
             </div>
           </form>
         </div>

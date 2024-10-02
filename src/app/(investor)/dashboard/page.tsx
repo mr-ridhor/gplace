@@ -73,7 +73,7 @@ const Page: React.FC = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="relative h-[80%] my-4 no-scrollbar overflow-y-auto flex gap-x-4">
+    <div className="relative h-[90%] 2xl:h-[98%] py-4 no-scrollbar overflow-y-auto flex gap-x-4">
       {showFilter && (
         <div className="w-[200px] space-y-2 border rounded-md h-full bg p-">
           <div className="h-[5%] justify-between flex items-center gap-x-3 bg-[#DEDEDE] px-4 w-full">
@@ -256,7 +256,7 @@ const Page: React.FC = () => {
 
       <div
         className={`h-full flex ${
-          showFilter || showSearch ? "flex-1 overflow-x-auto" : ""
+          showFilter || showSearch ? "flex-1 overflow-x-auto" : "w-full"
         }`}
       >
         <Table investors={filteredInvestors} />

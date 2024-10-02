@@ -34,11 +34,23 @@ const CompanyInfoForm = () => {
   }, [company]);
   console.log("company", company);
   const onSubmit = (data: companyType) => {
-    console.log(data);
-    dispatch(updateCompanyInfo(data));
-    // Navigate to the company-info step
-    // router.push("/auth/register?step=team-info");
+    const submitData = {
+      name: data.name,
+      country: data.country,
+      city: data.city,
+      email: data.email,
+      website: data.website,
+      industry: data.industry,
+      foundingYear: data.foundingYear,
+      revenue: data.revenue || { ltm: "", previousYear: "" },
+      grossProfit: data.grossProfit || { ltm: "", previousYear: "" },
+      EBITDA: data.EBITDA || { ltm: "", previousYear: "" },
+    };
+
+    console.log("Submit Data:", submitData);
+    dispatch(updateCompanyInfo(submitData));
   };
+
   return (
     <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>

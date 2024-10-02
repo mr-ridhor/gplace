@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         remember: {
           label: "remember",
           type: "checkbox",
-        }
+        },
       },
       authorize: async (credentials) => {
         await connectDB();
@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const { email, password, remember } = credentials;
-        rememberMe = 'true'
+        rememberMe = "true";
 
         const user: IUser | any = await User.findOne({
           "credentials.email": email,
@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
         if (!isPasswordValid) {
           throw Error("Invalid Password");
           return null;
-        }      
+        }
         const response: IUserResponse = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,
@@ -85,7 +85,7 @@ export const authOptions: NextAuthOptions = {
         token.firstName = user.firstName;
         token.lastName = user.lastName;
       }
-      console.log(token)
+      console.log(token);
       return token;
     },
     async session({ session, token }) {
@@ -95,7 +95,7 @@ export const authOptions: NextAuthOptions = {
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
       }
-      console.log(session.expires)
+      console.log(session.expires);
       return session;
     },
   },

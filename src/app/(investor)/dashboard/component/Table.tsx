@@ -56,7 +56,7 @@ const Table: React.FC<Props> = ({ investors }) => {
   );
 
   return (
-    <>
+    <div className="w-full h-full ">
       {activeTab === "investors" ? (
         <DataTable
           columns={Column}
@@ -68,7 +68,7 @@ const Table: React.FC<Props> = ({ investors }) => {
       ) : (
         <SelectedRow />
       )}
-    </>
+    </div>
   );
 };
 

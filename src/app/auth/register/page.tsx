@@ -19,21 +19,51 @@ export default function RegisterPage() {
     setStep(queryStep || "personal-info");
   }, [searchParams]);
 
+  const handleNext = (nextStep: string) => {
+    setStep(nextStep);
+    router.push(`?step=${nextStep}`);
+  };
+
+  const handleBack = (prevStep: string) => {
+    setStep(prevStep);
+    router.push(`?step=${prevStep}`);
+  };
+
   const renderStep = () => {
     switch (step) {
       case "company-info":
-        return <CompanyInfo onNext={() => setStep("team-info")} />;
+        return (
+          <CompanyInfo
+            onNext={() => handleNext("team-info")}
+            onBack={() => handleBack("personal-info")}
+          />
+        );
       case "team-info":
-        return <TeamInfo onNext={() => setStep("set-credentials")} />;
+        return (
+          <TeamInfo
+            onNext={() => handleNext("set-credentials")}
+            onBack={() => handleBack("company-info")}
+          />
+        );
       case "set-credentials":
-        return <Credentials onNext={() => setStep("otp")} />;
+        return (
+          <Credentials
+            onNext={() => handleNext("otp")}
+            onBack={() => handleBack("team-info")}
+          />
+        );
       case "otp":
-        return <Otp onNext={() => setStep("plan")} />;
+        return (
+          <Otp
+            onNext={() => handleNext("plan")}
+            // onBack={() => handleBack("set-credentials")}
+          />
+        );
       case "plan":
         return <Plan />;
       case "personal-info":
       default:
-        return <PersonalInfo onNext={() => setStep("company-info")} />;
+        return <PersonalInfo onNext={() => handleNext("company-info")} />;
     }
   };
 

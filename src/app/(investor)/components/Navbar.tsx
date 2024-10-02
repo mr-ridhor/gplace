@@ -116,7 +116,9 @@ const Navbar = () => {
   return (
     <div className="w-full h-16 px-5 sticky top-0 z-10 flex items-center justify-between bg-[#F5F8FA]">
       <div className="flex">
-        <Logo width={180} height={60} />
+        <div className="w-max">
+          <Logo width={180} height={60} />
+        </div>
 
         <Tabs value={tab || "detail"} className="w-full p-2 md:flex hidden">
           <TabsList className="w-full bg-inherit rounded-none rounded-t-md h-12 p-0">
@@ -164,7 +166,7 @@ const Navbar = () => {
         ((tab as string) !== "contact" || (tab as string) === "detail") ? (
           <>
             <div
-              className="flex gap-x-2 items-center h-full"
+              className="flex gap-x-2 items-center h-full cursor-pointer"
               onClick={() => {
                 shouldRender() && dispatch(toggleFilterPanel());
               }}
@@ -174,15 +176,15 @@ const Navbar = () => {
             </div>
 
             <div
-              className="h-1/2 items-center flex gap-x bordr w-1/4"
+              className="h-1/2 items-center flex gap-x bordr w-1/4 cursor-pointer"
               onClick={() => {
                 shouldRender() && dispatch(toggleSearchPanel());
               }}
             >
               <Search size={14} />
               <input
-                placeholder="Search"
-                className="focus-visible:outline-none h-1/2 px-2 w-[90%] bg-inherit"
+                placeholder="Search Investors"
+                className="focus-visible:outline-none h-1/2 px-2 w-[90%] cursor-pointer placeholder:text-sm bg-inherit"
               />
             </div>
             <Dialog>
@@ -225,7 +227,6 @@ const Navbar = () => {
               {/* </Button> */}
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-10">
-              
               {/* <DropdownMenuSeparator /> */}
               <DropdownMenuLabel className="flex w-full justify-center">
                 <Link href={"profile"}>

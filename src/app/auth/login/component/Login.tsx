@@ -26,7 +26,7 @@ import LoaderComponent from "@/components/LoaderComponent";
 
 const Login = () => {
   const searchParams = useSearchParams();
-  const [remember, setRemember] = useState<boolean>(false)
+  const [remember, setRemember] = useState<boolean>(false);
 
   const router = useRouter();
   const form = useForm<loginType>({
@@ -40,26 +40,26 @@ const Login = () => {
 
   const onSubmit = async (data: loginType) => {
     try {
-      console.log(remember)
+      console.log(remember);
       const result = await signIn("credentials", {
         ...data,
         remember,
         redirect: false,
         callbackUrl: "/dashboard",
       });
-
+      console.log(result);
       if (result?.ok) {
         toast("Login successful", {
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
         // console.log(result);
-        router.push(result.url ?? "/dashboard"); // Redirect to callback URL or default to /dashboard
+        router.push(result.url ?? "/dashboard");
       } else {
         throw new Error(result?.error || "Login failed");
       }
     } catch (error: any) {
       console.log(error);
-      toast(error.toString(), {
+      toast(error.message, {
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
     }
@@ -115,7 +115,7 @@ const Login = () => {
                             <FormItem>
                               <FormControl>
                                 <Input
-                                  type="password" // Ensure the password input is type password
+                                  type="password"
                                   className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                                   {...field}
                                 />
@@ -156,8 +156,12 @@ const Login = () => {
           </div>
           <div className="flex w-full justify-between">
             <div className="flex items-center gap-x-3">
-              <Checkbox id="remember" className="text-white" checked={remember}
-                onCheckedChange={(checked: boolean) => setRemember(!!checked)} />
+              <Checkbox
+                id="remember"
+                className="text-white"
+                checked={remember}
+                onCheckedChange={(checked: boolean) => setRemember(!!checked)}
+              />
               <label
                 htmlFor="remember"
                 className="text-[10px] md:text-sm lg:text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
