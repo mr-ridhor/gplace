@@ -40,7 +40,7 @@ const Login = () => {
 
   const onSubmit = async (data: loginType) => {
     try {
-      console.log(remember);
+      console.log(remember)
       const result = await signIn("credentials", {
         ...data,
         remember,

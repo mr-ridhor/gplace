@@ -1,43 +1,35 @@
-// import { withAuth } from "next-auth/middleware";
-export { default } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-export const config = {
-  matcher: ["/dashboard", "/", "/profile"],
-};
+export default withAuth(
+  async function middleware(req) {
+    const { nextUrl: { pathname }, nextauth: { token },} = req;
 
-// this is causing the login not to work
+    if (pathname.startsWith("/auth") && token) {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
+    return NextResponse.next()
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        const { nextUrl: { pathname },} = req;
 
-// export default withAuth(
-//   function middleware(req) {
-//     // Custom logic if needed
-//   },
-//   {
-//     callbacks: {
-//       authorized({ token, req }) {
-//         const { pathname } = req.nextUrl;
+        if (['/profile', '/dashboard'].includes(pathname) && !token) {
+          return false;
+        } else if(['/'].includes(pathname)) {
+          return false
+        } else {
+          return true
+        }
+    
 
-//         // Corrected the condition to group it properly with parentheses
-//         if (
-//           pathname.startsWith("/auth/register") ||
-//           pathname.startsWith("/auth/forget-password")
-//         ) {
-//           return true;
-//         }
-
-//         // Standard authentication check
-//         return !!token;
-//       },
-//     },
-//     pages: {
-//       signIn: "/auth/login", // Redirect to login if not authenticated
-//       // error: "/error", // Error page
-//     },
-//   }
-// );
-
-// import { withAuth } from "next-auth/middleware";
-// export { default } from "next-auth/middleware";
+        // return (!token && pathname.startsWith("/auth")) || !!token;
+      },
+    },
+  }
+);
 
 // export const config = {
-//   matcher: ["/dashboard", "/"],
+//   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 // };

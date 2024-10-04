@@ -9,6 +9,7 @@ declare module "next-auth" {
       firstName: string;
       lastName: string;
       email: string;
+      remember: any
     } & DefaultSession["user"];
   }
 
@@ -16,6 +17,7 @@ declare module "next-auth" {
     id: string;
     firstName: string;
     lastName: string;
+    remember: boolean
   }
 }
 

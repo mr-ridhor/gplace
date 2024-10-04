@@ -9,9 +9,9 @@ interface IUserResponse {
   email: string;
   firstName: string;
   lastName: string;
+  remember: boolean
 }
 
-let rememberMe;
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -39,7 +39,6 @@ export const authOptions: NextAuthOptions = {
         }
 
         const { email, password, remember } = credentials;
-        rememberMe = "true";
 
         const user: IUser | any = await User.findOne({
           "credentials.email": email,
@@ -57,11 +56,18 @@ export const authOptions: NextAuthOptions = {
           throw Error("Invalid Password");
           return null;
         }
+
+        if (!user.credentials.isVerified) {
+          throw Error("User not verified");
+          return null;
+        }
+
         const response: IUserResponse = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,
           firstName: user.bio.firstName,
           lastName: user.bio.lastName,
+          remember: remember === 'true'
         };
         return response;
       },
@@ -72,7 +78,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 24 * 60 * 60
   },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
@@ -84,8 +90,8 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
+        token.remember = user.remember
       }
-      console.log(token);
       return token;
     },
     async session({ session, token }) {
@@ -94,8 +100,8 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email;
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
+        session.user.remember = token.remember;
       }
-      console.log(session.expires);
       return session;
     },
   },
