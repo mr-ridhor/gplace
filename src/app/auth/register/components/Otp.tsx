@@ -34,7 +34,7 @@ interface Props {
 }
 const Otp: React.FC<Props> = ({ onNext }) => {
   const router = useRouter();
-  const { credentials } = useSelector(getRegister);
+  const { personalInfo } = useSelector(getRegister);
   const form = useForm<pinType>({
     resolver: zodResolver(pinSchema),
     defaultValues: {
@@ -46,7 +46,7 @@ const Otp: React.FC<Props> = ({ onNext }) => {
     console.log(data);
     // Navigate to the company-info step
     const payload = {
-      email: credentials.email,
+      email: personalInfo.email,
       verificationCode: data.otpCode,
     };
     console.log(payload);

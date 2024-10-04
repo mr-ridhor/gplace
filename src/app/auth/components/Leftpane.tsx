@@ -139,12 +139,11 @@ interface LeftpaneProps {
 
 const Leftpane: React.FC<LeftpaneProps> = ({ currentForm }) => {
   const registerSteps = [
-    { id: 1, step: "1 of 6", name: "Personal information", icon: <User /> },
-    { id: 2, step: "2 of 6", name: "Company information", icon: <Company /> },
-    { id: 3, step: "3 of 6", name: "Team information", icon: <Users /> },
-    { id: 4, step: "4 of 6", name: "Log in credentials", icon: <Key /> },
-    { id: 5, step: "5 of 6", name: "Email Verification", icon: <Mail /> },
-    { id: 6, step: "6 of 6", name: "Subscription plan", icon: <Mailer /> },
+    { id: 1, step: "1 of 5", name: "Personal information", icon: <User /> },
+    { id: 2, step: "2 of 5", name: "Company information", icon: <Company /> },
+    { id: 3, step: "3 of 5", name: "Team information", icon: <Users /> },
+    { id: 4, step: "4 of 5", name: "Email Verification", icon: <Mail /> },
+    { id: 5, step: "5 of 5", name: "Subscription plan", icon: <Mailer /> },
   ];
 
   return (

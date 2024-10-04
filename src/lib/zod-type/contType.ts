@@ -4,4 +4,5 @@ export type contType = {
   phone: string;
   name: string;
   title: string;
+  contactType: "Primary" | "Secondary";
 };

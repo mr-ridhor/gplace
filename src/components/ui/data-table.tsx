@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/table";
 import { Button } from "./button";
 import { BiSolidLeftArrowAlt, BiSolidRightArrowAlt } from "react-icons/bi";
+import { Selects } from "../Selects";
+import { Label } from "@radix-ui/react-label";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,10 +46,10 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pageIndex, setPageIndex] = React.useState(0);
-  const [pageSize, setPageSize] = React.useState(100);
+  const [pageSize, setPageSize] = React.useState(5); // Default to a smaller page size for better UX
 
   const table = useReactTable({
-    data: data,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
@@ -79,18 +81,24 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const options = [
+    { value: "10", label: "10" },
+    { value: "25", label: "25" },
+    { value: "3", label: "50" },
+    { value: "100", label: "100 " },
+  ];
+
   return (
-    <div className="rounded-md boder w-full h-full 2xl:py-6">
-      {/* <Table className={`w-${table.getTotalSize()}`}> */}
-      <div className="w-full h-[90%]">
-        <Table className="">
+    <div className="rounded-md border w-full h-full">
+      <div className="w-full h-[90%] overflow-auto no-scrollbar">
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={crypto.randomUUID()}>
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead
-                    key={crypto.randomUUID()}
-                    className={`${headerBgColor} w-${header.getSize()} text-[#898989]`}
+                    key={header.id}
+                    className={`${headerBgColor} text-[#898989]`}
                   >
                     {header.isPlaceholder
                       ? null
@@ -103,21 +111,19 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="h-max">
+          <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   className="cursor-pointer"
-                  key={crypto.randomUUID()}
+                  key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => onRowClick?.(row.original)} // Trigger row click handler
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell, index) => (
                     <TableCell
-                      key={crypto.randomUUID()}
-                      className={`w-${cell.column.getSize()} ${
-                        index < 3 ? "text-left" : "text-center"
-                      } bg-re-300`}
+                      key={cell.id}
+                      className={`${index < 3 ? "text-left" : "text-center"}`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -138,50 +144,47 @@ export function DataTable<TData, TValue>({
               </TableRow>
             )}
           </TableBody>
-
-          {/* <TableFooter className="h-[10%] bg-green-600">
-          <TableRow>
-            <TableCell colSpan={columns.length} className="w-full"> */}
-
-          {/* </TableCell>
-          </TableRow>
-        </TableFooter> */}
         </Table>
       </div>
-      <div className="h-[10%] flex justify-between items-center text-[#898989] py-2">
-        <div className="flex gap-x-1 items-center">
+
+      {/* Pagination */}
+      <div className="flex justify-between items-center text-[#898989] px-2 w-full ">
+        <div className="flex items-center gap-x-2 ">
           <Button
             variant="ghost"
             className="h-8 w-8 p-0"
-            onClick={() => setPageIndex(pageIndex - 1)}
+            onClick={() => setPageIndex((old) => Math.max(old - 1, 0))}
             disabled={!table.getCanPreviousPage()}
+            aria-label="Previous page"
           >
             <BiSolidLeftArrowAlt className="h-6 w-6" />
           </Button>
-          <p>Previous</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          {Array.from({ length: table.getPageCount() }, (_, i) => (
-            <Button
-              key={i}
-              variant="outline"
-              className={`h-8 w-8 p-0 ${pageIndex === i ? "bg-gray-200" : ""}`}
-              onClick={() => setPageIndex(i)}
-            >
-              {i + 1}
-            </Button>
-          ))}
-        </div>
-        <div className="flex items-center gap-x-1">
-          <p>Next</p>
+          <p>
+            Page <strong>{pageIndex + 1}</strong> of{" "}
+            <strong>{table.getPageCount()}</strong>
+          </p>
           <Button
             variant="ghost"
             className="h-8 w-8 p-0"
-            onClick={() => setPageIndex(pageIndex + 1)}
+            onClick={() =>
+              setPageIndex((old) => Math.min(old + 1, table.getPageCount() - 1))
+            }
             disabled={!table.getCanNextPage()}
+            aria-label="Next page"
           >
             <BiSolidRightArrowAlt className="h-6 w-6" />
           </Button>
+        </div>
+
+        <div className="flex items-center gap-x-2  w-max  justify-end">
+          <Label>Rows per page</Label>
+          <Selects
+            className="border flex rounded p w-[60px] focus:ring-0 ring-0"
+            options={options}
+            placeholder="Select rows"
+            value={String(pageSize)} // Pass the current pageSize as a string
+            onChange={(value) => setPageSize(Number(value))} // Update pageSize when the selection changes
+          />
         </div>
       </div>
     </div>

@@ -38,7 +38,7 @@ const Table: React.FC<Props> = ({ id }) => {
         <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
       </div>
     );
-  if (error) return <p>{error}</p>;
+  // if (error) return <p>{error}</p>;
 
   return (
     <div>

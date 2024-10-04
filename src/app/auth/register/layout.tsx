@@ -14,15 +14,15 @@ const RegisterLayout: React.FC<{ children: React.ReactNode }> = ({
   const getCurrentStepId = () => {
     switch (step) {
       case "otp":
-        return 5;
+        return 4;
       case "plan":
-        return 6;
+        return 5;
       case "company-info":
         return 2;
       case "team-info":
         return 3;
-      case "set-credentials":
-        return 4;
+      // case "set-credentials":
+      //   return 4;
       default:
         return 1; // Default step for 'personal-info'
     }
@@ -37,13 +37,13 @@ const RegisterLayout: React.FC<{ children: React.ReactNode }> = ({
       </div>
 
       <div className="flex-1 overflow-hidden">
-        {currentStepId !== 6 && (
+        {currentStepId !== 5 && (
           <div className="sticky top-0 w-full flex-1 flex justify-end px-5 items-center h-14 z-10 text-[10px] md:text-sm lg:text-base ">
             <Link href={"login"}>Already a member? Sign in</Link>
           </div>
         )}
         {children}
-        {currentStepId !== 6 && (
+        {currentStepId !== 5 && (
           <div className="sticky bottom-0 w-full flex-1 flex justify-center px-5 items-center h-14 z-10 text-[10px] md:text-sm lg:text-base ">
             <p>Your data is protected and encrypted</p>
           </div>

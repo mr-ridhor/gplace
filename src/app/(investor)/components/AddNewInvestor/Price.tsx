@@ -9,6 +9,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
+import {
+  formatNumberWithCommas,
+  numeralFormatter,
+} from "@/lib/numeralFormatter";
 import { getInvestor, setPrice } from "@/lib/slice/addInvestorSlice";
 import { priceSchema } from "@/lib/zod-schema/priceSchema";
 import { priceType } from "@/lib/zod-type/priceType";
@@ -62,6 +66,10 @@ const Price: React.FC<Props> = ({ handleClick }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                           {...field}
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -83,6 +91,10 @@ const Price: React.FC<Props> = ({ handleClick }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                           {...field}
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -102,6 +114,10 @@ const Price: React.FC<Props> = ({ handleClick }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                           {...field}
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />

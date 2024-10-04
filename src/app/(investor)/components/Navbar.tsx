@@ -148,7 +148,7 @@ const Navbar = () => {
                 // className="w-full h-full rounded-none border-b rounded-t-md"
                 onClick={handleSelectedRowClick}
               >
-                <div className="flex items-center">
+                <div className="flex items-center capitalize">
                   {selectedRow}
                   <X
                     className="ml-2 cursor-pointer"
