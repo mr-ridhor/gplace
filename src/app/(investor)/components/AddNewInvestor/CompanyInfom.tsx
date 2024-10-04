@@ -26,6 +26,10 @@ import { invcomSchema } from "@/lib/zod-schema/invcomSchema";
 import { Textarea } from "@/components/ui/textarea";
 import { getInvestor, setCompanyInfo } from "@/lib/slice/addInvestorSlice";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  formatNumberWithCommas,
+  numeralFormatter,
+} from "@/lib/numeralFormatter";
 
 interface Props {
   onNext: () => void;
@@ -168,6 +172,10 @@ const CompanyInfom: React.FC<Props> = ({ onNext }) => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                             {...field}
+                            value={formatNumberWithCommas(field.value || "")}
+                            onChange={(e) =>
+                              field.onChange(numeralFormatter(e.target.value))
+                            }
                           />
                         </FormControl>
                         <FormMessage />

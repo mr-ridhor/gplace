@@ -19,10 +19,20 @@ import { useRouter } from "next/navigation";
 
 import { teamType } from "@/lib/zod-type/teamType";
 import { teamSchema } from "@/lib/zod-schema/teamSchema";
+import {
+  getRegister,
+  setCredentials,
+  reset,
+  setTeamInfo,
+} from "@/lib/slice/registerSlice";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getRegister, setTeamInfo } from "@/lib/slice/registerSlice";
-
+// import { getRegister, setTeamInfo } from "@/lib/slice/registerSlice";
+import axios from "axios";
+import { toast } from "sonner";
+import moment from "moment";
+import { numeralFormatter } from "@/lib/numeralFormatter";
+import LoaderComponent from "@/components/LoaderComponent";
 interface TeamInfoProps {
   onNext: () => void;
   onBack: () => void;
@@ -30,7 +40,7 @@ interface TeamInfoProps {
 const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { teamInfo } = useSelector(getRegister);
+  const { personalInfo, companyInfo, teamInfo } = useSelector(getRegister);
   const form = useForm<teamType>({
     resolver: zodResolver(teamSchema),
     defaultValues: { team1: teamInfo.team1, team2: teamInfo.team2 },
@@ -39,11 +49,84 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
   useEffect(() => {
     dispatch(setTeamInfo(formValues));
   }, [formValues, dispatch]);
-  const onSubmit = (data: teamType) => {
-    dispatch(setTeamInfo(data));
-    console.log(data);
-    onNext();
-    router.push("/auth/register?step=set-credentials");
+  // const onSubmit = (data: teamType) => {
+  //   dispatch(setTeamInfo(data));
+  //   console.log(data);
+  //   onNext();
+  //   router.push("/auth/register?step=set-credentials");
+  // };
+  const onSubmit = async (data: teamType) => {
+    dispatch(setCredentials(data));
+
+    const cleanedData = {
+      ...companyInfo,
+      revenue: {
+        ltm: numeralFormatter(companyInfo.revenue.ltm),
+        previousYear: numeralFormatter(companyInfo.revenue.previousYear),
+      },
+      grossProfit: {
+        ltm: numeralFormatter(companyInfo.grossProfit.ltm),
+        previousYear: numeralFormatter(companyInfo.grossProfit.previousYear),
+      },
+      EBITDA: {
+        ltm: numeralFormatter(companyInfo.EBITDA.ltm),
+        previousYear: numeralFormatter(companyInfo.EBITDA.previousYear),
+      },
+    };
+    const credentials = {
+      email: personalInfo.email,
+      password: personalInfo.password,
+    };
+    const payload = {
+      bio: personalInfo,
+      company: cleanedData,
+      team: teamInfo,
+      credentials,
+    };
+    console.log("cred", payload);
+    try {
+      const response = await axios.post(`/api/signup`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("res", response);
+
+      if (response.status === 201) {
+        // const load = {
+        //   email: data.email,
+        // };
+        // // router.push("login");
+        // // console.log(load);
+        // const verificationResponse = await axios.post(
+        //   `/api/email/otp`,
+        //   load,
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //     },
+        //   }
+        // );
+        // console.log("otp", verificationResponse);
+        // if (verificationResponse.status === 200) {
+        toast(response.data.message, {
+          description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+        });
+        onNext();
+        router.push(`/auth/register?step=otp`);
+        reset();
+        // }
+      }
+
+      if (response.status !== 201) {
+        throw new Error("Failed to submit the data");
+      }
+    } catch (error: any) {
+      console.error("Error submitting data:", error);
+      toast(error.message, {
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
+    }
   };
 
   return (
@@ -178,15 +261,26 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
 
                 {/* )} */}
               </Button>
-              <div className="w-1/2 flex items-center justify-center">
-                <Button
-                  className="w-full h-10  gap-x-1 rounded-md flex items-center justify-center"
-                  type="submit"
-                >
-                  <p className="text-white font-bold">Next</p>
-                  <MoveRight color="white" className="" />
-                </Button>
-              </div>
+              <Button
+                disabled={!form.formState.isValid}
+                className={`w-1/2 h-10 rounded-md flex items-center justify-center
+                        `}
+                type="submit"
+              >
+                {form.formState.isSubmitting ? (
+                  <div className="w-8 h-8">
+                    <LoaderComponent className="text-white" />
+                  </div>
+                ) : (
+                  <p
+                    className={`${
+                      !form.formState.isValid ? "" : "text-white"
+                    } font-bold`}
+                  >
+                    Complete
+                  </p>
+                )}
+              </Button>
             </div>
           </div>
         </form>

@@ -41,17 +41,17 @@ export default function RegisterPage() {
       case "team-info":
         return (
           <TeamInfo
-            onNext={() => handleNext("set-credentials")}
+            onNext={() => handleNext("otp")}
             onBack={() => handleBack("company-info")}
           />
         );
-      case "set-credentials":
-        return (
-          <Credentials
-            onNext={() => handleNext("otp")}
-            onBack={() => handleBack("team-info")}
-          />
-        );
+      // case "set-credentials":
+      //   return (
+      //     <Credentials
+      //       onNext={() => handleNext("otp")}
+      //       onBack={() => handleBack("team-info")}
+      //     />
+      //   );
       case "otp":
         return (
           <Otp

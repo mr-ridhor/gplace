@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { TabsContent } from "@/components/ui/tabs";
 import { Investor } from "@/lib/data/mocked";
+import { formatNumberWithCommas } from "@/lib/numeralFormatter";
 import Link from "next/link";
 import React from "react";
 import { BiLogoTelegram } from "react-icons/bi";
@@ -56,7 +57,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
         <Card className="border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] col-span-1">
           <CardContent className="h-[100px] gap-y-2 flex flex-col justify-center  tems-center">
             <p className="text-[10px] lg:text-sm">Primary Contact</p>
-            <p className="font-medium text-[10px] lg:text-sm  truncate">
+            <p className="font-medium text-[10px] lg:text-sm  truncate capitalize">
               {selectedItem.primaryContact.name}
             </p>
           </CardContent>
@@ -65,7 +66,9 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           <CardContent className="h-[100px] gap-y-2 flex flex-col justify-center  tems-center">
             <p className="text-[10px] lg:text-sm"># of Deals in 5 Years</p>
             <p className="font-medium text-[10px] lg:text-sm">
-              {selectedItem.investmentBio.dealsIn5Y}
+              {formatNumberWithCommas(
+                `${selectedItem.investmentBio.dealsIn5Y}`
+              )}
             </p>
           </CardContent>
         </Card>
@@ -73,7 +76,9 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           <CardContent className="h-[100px] gap-y-2 flex flex-col justify-center  tems-center">
             <p className="text-[10px] lg:text-sm">Median Deal Size ($ mm)</p>
             <p className="font-medium text-[10px] lg:text-sm">
-              {selectedItem.investmentBio.medianDealSize}
+              {formatNumberWithCommas(
+                `${selectedItem.investmentBio.medianDealSize}`
+              )}
             </p>
           </CardContent>
         </Card>
@@ -81,7 +86,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           <CardContent className="h-[100px] gap-y-2 flex flex-col justify-center  tems-center">
             <p className="text-[10px] lg:text-sm">AUM ($ mm)</p>
             <p className="font-medium text-[10px] lg:text-sm">
-              {selectedItem.investmentBio.AUM}
+              {formatNumberWithCommas(`${selectedItem.investmentBio.AUM}`)}
             </p>
           </CardContent>
         </Card>
@@ -117,7 +122,11 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
             <div className="h2">
               <div className="">
                 <p># of Deals in LTM</p>
-                <p>{selectedItem.investmentBio.dealsInLTM}</p>
+                <p>
+                  {formatNumberWithCommas(
+                    `${selectedItem.investmentBio.dealsInLTM}`
+                  )}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -135,22 +144,28 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           <div className="col-span-1">
             <p className="">Revenue ($ mm)</p>
             <p className="">
-              {selectedItem.paidInfo.revenue.from}-
-              {selectedItem.paidInfo.revenue.to}
+              {formatNumberWithCommas(`${selectedItem.paidInfo.revenue.from}`)}{" "}
+              -{formatNumberWithCommas(`${selectedItem.paidInfo.revenue.to} `)}
             </p>
           </div>
           <div className="col-span-1">
             <p className="">EBITDA ($ mm)</p>
             <p className="">
-              {selectedItem.paidInfo.EBITDA.from}-{" "}
-              {selectedItem.paidInfo.EBITDA.to}
+              {formatNumberWithCommas(`${selectedItem.paidInfo.EBITDA.from}`)}-{" "}
+              {formatNumberWithCommas(`${selectedItem.paidInfo.EBITDA.to}`)}
             </p>
           </div>
           <div className="col-span-1">
             <p className="">Deal Size ($ mm)</p>
             <p className="">
-              ${selectedItem.targetInfo.dealSize.from} - $
-              {selectedItem.targetInfo.dealSize.to}
+              $
+              {formatNumberWithCommas(
+                `${selectedItem.targetInfo.dealSize.from} `
+              )}
+              -{" "}
+              {formatNumberWithCommas(
+                `${selectedItem.targetInfo.dealSize.to} `
+              )}
             </p>
           </div>
         </div>
@@ -167,22 +182,30 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           <div className="col-span-1">
             <p className="">Valuation ($ mm)</p>
             <p className="">
-              ${selectedItem.paidInfo.valuation.from} - $
-              {selectedItem.paidInfo.valuation.to}
+              $
+              {formatNumberWithCommas(
+                `${selectedItem.paidInfo.valuation.from} `
+              )}
+              - $ $
+              {formatNumberWithCommas(`${selectedItem.paidInfo.valuation.to} `)}
             </p>
           </div>
           <div className="col-span-1">
             <p className="">EV/Revenue</p>
             <p className="">
-              {selectedItem.targetInfo.revenue.from} - $
-              {selectedItem.targetInfo.revenue.from}
+              $
+              {formatNumberWithCommas(
+                `${selectedItem.targetInfo.revenue.from} `
+              )}{" "}
+              - $
+              {formatNumberWithCommas(`${selectedItem.targetInfo.revenue.to} `)}
             </p>
           </div>
           <div className="col-span-1">
             <p className="">EV/EBITDA</p>
             <p className="">
-              ${selectedItem.paidInfo.revenue.from} - $
-              {selectedItem.targetInfo.EBITDA.to}{" "}
+              ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.from}`)}{" "}
+              - ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.to}`)}
             </p>
           </div>
         </div>

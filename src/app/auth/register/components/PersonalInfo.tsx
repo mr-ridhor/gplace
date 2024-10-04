@@ -43,6 +43,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
       city: personalInfo.city,
       address: personalInfo.address,
       phone: personalInfo.phone,
+      password: personalInfo.password,
     },
   });
 
@@ -175,6 +176,48 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                         //     })
                         //   );
                         // }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="w-full  flex gap-x-4">
+              <div className="w-full space-y-2">
+                <FormLabel className="text-[10px] md:text-sm lg:text-base font-normal">
+                  Password
+                </FormLabel>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="w-full space-y-2">
+              <FormLabel className="text-[10px] md:text-sm lg:text-base font-normal">
+                Confirm Password
+              </FormLabel>
+              <FormField
+                control={form.control}
+                name="confirmPass"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />

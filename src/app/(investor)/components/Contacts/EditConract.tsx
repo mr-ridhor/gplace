@@ -1,6 +1,10 @@
 "use Client";
 import { Button } from "@/components/ui/button";
-import { DialogContent } from "@/components/ui/dialog";
+import {
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -25,7 +29,7 @@ import { toast } from "sonner";
 interface Props {
   selectedItem?: Investor;
 }
-const AddContact: React.FC<Props> = ({ selectedItem }) => {
+const EditContact: React.FC<Props> = ({ selectedItem }) => {
   const router = useRouter();
   const [contactType, setContactType] = useState("Primary");
   const form = useForm<contType>({
@@ -78,10 +82,8 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
       <Form {...form}>
         <div className="    space-y-6 flex flex-col items-centr w-full">
           <div className="w-full flex flex-col items-center  justify-center">
-            <p className="font-bold text-xl">New Contact</p>
-            <p className="font-normal">
-              Fill in the fields below in order to add a new contact
-            </p>
+            <p className="font-bold text-xl">View record</p>
+            <p className="font-normal">Contact Records</p>
           </div>
           <form
             action=""
@@ -218,35 +220,44 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
                   )}
                 />
               </div>
-              <div className="w-full flex items-center gap-x-4">
-                {/* <Button
-                  className="w-full h-10  rounded-md flex items-center justify-center"
-                  type="submit"
-                >
-                  <p className="text-white font-bold">Done!</p>
-                </Button> */}
-                <Button
-                  disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+              <DialogFooter className="sm:justify-start">
+                <DialogClose asChild>
+                  <div className="w-full flex items-center gap-x-4">
+                    <div className="w-1/2">
+                      <Button
+                        className={`w-full bg-[#DCF8FC]  h-10 mt-3 rounded-md flex items-center justify-center
                         `}
-                  type="submit"
-                >
-                  {form.formState.isSubmitting ? (
-                    <div className="w-full h-72 flex items-center justify-center">
-                      <LuLoader className="w-8 h-8 text-white" />
-                      {/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
+                        type="button"
+                      >
+                        <p className={` font-bold`}>Close</p>
+                      </Button>
                     </div>
-                  ) : (
-                    <p
-                      className={`${
-                        !form.formState.isValid ? "" : "text-white"
-                      } font-bold`}
-                    >
-                      Done!
-                    </p>
-                  )}
-                </Button>
-              </div>
+                    <div className="w-1/2">
+                      <Button
+                        disabled={!form.formState.isValid}
+                        className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                        `}
+                        type="submit"
+                      >
+                        {form.formState.isSubmitting ? (
+                          <div className="w-full h-72 flex items-center justify-center">
+                            <LuLoader className="w-8 h-8 text-white" />
+                            {/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
+                          </div>
+                        ) : (
+                          <p
+                            className={`${
+                              !form.formState.isValid ? "" : "text-white"
+                            } font-bold`}
+                          >
+                            Done!
+                          </p>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </DialogClose>
+              </DialogFooter>
             </div>
           </form>
         </div>
@@ -255,4 +266,4 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
   );
 };
 
-export default AddContact;
+export default EditContact;

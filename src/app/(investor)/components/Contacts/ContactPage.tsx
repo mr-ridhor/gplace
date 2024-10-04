@@ -5,6 +5,8 @@ import ContactHeader from "./ContactHeader";
 import { BiLogoTelegram } from "react-icons/bi";
 import Table from "./Table";
 import { Investor } from "@/lib/data/mocked";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import EditContact from "./EditConract";
 
 interface Props {
   selectedItem: Investor;
@@ -14,11 +16,11 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
     <div className="w-full space-y-3 my-2">
       <ContactHeader selectedItem={selectedItem} />
       <div className="border rounded-md w-full text-[10px] md:text-sm p-3 space-y-4 shadow shadow-gray-200">
-        <div className=" flex-col md:flex-row items-cener gap-x-3 flex justify-between w-full">
+        <div className=" flex-col md:flex-row items-center gap-x-3 flex justify-between w-full">
           <div className="flex gap-x-2 h-fit items-center">
-            <p>
-              {selectedItem?.primaryContact.name.toUpperCase()}{" "}
-              {selectedItem?.primaryContact.surname.toUpperCase()}
+            <p className="capitalize">
+              {selectedItem?.primaryContact.name}{" "}
+              {selectedItem?.primaryContact.surname}
             </p>
           </div>
           <div className="flex-1 flex justify-between w-full">
@@ -26,9 +28,14 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
               <p>Primary Contact</p>
             </div>
             <div className="text-black h-8">
-              <Button className="h-full items-center flex gap-x-1 bg-[#DCF8FC] hover:bg-[#DCF8FC]/60 text-[10px] md:text-sm">
-                View record <BiLogoTelegram />
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="h-full items-center flex gap-x-1 bg-[#DCF8FC] hover:bg-[#DCF8FC]/60 text-[10px] md:text-sm">
+                    View record <BiLogoTelegram />
+                  </Button>
+                </DialogTrigger>
+                <EditContact />
+              </Dialog>
             </div>
           </div>
         </div>

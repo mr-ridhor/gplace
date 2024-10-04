@@ -9,4 +9,6 @@ export type personalType = {
   city: string;
   address: string;
   x: string;
+  password: string;
+  confirmPass?: string;
 };

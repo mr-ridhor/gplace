@@ -10,6 +10,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
 import {
+  formatNumberWithCommas,
+  numeralFormatter,
+} from "@/lib/numeralFormatter";
+import {
   getInvestor,
   setPrice,
   setProfile,
@@ -106,6 +110,10 @@ const ProfileInfo: React.FC<Props> = ({ onNext }) => {
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                           {...field}
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />
