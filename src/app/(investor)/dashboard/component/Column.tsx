@@ -6,6 +6,7 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Line, Circle } from "rc-progress";
 import { TiArrowUnsorted } from "react-icons/ti";
+import ActionCell from "./ActionCell";
 const columnHelper = createColumnHelper();
 
 export const Column: ColumnDef<Investor>[] = [
@@ -221,5 +222,17 @@ export const Column: ColumnDef<Investor>[] = [
     ),
     enableSorting: true,
     enableHiding: false,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      console.log(row.original);
+
+      return (
+        <div className="">
+          <ActionCell row={row} />
+        </div>
+      );
+    },
   },
 ];
