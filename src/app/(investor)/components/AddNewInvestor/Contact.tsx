@@ -18,6 +18,11 @@ import {
   resetPayload,
   setContact,
 } from "@/lib/slice/addInvestorSlice";
+import {
+  fetchInvestorsFailure,
+  fetchInvestorsRequest,
+  fetchInvestorsSuccess,
+} from "@/lib/slice/investorSlice";
 import { contSchema } from "@/lib/zod-schema/contSchema";
 import { contType } from "@/lib/zod-type/contType";
 
@@ -40,6 +45,16 @@ const Contact = () => {
     mode: "onChange",
     defaultValues: contact,
   });
+  const loadInvestors = async () => {
+    dispatch(fetchInvestorsRequest());
+    try {
+      const { data } = await axios.get("/api/investors");
+      dispatch(fetchInvestorsSuccess(data));
+    } catch (error: any) {
+      dispatch(fetchInvestorsFailure(error.response.data.message));
+      // toast()
+    }
+  };
   const onSubmit = async (data: contType) => {
     console.log(data);
     const payload = {
@@ -109,7 +124,8 @@ const Contact = () => {
       });
       console.log(res);
       dispatch(resetPayload());
-      window.location.reload();
+      // window.location.reload();
+      loadInvestors();
       // if (response.status !== 200) {
       //   throw new Error("Failed to submit the data");
       // }

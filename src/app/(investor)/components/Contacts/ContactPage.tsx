@@ -13,7 +13,7 @@ interface Props {
 }
 const ContactPage: React.FC<Props> = ({ selectedItem }) => {
   return (
-    <div className="w-full space-y-3 my-2">
+    <div className="w-full space-y-3 my-2  h-full">
       <ContactHeader selectedItem={selectedItem} />
       <div className="border rounded-md w-full text-[10px] md:text-sm p-3 space-y-4 shadow shadow-gray-200">
         <div className=" flex-col md:flex-row items-center gap-x-3 flex justify-between w-full">
@@ -54,7 +54,9 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
           </div>
         </div>
       </div>
-      <Table id={selectedItem._id} />
+      <div className="flex-1 overflow-y-auto no-scrollbar">
+        {/* <Table id={selectedItem._id} /> */}
+      </div>
     </div>
   );
 };

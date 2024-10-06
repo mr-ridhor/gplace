@@ -167,7 +167,7 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.primaryContact.phone,
+    cell: ({ row }) => row.original.paidInfo.revenue.from,
     enableSorting: true,
     enableHiding: false,
   },
