@@ -5,22 +5,29 @@ import axiosService from "../services/axiosService";
 import { authOptions } from "../../../utils/authOptions";
 import axios from "axios";
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
-export const fetchInvestors = async () => {
-  try {
-    const response = await axios.get(`api/investors`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data;
-  } catch (error: any) {
-    console.error("No investor found ", error.response?.data || error.message);
-    throw new Error(
-      error.response?.data?.message || "Error fetching investors"
-    );
-  }
-};
-
+// export const fetchInvestors = async () => {
+//   try {
+//     const response = await axios.get(`api/investors`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+//     return response.data;
+//   } catch (error: any) {
+//     console.error("No investor found ", error.response?.data || error.message);
+//     throw new Error(
+//       error.response?.data?.message || "Error fetching investors"
+//     );
+//   }
+// };
+// export const deleteInvestor = async (id: string): Promise<void> => {
+//   try {
+//     await axios.delete(`/api/investors/${id}`); // Adjust the URL based on your API structure
+//   } catch (error) {
+//     console.error("Error deleting investor:", error);
+//     throw error; // Rethrow to handle in the calling component
+//   }
+// };
 export const fetchInvestor = async (detail: string) => {
   try {
     // Retrieve the session

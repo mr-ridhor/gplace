@@ -229,7 +229,7 @@ export const Column: ColumnDef<Investor>[] = [
       console.log(row.original);
 
       return (
-        <div className="">
+        <div className="" onClick={(e) => e.stopPropagation()}>
           <ActionCell row={row} />
         </div>
       );
