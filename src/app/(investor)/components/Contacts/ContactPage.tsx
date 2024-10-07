@@ -54,8 +54,8 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
           </div>
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto no-scrollbar">
-        {/* <Table id={selectedItem._id} /> */}
+      <div className="flex-1 overflow-y-auto no-scrollbar min-h-0">
+        <Table id={selectedItem._id} />
       </div>
     </div>
   );

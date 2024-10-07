@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
   ];
 
   return (
-    <div className="rounded-md border w-full h-full">
+    <div className="rounded-md border w-full ">
       <div className="w-full h-[90%] overflow-auto no-scrollbar">
         <Table>
           <TableHeader>

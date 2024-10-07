@@ -41,9 +41,8 @@ const Table: React.FC<Props> = ({ id }) => {
   // if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <div className="  h-full">
       <DataTable columns={Column} data={data} />{" "}
-      {/* Render DataTable with fetched data */}
     </div>
   );
 };

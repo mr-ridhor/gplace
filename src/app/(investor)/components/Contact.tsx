@@ -8,7 +8,7 @@ interface Props {
 }
 const Contact: React.FC<Props> = ({ selectedItem }) => {
   return (
-    <TabsContent value="contact" className="w-full h-full ">
+    <TabsContent value="contact" className="w-full h-full overflow-hidden">
       <ContactPage selectedItem={selectedItem} />
     </TabsContent>
   );
