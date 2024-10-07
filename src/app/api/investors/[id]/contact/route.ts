@@ -22,6 +22,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         email,
         phone,
         title,
+        contactType: 'Primary'
       });
   
       // Save the contact to the database

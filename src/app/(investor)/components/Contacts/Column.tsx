@@ -84,8 +84,8 @@ export const Column = [
       <Button
         className={`bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md h-8 px-2`}
       >
-        {/* {info.getValue()} */}
-        <p>Secondary</p>
+        {info.getValue()}
+        {/* <p>Secondary</p> */}
       </Button>
     ),
     enableSorting: true,
