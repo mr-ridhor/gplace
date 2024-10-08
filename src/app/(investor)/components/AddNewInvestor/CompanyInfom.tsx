@@ -33,6 +33,7 @@ import {
 
 interface Props {
   onNext: () => void;
+  // onBack: () => void;
 }
 const CompanyInfom: React.FC<Props> = ({ onNext }) => {
   const dispatch = useDispatch();
@@ -205,7 +206,7 @@ const CompanyInfom: React.FC<Props> = ({ onNext }) => {
                 />
               </div>
               <div className="w-full space-y-2">
-                <FormLabel className="font-normal text-sm">
+                {/* <FormLabel className="font-normal text-sm">
                   Description
                 </FormLabel>
                 <FormField
@@ -217,7 +218,30 @@ const CompanyInfom: React.FC<Props> = ({ onNext }) => {
                         <Textarea
                           className="focus:border-0 resize-none focus-visible:ring-[#04acc2] text-sm"
                           {...field}
+                          maxLength={250}
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="relative">
+                          <Textarea
+                            className="focus:border-0 min-h-[100px] resize-none focus-visible:ring-[#04acc2] text-sm p0"
+                            {...field}
+                            maxLength={250}
+                          />
+
+                          <span className="absolute bottom-2 right-2 text-xs text-gray-500">
+                            {field.value?.length || 0}/250
+                          </span>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -228,7 +252,7 @@ const CompanyInfom: React.FC<Props> = ({ onNext }) => {
                 <Button
                   // onClick={handleClick}
                   disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                  className={`w-full h-10   rounded-md flex items-center justify-center
                     `}
                   type="submit"
                 >

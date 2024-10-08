@@ -58,13 +58,13 @@ const SelectedRow = () => {
   };
 
   return (
-    <div className="flex gap-x-6 h-fll w-full px- h-screen overflow-hidden">
+    <div className="flex gap-x-6 h-full w-full px-">
       <Leftbar list={selectedItem} /> {/* Pass selectedItem to Leftbar */}
-      <div className={`md:ml-[200px] w-full l p-4 h-full`}>
+      <div className={`md:ml-[200px] w-full l p-4 `}>
         <Tabs
           value={activeTab}
           onValueChange={handleTabChange}
-          className="h-full w-full"
+          className=" w-full"
         >
           <TabsList className="w-full bg-inherit rounded-none rounded-t-md h-10 border-b">
             <div className="flex w-full">

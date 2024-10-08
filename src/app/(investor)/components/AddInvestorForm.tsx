@@ -42,7 +42,14 @@ const AddInvestorForm: React.FC = () => {
       handleTabChange(nextTab);
     }
   };
-
+  // Handle moving to the previous tab
+  const handleBackTab = () => {
+    const currentIndex = tabs.indexOf(currentTab);
+    if (currentIndex > 0) {
+      const prevTab = tabs[currentIndex - 1];
+      handleTabChange(prevTab);
+    }
+  };
   return (
     <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[400px] md:w-[600px] my3 overflow-auto no-scrollbar">
       <div className="spacey-3">
@@ -84,6 +91,7 @@ const AddInvestorForm: React.FC = () => {
           <CompanyInfom
             // setCompanyInfo={setInvCom}
             // companyInfo={invCom}
+            // onBack={handleBackTab}
             onNext={handleNextTab}
           />
           {/* <CompanyInfom
@@ -94,23 +102,27 @@ const AddInvestorForm: React.FC = () => {
           <ProfileInfo
             // setPro={setProfile}
             // profile={profile}
+            onBack={handleBackTab}
             onNext={handleNextTab}
           />
           <ProfileInfo2
             // setPro2={setProfile2}
             // profile2={profile2}
-            handleClick={handleNextTab}
+            onBack={handleBackTab}
+            onNext={handleNextTab}
           />
 
           <Target
             // target={target}
             // setTarget={setTarget}
-            handleClick={handleNextTab}
+            onBack={handleBackTab}
+            onNext={handleNextTab}
           />
 
           <Price
             // price={price} setPri={setPrice}
-            handleClick={handleNextTab}
+            onBack={handleBackTab}
+            onNext={handleNextTab}
           />
 
           <Contact
