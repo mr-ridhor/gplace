@@ -1,36 +1,45 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Column } from "./Column";
 import { DataTable } from "@/components/ui/data-table";
-import axios from "axios"; // Importing Axios for API requests
 import LoaderComponent from "@/components/LoaderComponent";
+// import { useAppDispatch, useAppSelector } from "@/store/hooks";
+// import {
+//   fetchDataStart,
+//   fetchDataSuccess,
+//   fetchDataFailure,
+// } from "@/store/dataSlice";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchDataFailure,
+  fetchDataStart,
+  fetchDataSuccess,
+} from "@/lib/slice/contactSlice";
+import { mockedInfoType } from "@/lib/data/mockedInfo";
+// import { mockedInfoType } from "@/types"; // Import the mockedInfoType
 
 interface Props {
   id: string;
 }
 
 const Table: React.FC<Props> = ({ id }) => {
-  const [data, setData] = useState<any[]>([]); // State for storing fetched data
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error state
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state: any) => state.data); // Access global state
 
   useEffect(() => {
     const fetchData = async () => {
+      dispatch(fetchDataStart()); // Dispatch loading state
       try {
-        setLoading(true); // Set loading to true while fetching
-        const response = await axios.get(`/api/investors/${id}/contact`); // Axios GET request
-        console.log("here", response.data);
-        setData(response.data); // Set the data from the response
+        const response = await axios.get(`/api/investors/${id}/contact`);
+
+        dispatch(fetchDataSuccess(response.data)); // Dispatch success action with typed data
       } catch (error: any) {
-        setError(error.message || "No contact found"); // Set error message in case of failure
-      } finally {
-        setLoading(false); // Set loading to false after fetching is done
+        dispatch(fetchDataFailure(error.message || "No contact found")); // Dispatch error action
       }
     };
 
     fetchData();
-  }, [id]);
+  }, [id, dispatch]);
 
   if (loading)
     return (
@@ -38,12 +47,13 @@ const Table: React.FC<Props> = ({ id }) => {
         <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
       </div>
     );
-  // if (error) return <p>{error}</p>;
+
+  if (error) return <p>{error}</p>; // Display error if any
 
   return (
     <div>
       <DataTable columns={Column} data={data} />{" "}
-      {/* Render DataTable with fetched data */}
+      {/* Render DataTable with typed data */}
     </div>
   );
 };

@@ -46,7 +46,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pageIndex, setPageIndex] = React.useState(0);
-  const [pageSize, setPageSize] = React.useState(5); // Default to a smaller page size for better UX
+  const [pageSize, setPageSize] = React.useState(10); // Default to a smaller page size for better UX
 
   const table = useReactTable({
     data,
@@ -182,8 +182,12 @@ export function DataTable<TData, TValue>({
             className="border flex rounded p w-[60px] focus:ring-0 ring-0"
             options={options}
             placeholder="Select rows"
-            value={String(pageSize)} // Pass the current pageSize as a string
-            onChange={(value) => setPageSize(Number(value))} // Update pageSize when the selection changes
+            value={String(pageSize)} // Use pageSize as string
+            onChange={(value) => {
+              const newSize = Number(value);
+              setPageSize(newSize); // Update pageSize
+              setPageIndex(0); // Reset to first page
+            }}
           />
         </div>
       </div>

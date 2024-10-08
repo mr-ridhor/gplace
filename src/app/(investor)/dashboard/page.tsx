@@ -1,88 +1,87 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Table from "./component/Table"; // Ensure the path to your Table component is correct
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+// import {
+//   fetchInvestorsRequest,
+//   fetchInvestorsSuccess,
+//   fetchInvestorsFailure,
+// } from "./investorsSlice";
 import axios from "axios";
-import LoaderComponent from "@/components/LoaderComponent"; // Ensure this path is correct
+import Table from "./component/Table";
+import LoaderComponent from "@/components/LoaderComponent";
 import { SearchIcon } from "lucide-react";
 import { GrClose } from "react-icons/gr";
-import Filter from "@/app/svgComponent/Filter"; // Ensure this path is correct
-import { useDispatch, useSelector } from "react-redux";
-import { getPanel, setShowFilter } from "@/lib/slice/panelSlice"; // Ensure these imports are correct
-import { Investor } from "@/lib/data/mocked"; // Ensure this path is correct
+import Filter from "@/app/svgComponent/Filter";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"; // Ensure this path is correct
+} from "@/components/ui/accordion";
+import {
+  fetchInvestorsRequest,
+  fetchInvestorsSuccess,
+  fetchInvestorsFailure,
+  setSearchValue,
+  setSelectedCompany,
+  setSelectedCountries,
+  setSelectedDeals,
+  setSelectedDealSize,
+  setSelectedIndustry,
+  setSelectedGeography,
+  setSelectedContactTitle,
+} from "@/lib/slice/investorSlice";
+import { Investor } from "@/lib/data/mocked";
+import { getPanel, setShowFilter } from "@/lib/slice/panelSlice"; // Ensure these imports are correct
 
 const Page: React.FC = () => {
   const dispatch = useDispatch();
+  const {
+    investors,
+    loading,
+    error,
+    searchValue,
+    selectedCompany,
+    selectedCountries,
+    selectedDeals,
+    selectedDealSize,
+    selectedIndustry,
+    selectedGeography,
+    selectedContactTitle,
+  } = useSelector((state: any) => state.investors);
   const { showFilter, showSearch } = useSelector(getPanel);
-  const [investors, setInvestors] = useState<Investor[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
 
-  // State for each filter
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [selectedDeals, setSelectedDeals] = useState<string | null>(null);
-  const [selectedDealSize, setSelectedDealSize] = useState<string | null>(null);
-  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
-  const [selectedGeography, setSelectedGeography] = useState<string | null>(
-    null
-  );
-  const [selectedContactTitle, setSelectedContactTitle] = useState<
-    string | null
-  >(null);
-
-  // Handle search input
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-    setSelectedCompany(null); // Reset selected company when typing
-  };
-
-  // Handle clear input
-  const handleClearInput = () => {
-    setSearchValue(""); // Clear search input
-    setSelectedCompany(null); // Clear selected company
-    // Optionally reset other filters if you want to reset the entire table
-    setSelectedCountries([]);
-    setSelectedDeals(null);
-    setSelectedDealSize(null);
-    setSelectedIndustry(null);
-    setSelectedGeography(null);
-    setSelectedContactTitle(null);
-  };
-
-  // Fetch investors data
   useEffect(() => {
     const loadInvestors = async () => {
+      dispatch(fetchInvestorsRequest());
       try {
-        const { data } = await axios.get(`/api/investors`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        setInvestors(data);
-      } catch (error) {
-        console.error("Failed to fetch investors:", error);
-        setError("No investor found");
-      } finally {
-        setLoading(false);
+        const { data } = await axios.get("/api/investors");
+        dispatch(fetchInvestorsSuccess(data));
+      } catch (error: any) {
+        console.log(error);
+        dispatch(fetchInvestorsFailure(error.response.data.message));
       }
     };
-
     loadInvestors();
-  }, []);
+  }, [dispatch]);
 
-  // Function to extract unique values from an array
-  const uniqueValues = <T,>(arr: T[]): T[] => [...new Set(arr)];
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchValue(e.target.value));
+    dispatch(setSelectedCompany(null));
+  };
 
-  // Get filtered investors
-  // Get filtered investors
-  const filteredInvestors = investors.filter((investor) => {
+  const handleClearInput = () => {
+    dispatch(setSearchValue(""));
+    dispatch(setSelectedCompany(null));
+    dispatch(setSelectedCountries([]));
+    dispatch(setSelectedDeals(null));
+    dispatch(setSelectedDealSize(null));
+    dispatch(setSelectedIndustry(null));
+    dispatch(setSelectedGeography(null));
+    dispatch(setSelectedContactTitle(null));
+  };
+
+  const filteredInvestors = investors.filter((investor: Investor) => {
     const {
       companyInfo: { companyName, country } = {},
       investmentBio: { dealsIn5Y, medianDealSize, industry, geography } = {},
@@ -115,32 +114,14 @@ const Page: React.FC = () => {
         : true) // Show all if searchValue is empty
     );
   });
-  // Get unique filter values based on filtered investors
-  const uniqueCountries = uniqueValues(
-    investors.map((investor) => investor.companyInfo.country)
-  );
-  const uniqueDeals = uniqueValues(
-    filteredInvestors.map((investor) => investor.investmentBio.dealsIn5Y)
-  );
-  const uniqueDealSizes = uniqueValues(
-    filteredInvestors.map((investor) => investor.investmentBio.medianDealSize)
-  );
-  const uniqueIndustries = uniqueValues(
-    filteredInvestors.map((investor) => investor.investmentBio.industry)
-  );
-  const uniqueGeographies = uniqueValues(
-    filteredInvestors.map((investor) => investor.investmentBio.geography)
-  );
-  const uniqueContactTitles = uniqueValues(
-    filteredInvestors.map((investor) => investor.primaryContact.title)
-  );
 
-  if (loading)
+  if (loading) {
     return (
       <div className="w-full h-72 flex items-center justify-center">
         <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
       </div>
     );
+  }
   if (error) return <div>{error}</div>;
 
   return (
@@ -157,8 +138,8 @@ const Page: React.FC = () => {
               onClick={() => dispatch(setShowFilter(false))}
             />
           </div>
-          <div className="px-4 h-[90%]">
-            <div className="h-[30%] bg-[#F5F8FA] rounded-md overflow-y-auto no-scrollbar">
+          <div className="px-4 overflow-y-auto no-scrollbar h-[90%]">
+            <div className="h-max bg-[#F5F8FA] rounded-md overflow-y-auto no-scrollbar">
               <div className="gap-x-4 h-10 px-3 w-full flex items-center">
                 <input
                   className="w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit"
@@ -173,23 +154,26 @@ const Page: React.FC = () => {
                 />
               </div>
               <hr className="bg-black" />
-              {/* Show dropdown only if search value is not empty */}
               {searchValue && (
                 <div className="space-y-2 px-3 mt-2">
                   {investors
-                    .filter((investor) =>
+                    .filter((investor: Investor) =>
                       investor.companyInfo.companyName
                         .toLowerCase()
                         .includes(searchValue.toLowerCase())
-                    ) // Filter based on search value
-                    .slice(0, 5)
-                    .map((investor, id) => (
+                    )
+
+                    .map((investor: Investor) => (
                       <div
-                        key={id} // Assuming each investor has a unique 'id'
+                        key={investor._id}
                         className="text-[12px] cursor-pointer hover:bg-[#03AAC1] hover:text-white"
                         onClick={() => {
-                          setSelectedCompany(investor.companyInfo.companyName);
-                          setSearchValue(investor.companyInfo.companyName); // Update the search value
+                          dispatch(
+                            setSelectedCompany(investor.companyInfo.companyName)
+                          );
+                          dispatch(
+                            setSearchValue(investor.companyInfo.companyName)
+                          );
                         }}
                       >
                         {investor.companyInfo.companyName}
@@ -201,107 +185,171 @@ const Page: React.FC = () => {
 
             <Accordion type="single" collapsible>
               <AccordionItem value="country">
-                <AccordionTrigger>Country</AccordionTrigger>
+                <AccordionTrigger className="2xl:text-base text-sm">
+                  Country
+                </AccordionTrigger>
                 <AccordionContent>
-                  {uniqueCountries.map((country, idx) => (
-                    <div
-                      key={idx}
-                      className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
-                      onClick={() => {
-                        setSelectedCountries((prev) => {
-                          if (prev.includes(country)) {
-                            // Remove country if already selected
-                            return prev.filter((c) => c !== country);
-                          }
-                          // Add country if not selected
-                          return [...prev, country];
-                        });
-                      }}
-                    >
-                      {country}
-                    </div>
-                  ))}
+                  {investors
+                    .map((investor: Investor) => investor.companyInfo.country)
+                    .filter(
+                      (country: string, index: number, self: string[]) =>
+                        self.indexOf(country) === index
+                    )
+                    .map((country: string, idx: number) => (
+                      <div
+                        key={idx}
+                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
+                        onClick={() => {
+                          dispatch(setSelectedCountries([country]));
+                        }}
+                      >
+                        {country}
+                      </div>
+                    ))}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="deals">
-                <AccordionTrigger>Deals in 5 years</AccordionTrigger>
+                <AccordionTrigger className="2xl:text-base text-sm">
+                  Deals in 5 years
+                </AccordionTrigger>
                 <AccordionContent>
-                  {uniqueDeals.map((deals, idx) => (
-                    <div
-                      key={idx}
-                      className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
-                      onClick={() => setSelectedDeals(String(deals))}
-                    >
-                      {deals}
-                    </div>
-                  ))}
+                  {investors
+                    .map(
+                      (investor: Investor) => investor.investmentBio.dealsIn5Y
+                    )
+                    .filter(
+                      (deals: number, index: number, self: number[]) =>
+                        self.indexOf(deals) === index
+                    )
+                    .map((deals: number, idx: number) => (
+                      <div
+                        key={idx}
+                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover :text-white"
+                        onClick={() => {
+                          dispatch(setSelectedDeals(String(deals)));
+                        }}
+                      >
+                        {deals}
+                      </div>
+                    ))}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="dealSize">
-                <AccordionTrigger>Median Deal Size</AccordionTrigger>
+                <AccordionTrigger className="2xl:text-base text-sm">
+                  Median Deal Size
+                </AccordionTrigger>
                 <AccordionContent>
-                  {uniqueDealSizes.map((size, idx) => (
-                    <div
-                      key={idx}
-                      className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
-                      onClick={() => setSelectedDealSize(String(size))}
-                    >
-                      {size}
-                    </div>
-                  ))}
+                  {investors
+                    .map(
+                      (investor: Investor) =>
+                        investor.investmentBio.medianDealSize
+                    )
+                    .filter(
+                      (size: number, index: number, self: number[]) =>
+                        self.indexOf(size) === index
+                    )
+                    .map((size: number, idx: number) => (
+                      <div
+                        key={idx}
+                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
+                        onClick={() => {
+                          dispatch(setSelectedDealSize(String(size)));
+                        }}
+                      >
+                        {size}
+                      </div>
+                    ))}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="industry">
-                <AccordionTrigger>Industry</AccordionTrigger>
+                <AccordionTrigger className="2xl:text-base text-sm">
+                  Industry
+                </AccordionTrigger>
                 <AccordionContent>
-                  {uniqueIndustries.map((industry, idx) => (
-                    <div
-                      key={idx}
-                      className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
-                      onClick={() => setSelectedIndustry(industry)}
-                    >
-                      {industry}
-                    </div>
-                  ))}
+                  {investors
+                    .map(
+                      (investor: Investor) => investor.investmentBio.industry
+                    )
+                    .filter(
+                      (industry: string, index: number, self: string[]) =>
+                        self.indexOf(industry) === index
+                    )
+                    .map((industry: string, idx: number) => (
+                      <div
+                        key={idx}
+                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
+                        onClick={() => {
+                          dispatch(setSelectedIndustry(industry));
+                        }}
+                      >
+                        {industry}
+                      </div>
+                    ))}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="geography">
-                <AccordionTrigger>Geography</AccordionTrigger>
+                <AccordionTrigger className="2xl:text-base text-sm">
+                  Geography
+                </AccordionTrigger>
                 <AccordionContent>
-                  {uniqueGeographies.map((geo, idx) => (
-                    <div
-                      key={idx}
-                      className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
-                      onClick={() => setSelectedGeography(geo)}
-                    >
-                      {geo}
-                    </div>
-                  ))}
+                  {investors
+                    .map(
+                      (investor: Investor) => investor.investmentBio.geography
+                    )
+                    .filter(
+                      (geo: string, index: number, self: string[]) =>
+                        self.indexOf(geo) === index
+                    )
+                    .map((geo: string, idx: number) => (
+                      <div
+                        key={idx}
+                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
+                        onClick={() => {
+                          dispatch(setSelectedGeography(geo));
+                        }}
+                      >
+                        {geo}
+                      </div>
+                    ))}
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="contactTitle">
-                <AccordionTrigger>Contact Title</AccordionTrigger>
+                <AccordionTrigger className="2xl:text-base text-sm">
+                  Contact Title
+                </AccordionTrigger>
                 <AccordionContent>
-                  {uniqueContactTitles.map((title, idx) => (
-                    <div
-                      key={idx}
-                      className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
-                      onClick={() => setSelectedContactTitle(title)}
-                    >
-                      {title}
-                    </div>
-                  ))}
+                  {investors
+                    .map((investor: Investor) => investor.primaryContact.title)
+                    .filter(
+                      (title: string, index: number, self: string[]) =>
+                        self.indexOf(title) === index
+                    )
+                    .map((title: string, idx: number) => (
+                      <div
+                        key={idx}
+                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
+                        onClick={() => {
+                          dispatch(setSelectedContactTitle(title));
+                        }}
+                      >
+                        {title}
+                      </div>
+                    ))}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>
         </div>
       )}
+
+      {/* <div className="h-full w-full overflow-y-auto">
+        <Table investors={filteredInvestors} />
+      </div> */}
       <div
         className={`h-full flex ${
           showFilter || showSearch ? "flex-1 overflow-x-auto" : "w-full"

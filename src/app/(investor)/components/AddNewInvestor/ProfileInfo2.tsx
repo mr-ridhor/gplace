@@ -24,10 +24,11 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
-  handleClick: () => void;
+  onNext: () => void;
+  onBack: () => void;
 }
 
-const ProfileInfo2: React.FC<Props> = ({ handleClick }) => {
+const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const profile2 = useSelector(getInvestor);
   const form = useForm<invpro2Type>({
@@ -38,7 +39,7 @@ const ProfileInfo2: React.FC<Props> = ({ handleClick }) => {
   const onSubmit = (data: invpro2Type) => {
     console.log(data);
     dispatch(setProfile2(data));
-    handleClick();
+    onNext();
   };
   return (
     <TabsContent value="profile2">
@@ -129,9 +130,17 @@ const ProfileInfo2: React.FC<Props> = ({ handleClick }) => {
 
               <div className="w-full flex items-center gap-x-4">
                 <Button
+                  onClick={onBack}
+                  className={`w-1/2 h-10 bg-[#DCF8FC] hover:bg-[#B9E5EB]  rounded-md flex items-center justify-center
+                    `}
+                  type="button"
+                >
+                  <p className={` font-bold`}>Back</p>
+                </Button>
+                <Button
                   // onClick={handleClick}
                   disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                  className={`w-1/2 h-10  rounded-md flex items-center justify-center
                     `}
                   type="submit"
                 >

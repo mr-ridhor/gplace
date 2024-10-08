@@ -27,10 +27,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
   onNext: () => void;
+  onBack: () => void;
   // setPro: React.Dispatch<React.SetStateAction<invproType>>;
   // profile: invproType;
 }
-const ProfileInfo: React.FC<Props> = ({ onNext }) => {
+const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const profile = useSelector(getInvestor);
   const form = useForm<invproType>({
@@ -124,9 +125,18 @@ const ProfileInfo: React.FC<Props> = ({ onNext }) => {
 
               <div className="w-full flex items-center gap-x-4">
                 <Button
+                  onClick={onBack}
+                  // disabled={!form.formState.isValid}
+                  className={`w-1/2 h-10 rounded-md bg-[#DCF8FC] hover:bg-[#B9E5EB] flex items-center justify-center
+                    `}
+                  type="button"
+                >
+                  <p className={` font-bold`}>Back</p>
+                </Button>
+                <Button
                   // onClick={handleClick}
                   disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                  className={`w-1/2 h-10 rounded-md flex items-center justify-center
                     `}
                   type="submit"
                 >

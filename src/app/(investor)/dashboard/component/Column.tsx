@@ -167,7 +167,7 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.primaryContact.phone,
+    cell: ({ row }) => row.original.paidInfo.revenue.from,
     enableSorting: true,
     enableHiding: false,
   },
@@ -229,7 +229,7 @@ export const Column: ColumnDef<Investor>[] = [
       console.log(row.original);
 
       return (
-        <div className="">
+        <div className="" onClick={(e) => e.stopPropagation()}>
           <ActionCell row={row} />
         </div>
       );

@@ -26,10 +26,11 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
-  handleClick: () => void;
+  onNext: () => void;
+  onBack: () => void;
 }
 
-const Target: React.FC<Props> = ({ handleClick }) => {
+const Target: React.FC<Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const target = useSelector(getInvestor);
   const form = useForm<tragetType>({
@@ -41,7 +42,7 @@ const Target: React.FC<Props> = ({ handleClick }) => {
     console.log(data);
     dispatch(setTarget(data));
 
-    handleClick();
+    onNext();
   };
   return (
     <TabsContent value="target">
@@ -126,9 +127,17 @@ const Target: React.FC<Props> = ({ handleClick }) => {
 
               <div className="w-full flex items-center gap-x-4">
                 <Button
-                  // onClick={handleClick}
+                  onClick={onBack}
+                  className={`w-1/2 h-10 bg-[#DCF8FC] hover:bg-[#B9E5EB]  rounded-md flex items-center justify-center
+                    `}
+                  type="button"
+                >
+                  <p className={` font-bold`}>Back</p>
+                </Button>
+                <Button
+                  // onClick={onNext}
                   disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                  className={`w-1/2 h-10  rounded-md flex items-center justify-center
                     `}
                   type="submit"
                 >

@@ -22,12 +22,13 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
-  handleClick: () => void;
+  onNext: () => void;
+  onBack: () => void;
   // price: priceType;
   // setPri: React.Dispatch<React.SetStateAction<priceType>>;
 }
 
-const Price: React.FC<Props> = ({ handleClick }) => {
+const Price: React.FC<Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const price = useSelector(getInvestor);
   const form = useForm<priceType>({
@@ -41,7 +42,7 @@ const Price: React.FC<Props> = ({ handleClick }) => {
     console.log(data);
     dispatch(setPrice(data));
     // setPri(data);
-    handleClick();
+    onNext();
   };
   return (
     <TabsContent value="price">
@@ -128,9 +129,17 @@ const Price: React.FC<Props> = ({ handleClick }) => {
 
               <div className="w-full flex items-center gap-x-4">
                 <Button
+                  onClick={onBack}
+                  className={`w-1/2 h-10 bg-[#DCF8FC] hover:bg-[#B9E5EB]  rounded-md flex items-center justify-center
+                    `}
+                  type="button"
+                >
+                  <p className={` font-bold`}>Back</p>
+                </Button>
+                <Button
                   // onClick={handleClick}
                   disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                  className={`w-1/2 h-10  rounded-md flex items-center justify-center
                     `}
                   type="submit"
                 >
