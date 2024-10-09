@@ -135,10 +135,10 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
       <div className="w-full p-4 border rounded-md space-y-4 text-[10px] lg:text-sm">
         <div className="flex w-full justify-between items-center">
           <p className="text-[#898989]">Typical Acquisition Target</p>
-          <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
+          {/* <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
             <Link href={""}>Request Info</Link>
             <BiLogoTelegram />
-          </Button>
+          </Button> */}
         </div>
         <div className="grid-cols-3 grid w-full">
           <div className="col-span-1">
@@ -173,10 +173,10 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
       <div className="w-full text-[10px] lg:text-sm p-4 border rounded-md space-y-4">
         <div className="flex w-full justify-between items-center">
           <p className="text-[#898989]">Typical Price Paid</p>
-          <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
+          {/* <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
             <Link href={""}>Request Info</Link>
             <BiLogoTelegram />
-          </Button>
+          </Button> */}
         </div>
         <div className="text-[10px] lg:text-sm grid-cols-3 grid w-full">
           <div className="col-span-1">
