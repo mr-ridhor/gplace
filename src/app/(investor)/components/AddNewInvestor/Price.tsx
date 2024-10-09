@@ -126,7 +126,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
                   )}
                 />
               </div>
-              <div className="w-full space-y-2">
+              {/* <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-sm">
                   Offered Price
                 </FormLabel>
@@ -149,7 +149,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
                     </FormItem>
                   )}
                 />
-              </div>
+              </div> */}
               <div className="w-full flex items-center gap-x-4">
                 <Button
                   onClick={onBack}
