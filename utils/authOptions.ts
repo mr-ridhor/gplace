@@ -1,4 +1,5 @@
 import Credentials from "next-auth/providers/credentials";
+import HubspotProvider from "next-auth/providers/hubspot"
 import connectDB from "../config/db";
 import User, { IUser } from "../models/User"; // Adjust the path according to your folder structure
 import { NextAuthOptions } from "next-auth";

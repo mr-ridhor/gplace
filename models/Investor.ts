@@ -81,6 +81,7 @@ const investorSchema = new Schema<InvestorInterface>({
         revenue: { from: { type: Number, required: true }, to: { type: Number, required: true } },
         EBITDA: { from: { type: Number, required: true }, to: { type: Number, required: true } },
         dealSize: { from: { type: Number, required: true }, to: { type: Number, required: true } },
+        offeredPrice: { from: { type: Number, required: true }, to: { type: Number, required: true } },
     },
     paidInfo: {
         valuation: { from: { type: Number, required: true }, to: { type: Number, required: true } },
