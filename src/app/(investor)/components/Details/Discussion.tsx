@@ -35,7 +35,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
   ];
   console.log(selectedItem);
   return (
-    <TabsContent value="discussion" className="space-y-4">
+    <TabsContent value="discussion" className="space-y-4  pb-3">
       {/* <div className="grid gap-x-5 gap-y-2 grid-cols-2 lg:grid-cols-4 w-full">
         {data.map((list, id) => {
           return (
@@ -170,7 +170,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           </div>
         </div>
       </div>
-      <div className="w-fulltext-[10px] lg:text-sm p-4 border rounded-md space-y-4">
+      <div className="w-full text-[10px] lg:text-sm p-4 border rounded-md space-y-4">
         <div className="flex w-full justify-between items-center">
           <p className="text-[#898989]">Typical Price Paid</p>
           <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
@@ -206,6 +206,49 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
             <p className="">
               ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.from}`)}{" "}
               - ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.to}`)}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="w-full text-[10px] lg:text-sm p-4 border rounded-md space-y-4 ">
+        <div className="flex w-full justify-between items-center">
+          <p className="text-[#898989]">Offered Price</p>
+          {/* <Button className="text-[10px] lg:text-sm text-white flex gap-x-1 items-center">
+            <Link href={""}>Request Info</Link>
+            <BiLogoTelegram />
+          </Button> */}
+        </div>
+        <div className="text-[10px] lg:text-sm grid-cols-3 grid w-full">
+          <div className="col-span-1">
+            <p className="">Valuation ($ mm)</p>
+            <p className="">
+              35
+              {/* $
+              {formatNumberWithCommas(
+                `${selectedItem.paidInfo.valuation.from} `
+              )}
+              - $ $
+              {formatNumberWithCommas(`${selectedItem.paidInfo.valuation.to} `)} */}
+            </p>
+          </div>
+          <div className="col-span-1">
+            <p className="">EV/Revenue</p>
+            <p className="">
+              2.4x{" "}
+              {/* $
+              {formatNumberWithCommas(
+                `${selectedItem.targetInfo.revenue.from} `
+              )}{" "}
+              - $
+              {formatNumberWithCommas(`${selectedItem.targetInfo.revenue.to} `)} */}
+            </p>
+          </div>
+          <div className="col-span-1">
+            <p className="">EV/EBITDA</p>
+            <p className="">
+              3.4x
+              {/* ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.from}`)}{" "}
+              - ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.to}`)} */}
             </p>
           </div>
         </div>

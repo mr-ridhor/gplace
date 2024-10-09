@@ -1,6 +1,6 @@
-"use Client";
+"use client";
 import { Button } from "@/components/ui/button";
-import { DialogContent } from "@/components/ui/dialog";
+import { DialogContent, DialogFooter } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -21,12 +21,22 @@ import axios from "axios";
 import { LuLoader } from "react-icons/lu";
 import moment from "moment";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import {
+  fetchDataFailure,
+  fetchDataStart,
+  fetchDataSuccess,
+} from "@/lib/slice/contactSlice";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface Props {
   selectedItem?: Investor;
+  onClose: () => void; // Pass the onClose prop
 }
-const AddContact: React.FC<Props> = ({ selectedItem }) => {
+
+const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [contactType, setContactType] = useState("Primary");
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
@@ -41,15 +51,25 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
     },
   });
 
+  const fetchData = async () => {
+    dispatch(fetchDataStart());
+    try {
+      const response = await axios.get(
+        `/api/investors/${selectedItem?._id}/contact`
+      );
+      dispatch(fetchDataSuccess(response.data));
+    } catch (error: any) {
+      dispatch(fetchDataFailure(error.message || "No contact found"));
+    }
+  };
+
   const onSubmit = async (data: contType) => {
     try {
       const investorId = selectedItem?._id;
-
       if (!investorId) {
         throw new Error("Investor ID is missing");
       }
 
-      // Use axios directly to post data
       await axios.post(`/api/investors/${investorId}/contact`, {
         name: data.name,
         surname: data.surname,
@@ -58,13 +78,15 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
         title: data.title,
         contactType: contactType,
       });
+      fetchData();
 
-      // Refresh the data or reload the page
-      router.refresh();
-      console.log("Contact added successfully"); // Handle success message
       toast("Contact added successfully", {
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
+      form.reset();
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     } catch (error: any) {
       console.error(error.message);
       toast("All fields must be filled", {
@@ -74,22 +96,21 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
   };
 
   return (
-    <DialogContent className="max-h-[550px] text-sm  w-[320px] md:w-[600px] my-3 overflow-auto no-scrollbar">
+    <DialogContent className="max-h-[550px] text-sm w-[320px] md:w-[600px] my-3 overflow-auto no-scrollbar">
       <Form {...form}>
-        <div className="    space-y-6 flex flex-col items-centr w-full">
-          <div className="w-full flex flex-col items-center  justify-center">
+        <div className="space-y-6 flex flex-col items-center w-full">
+          <div className="w-full flex flex-col items-center justify-center">
             <p className="font-bold text-xl">New Contact</p>
             <p className="font-normal">
               Fill in the fields below in order to add a new contact
             </p>
           </div>
           <form
-            action=""
             onSubmit={form.handleSubmit(onSubmit)}
-            className="   items-center flex flex-col h-full "
+            className="items-center flex flex-col h-full"
           >
             <div className="space-y-4 w-full">
-              <div className="w-full  flex gap-x-4 items-center">
+              <div className="w-full flex gap-x-4 items-center">
                 <div className="w-1/2 space-y-2">
                   <FormLabel className="text-sm font-normal">
                     First Name
@@ -135,34 +156,6 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
               </div>
 
               <div className="w-full space-y-2">
-                <div className="w-full grid grid-cols-2 my-3 ">
-                  <div className=" col-span-1 px-3">
-                    <Button
-                      type="button"
-                      className={`w-full ${
-                        contactType === "Primary"
-                          ? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
-                          : "bg-transparent hover:bg-transparent text-black"
-                      }`}
-                      onClick={() => setContactType("Primary")}
-                    >
-                      <p>Primary Contact</p>
-                    </Button>
-                  </div>
-                  <div className=" col-span-1 px-3">
-                    <Button
-                      className={`w-full ${
-                        contactType === "Secondary"
-                          ? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
-                          : "bg-transparent hover:bg-transparent text-black"
-                      }`}
-                      onClick={() => setContactType("Secondary")}
-                      type="button"
-                    >
-                      <p>Secondary Contact</p>
-                    </Button>
-                  </div>
-                </div>
                 <FormLabel className="font-normal text-sm">Email</FormLabel>
                 <FormField
                   control={form.control}
@@ -180,6 +173,7 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
                   )}
                 />
               </div>
+
               <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-sm">
                   Phone number
@@ -200,6 +194,7 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
                   )}
                 />
               </div>
+
               <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-sm">Title</FormLabel>
                 <FormField
@@ -218,35 +213,30 @@ const AddContact: React.FC<Props> = ({ selectedItem }) => {
                   )}
                 />
               </div>
-              <div className="w-full flex items-center gap-x-4">
-                {/* <Button
-                  className="w-full h-10  rounded-md flex items-center justify-center"
-                  type="submit"
-                >
-                  <p className="text-white font-bold">Done!</p>
-                </Button> */}
-                <Button
-                  disabled={!form.formState.isValid}
-                  className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
-                        `}
-                  type="submit"
-                >
-                  {form.formState.isSubmitting ? (
-                    <div className="w-full h-72 flex items-center justify-center">
-                      <LuLoader className="w-8 h-8 text-white" />
-                      {/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
-                    </div>
-                  ) : (
-                    <p
-                      className={`${
-                        !form.formState.isValid ? "" : "text-white"
-                      } font-bold`}
-                    >
-                      Done!
-                    </p>
-                  )}
-                </Button>
-              </div>
+
+              <DialogFooter>
+                <div className="w-full flex items-center gap-x-4">
+                  <Button
+                    disabled={!form.formState.isValid}
+                    className={`w-full h-10 mt-3 rounded-md flex items-center justify-center`}
+                    type="submit"
+                  >
+                    {form.formState.isSubmitting ? (
+                      <div className="w-full h-72 flex items-center justify-center">
+                        <LuLoader className="w-8 h-8 text-white" />
+                      </div>
+                    ) : (
+                      <p
+                        className={`${
+                          !form.formState.isValid ? "" : "text-white"
+                        } font-bold`}
+                      >
+                        Done!
+                      </p>
+                    )}
+                  </Button>
+                </div>
+              </DialogFooter>
             </div>
           </form>
         </div>

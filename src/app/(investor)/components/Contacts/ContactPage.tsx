@@ -1,22 +1,29 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import React, { useState } from "react";
 import ContactHeader from "./ContactHeader";
 import { BiLogoTelegram } from "react-icons/bi";
 import Table from "./Table";
 import { Investor } from "@/lib/data/mocked";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import EditContact from "./EditConract";
+import AddContact from "./AddContact"; // Adjust import based on your filename
 
 interface Props {
   selectedItem: Investor;
 }
+
 const ContactPage: React.FC<Props> = ({ selectedItem }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
   return (
-    <div className="w-full space-y-3 my-2  h-full">
+    <div className="w-full space-y-3 my-2 h-full">
       <ContactHeader selectedItem={selectedItem} />
       <div className="border rounded-md w-full text-[10px] md:text-sm p-3 space-y-4 shadow shadow-gray-200">
-        <div className=" flex-col md:flex-row items-center gap-x-3 flex justify-between w-full">
+        <div className="flex-col md:flex-row items-center gap-x-3 flex justify-between w-full">
           <div className="flex gap-x-2 h-fit items-center">
             <p className="capitalize">
               {selectedItem?.primaryContact.name}{" "}
@@ -28,13 +35,19 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
               <p>Primary Contact</p>
             </div>
             <div className="text-black h-8">
-              <Dialog>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="h-full items-center flex gap-x-1 bg-[#DCF8FC] hover:bg-[#DCF8FC]/60 text-[10px] md:text-sm">
+                  <Button
+                    className="h-full items-center flex gap-x-1 bg-[#DCF8FC] hover:bg-[#DCF8FC]/60 text-[10px] md:text-sm"
+                    onClick={() => setIsDialogOpen(true)} // Open dialog
+                  >
                     View record <BiLogoTelegram />
                   </Button>
                 </DialogTrigger>
-                <EditContact />
+                <AddContact
+                  selectedItem={selectedItem}
+                  onClose={handleCloseDialog}
+                />
               </Dialog>
             </div>
           </div>

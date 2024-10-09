@@ -21,7 +21,7 @@ import { YearSelect } from "@/components/YearSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile, updateCompanyInfo } from "@/lib/slice/profileSlice";
 import {
-  formatNumberWithCommas,
+  // formatNumberWithCommas,
   numeralFormatter,
 } from "@/lib/numeralFormatter";
 
@@ -53,6 +53,10 @@ const CompanyInfoForm = () => {
 
     console.log("Submit Data:", submitData);
     dispatch(updateCompanyInfo(submitData));
+  };
+  const formatNumberWithCommas = (value: string | number): string => {
+    // Ensure value is a string before calling replace
+    return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
   return (
@@ -269,6 +273,10 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
+                              value={formatNumberWithCommas(field.value || "")}
+                              onChange={(e) =>
+                                field.onChange(numeralFormatter(e.target.value))
+                              }
                             />
                           </FormControl>
                           <FormMessage />

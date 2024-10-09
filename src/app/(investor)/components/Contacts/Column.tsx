@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { mockedInfoType } from "@/lib/data/mockedInfo";
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { mockedInfoType } from "@/lib/data/mockedInfo"; // Ensure this type is correct
+import { ColumnDef } from "@tanstack/react-table";
 import { TiArrowUnsorted } from "react-icons/ti";
+import ContactActionCell from "./ContactActionCell";
+// import ActionCell from "./ActionCell";
 
-const columnHelper = createColumnHelper<mockedInfoType>();
+// Create a new type that includes the actions
+type TableRowType = mockedInfoType & { actions?: any }; // Adjust the type as necessary
 
-export const Column = [
-  columnHelper.accessor("name", {
+export const Column: ColumnDef<TableRowType>[] = [
+  {
+    accessorKey: "name",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -16,13 +20,14 @@ export const Column = [
         <TiArrowUnsorted className="ml-2 h-4 w-4 text-[#898989]" />
       </Button>
     ),
-    cell: (info) => (
-      <div className="text-[10px] md:text-sm">{info.getValue()}</div>
+    cell: ({ row }) => (
+      <div className="text-[10px] md:text-sm">{row.original.name}</div>
     ),
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("title", {
+  },
+  {
+    accessorKey: "title",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -32,13 +37,14 @@ export const Column = [
         <TiArrowUnsorted className="ml-2 h-4 w-4 text-[#898989]" />
       </Button>
     ),
-    cell: (info) => (
-      <div className="text-[10px] md:text-sm">{info.getValue()}</div>
+    cell: ({ row }) => (
+      <div className="text-[10px] md:text-sm">{row.original.title}</div>
     ),
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("email", {
+  },
+  {
+    accessorKey: "email",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -48,13 +54,14 @@ export const Column = [
         <TiArrowUnsorted className="ml-2 h-4 w-4 text-[#898989]" />
       </Button>
     ),
-    cell: (info) => (
-      <div className="text-[10px] md:text-sm">{info.getValue()}</div>
+    cell: ({ row }) => (
+      <div className="text-[10px] md:text-sm">{row.original.email}</div>
     ),
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("phone", {
+  },
+  {
+    accessorKey: "phone",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -64,13 +71,14 @@ export const Column = [
         <TiArrowUnsorted className="ml-2 h-4 w-4 text-[#898989]" />
       </Button>
     ),
-    cell: (info) => (
-      <div className="text-[10px] md:text-sm">{info.getValue()}</div>
+    cell: ({ row }) => (
+      <div className="text-[10px] md:text-sm">{row.original.phone}</div>
     ),
     enableSorting: true,
     enableHiding: false,
-  }),
-  columnHelper.accessor("contactType", {
+  },
+  {
+    accessorKey: "contactType",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -81,14 +89,24 @@ export const Column = [
       </Button>
     ),
     cell: (info) => (
-      <Button
-        className={`bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md h-8 px-2`}
-      >
-        {/* {info.getValue()} */}
+      <Button className="bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md h-8 px-2">
         <p>Secondary</p>
       </Button>
     ),
     enableSorting: true,
     enableHiding: false,
-  }),
+  },
+  {
+    id: "actions", // Make sure to give a unique id for the actions column
+    cell: ({ row }) => {
+      console.log("here", row.original);
+      return (
+        <div onClick={(e) => e.stopPropagation()}>
+          <ContactActionCell row={row} />
+        </div>
+      );
+    },
+    enableSorting: false,
+    enableHiding: true,
+  },
 ];

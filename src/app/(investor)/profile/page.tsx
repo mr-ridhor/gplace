@@ -25,7 +25,7 @@ const page = () => {
       .then((response) => response.json())
       .then((data) => {
         dispatch(setProfile(data));
-        console.log("data", data);
+        console.log("profile", data);
       })
       .catch((err) => console.log(err));
   }, [dispatch]);

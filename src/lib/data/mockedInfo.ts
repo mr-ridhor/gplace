@@ -4,6 +4,8 @@ export type mockedInfoType = {
   email: string;
   phone: string;
   contactType: string;
+  investor: string;
+  _id: string;
 };
 
 export const mockedInfo: Array<{
