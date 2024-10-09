@@ -22,6 +22,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         email,
         phone,
         title,
+        contactType: 'Primary'
       });
   
       // Save the contact to the database
@@ -37,6 +38,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     if(!user || !user.user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
     const contacts = await InvestorContact.find({user: user.user.id, investor: params.id });
+    if(!contacts || contacts.length == 0) return NextResponse.json({ message: 'No Contacts Found' }, { status: 404 });
   
     return NextResponse.json(contacts, { status: 200 })
 }

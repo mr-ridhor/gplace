@@ -88,9 +88,12 @@ export const Column: ColumnDef<TableRowType>[] = [
         <TiArrowUnsorted className="ml-2 h-4 w-4 text-[#898989]" />
       </Button>
     ),
-    cell: (info) => (
-      <Button className="bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md h-8 px-2">
-        <p>Secondary</p>
+    cell: ({ row }) => (
+      <Button
+        className={`bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md h-8 px-2`}
+      >
+        {row.original.contactType}
+        {/* <p>Secondary</p> */}
       </Button>
     ),
     enableSorting: true,

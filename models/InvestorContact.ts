@@ -9,9 +9,7 @@ export interface IInvestorContact extends Document {
   email: string;
   phone: string;
   title: string;
-  type: 'secondary' | 'primary';
-  createdAt?: Date;
-  updatedAt?: Date;
+  contactType: 'Secondary' | 'Primary';
 }
 
 // Define the Mongoose schema for InvestorContact
@@ -32,7 +30,7 @@ const InvestorContactSchema: Schema<IInvestorContact> = new Schema(
     email: { type: String, required: true },
     phone: { type: String, required: true },
     title: { type: String, required: true },
-    type: { type: String, enum: ['secondary', 'primary'], default: 'secondary' },
+    contactType: { type: String, enum:["Secondary", "Primary"], default: 'Secondary'},
   },
   { timestamps: true }
 );
