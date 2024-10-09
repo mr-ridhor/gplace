@@ -126,7 +126,30 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
                   )}
                 />
               </div>
-
+              <div className="w-full space-y-2">
+                <FormLabel className="font-normal text-sm">
+                  Offered Price
+                </FormLabel>
+                <FormField
+                  control={form.control}
+                  name="offeredPrice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
+                          {...field}
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div className="w-full flex items-center gap-x-4">
                 <Button
                   onClick={onBack}
