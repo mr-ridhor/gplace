@@ -98,7 +98,7 @@ export const Column: ColumnDef<TableRowType>[] = [
     enableHiding: false,
   },
   {
-    id: "actions", // Make sure to give a unique id for the actions column
+    id: "actions",
     cell: ({ row }) => {
       console.log("here", row.original);
       return (
