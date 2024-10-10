@@ -40,7 +40,7 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
     defaultValues: profile,
   });
   const onSubmit = (data: invproType) => {
-    console.log(data);
+    // console.log(data);
     dispatch(setProfile(data));
     // setPro(data);
     // alert("hi");

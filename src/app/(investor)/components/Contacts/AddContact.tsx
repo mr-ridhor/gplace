@@ -64,20 +64,23 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
   };
 
   const onSubmit = async (data: contType) => {
+    const payload = {
+      name: data.name,
+      surname: data.surname,
+      email: data.email,
+      phone: data.phone,
+      title: data.title,
+      contactType: contactType,
+    };
+    console.log(payload);
+
     try {
       const investorId = selectedItem?._id;
       if (!investorId) {
         throw new Error("Investor ID is missing");
       }
 
-      await axios.post(`/api/investors/${investorId}/contact`, {
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        phone: data.phone,
-        title: data.title,
-        contactType: contactType,
-      });
+      await axios.post(`/api/investors/${investorId}/contact`, payload);
       fetchData();
       form.reset();
       setTimeout(() => {
@@ -153,7 +156,36 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
                   </div>
                 </div>
               </div>
-
+              <div className="w-full space-y-2">
+                <div className="w-full grid grid-cols-2 my-3 ">
+                  <div className=" col-span-1 px-3">
+                    <Button
+                      type="button"
+                      className={`w-full ${
+                        contactType === "Primary"
+                          ? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
+                          : "bg-transparent hover:bg-transparent text-black"
+                      }`}
+                      onClick={() => setContactType("Primary")}
+                    >
+                      <p>Primary Contact</p>
+                    </Button>
+                  </div>
+                  <div className=" col-span-1 px-3">
+                    <Button
+                      className={`w-full ${
+                        contactType === "Secondary"
+                          ? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
+                          : "bg-transparent hover:bg-transparent text-black"
+                      }`}
+                      onClick={() => setContactType("Secondary")}
+                      type="button"
+                    >
+                      <p>Secondary Contact</p>
+                    </Button>
+                  </div>
+                </div>
+              </div>
               <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-sm">Email</FormLabel>
                 <FormField

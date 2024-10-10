@@ -18,6 +18,7 @@ import { invpro2Schema } from "@/lib/zod-schema/invpro2Schema";
 import { targetSchema } from "@/lib/zod-schema/targetSchema";
 
 import { invpro2Type } from "@/lib/zod-type/invpro2Type";
+import { offeredPriceType } from "@/lib/zod-type/offerPriceType";
 import { tragetType } from "@/lib/zod-type/targetType";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,7 +34,7 @@ interface Props {
 const Target: React.FC<Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const target = useSelector(getInvestor);
-  const form = useForm<tragetType>({
+  const form = useForm<tragetType & { offeredPrice: offeredPriceType }>({
     resolver: zodResolver(targetSchema),
     mode: "onChange",
     defaultValues: target,
@@ -124,13 +125,13 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
                   )}
                 />
               </div>
-              <div className="w-full space-y-2">
+              {/* <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-sm">
                   Offered Price
                 </FormLabel>
                 <FormField
                   control={form.control}
-                  name="offeredPrice"
+                  name="offeredPrice.offeredPriceValuation" 
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
@@ -147,7 +148,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
                     </FormItem>
                   )}
                 />
-              </div>
+              </div> */}
               <div className="w-full flex items-center gap-x-4">
                 <Button
                   onClick={onBack}

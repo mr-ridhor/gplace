@@ -79,10 +79,10 @@ const Navbar = () => {
     return false;
   };
   const detail = searchParams.get("detail"); // Get the 'detail' parameter from the URL
-  console.log(tab);
+  // console.log(tab);
   const pathname = usePathname();
 
-  console.log(pathname);
+  // console.log(pathname);
   React.useEffect(() => {
     if (pathname === "/profile") {
       dispatch(setActiveTab(""));

@@ -36,7 +36,7 @@ const PersonalInfoForm = () => {
   });
 
   const onSubmit = async (data: personalType) => {
-    console.log(data);
+    // console.log(data);
 
     // Send a PUT request to the API
     try {
@@ -50,7 +50,7 @@ const PersonalInfoForm = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Profile updated successfully:", result);
+        // console.log("Profile updated successfully:", result);
 
         // Dispatch the updated info to the Redux store
         dispatch(updatePersonalInfo(data));
@@ -98,7 +98,7 @@ const PersonalInfoForm = () => {
                               {...field}
                               onChange={(e) => {
                                 field.onChange(e); // React Hook Form handler
-                                console.log(e.target.value); // Log value on change
+                                // console.log(e.target.value); // Log value on change
                               }}
                             />
                           </FormControl>
@@ -120,7 +120,7 @@ const PersonalInfoForm = () => {
                               {...field}
                               onChange={(e) => {
                                 field.onChange(e);
-                                console.log(e.target.value);
+                                // console.log(e.target.value);
                               }}
                             />
                           </FormControl>
@@ -143,7 +143,7 @@ const PersonalInfoForm = () => {
                             {...field}
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log(e.target.value);
+                              // console.log(e.target.value);
                             }}
                           />
                         </FormControl>
@@ -187,7 +187,7 @@ const PersonalInfoForm = () => {
                             {...field}
                             onChange={(e) => {
                               field.onChange(e);
-                              console.log(e.target.value);
+                              // console.log(e.target.value);
                             }}
                           />
                         </FormControl>

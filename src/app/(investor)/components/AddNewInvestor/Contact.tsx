@@ -38,8 +38,15 @@ const Contact = () => {
   const dispatch = useDispatch();
   // const router = useRouter;
   const { data: session } = useSession();
-  const { contact, companyInfo, profile, profile2, target, price } =
-    useSelector(getInvestor);
+  const {
+    contact,
+    companyInfo,
+    profile,
+    profile2,
+    target,
+    price,
+    offeredPriceValuation,
+  } = useSelector(getInvestor);
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
     mode: "onChange",
@@ -56,7 +63,7 @@ const Contact = () => {
     }
   };
   const onSubmit = async (data: contType) => {
-    console.log(data);
+    // console.log(data);
     const payload = {
       companyInfo: {
         companyName: companyInfo.name,
@@ -90,10 +97,15 @@ const Contact = () => {
           to: price.evEbd,
         },
         offeredPrice: {
-          to: target.offeredPrice,
+          to: offeredPriceValuation,
           from: 0,
         },
       },
+      // offeredPriceValuation: {
+      //   offeredPriceValuation: Number(offeredPriceValuation),
+      //   EBIDTA: 0,
+      //   revenue: 0,
+      // },
       paidInfo: {
         valuation: {
           from: 10000000, // (required)
@@ -116,7 +128,7 @@ const Contact = () => {
         title: data.title,
       },
     };
-    console.log(payload);
+    // console.log(payload);
 
     dispatch(setContact(data));
     try {
@@ -126,7 +138,7 @@ const Contact = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log(res);
+      // console.log(res);
       dispatch(resetPayload());
       // window.location.reload();
       loadInvestors();
@@ -134,7 +146,7 @@ const Contact = () => {
       //   throw new Error("Failed to submit the data");
       // }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       console.error("Error submitting data:", error);
     }
   };

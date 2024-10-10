@@ -36,7 +36,7 @@ const CompanyInfoForm = () => {
   useEffect(() => {
     form.reset(company);
   }, [company]);
-  console.log("company", company);
+  // console.log("company", company);
   const onSubmit = (data: companyType) => {
     const submitData = {
       name: data.name,
@@ -51,7 +51,7 @@ const CompanyInfoForm = () => {
       EBITDA: data.EBITDA || { ltm: "", previousYear: "" },
     };
 
-    console.log("Submit Data:", submitData);
+    // console.log("Submit Data:", submitData);
     dispatch(updateCompanyInfo(submitData));
   };
   const formatNumberWithCommas = (value: string | number): string => {

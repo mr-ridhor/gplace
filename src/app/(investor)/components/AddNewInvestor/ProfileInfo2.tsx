@@ -37,7 +37,7 @@ const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
     defaultValues: profile2,
   });
   const onSubmit = (data: invpro2Type) => {
-    console.log(data);
+    // console.log(data);
     dispatch(setProfile2(data));
     onNext();
   };

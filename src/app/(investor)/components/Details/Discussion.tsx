@@ -33,7 +33,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
       name: "$325.00",
     },
   ];
-  console.log(selectedItem);
+  // console.log(selectedItem);
   return (
     <TabsContent value="discussion" className="space-y-4  pb-3">
       {/* <div className="grid gap-x-5 gap-y-2 grid-cols-2 lg:grid-cols-4 w-full">
