@@ -2,8 +2,8 @@ import connectDB from "../../../../../config/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../utils/authOptions";
 import { NextRequest, NextResponse } from "next/server";
-import User from "../../../../../models/User";
 import Investor from "../../../../../models/Investor";
+import User, { IUser } from "../../../../../models/User";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
@@ -16,14 +16,25 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         }
 
         const investor = await Investor.findOne({ user: data?.user.id, _id: params.id });
+        const user: IUser | any = await User.findById(data.user.id)
         if (!investor) {
             return NextResponse.json(
-                {message: 'Investor not found'},
+                { message: 'Investor not found' },
                 { status: 404 }
             );
         }
 
-        return NextResponse.json(investor, { status: 200 });
+        const investorObj = investor.toObject()
+        const valuation = investor.targetInfo.offeredPrice || 0
+
+        return NextResponse.json({
+            ...investorObj, 
+            offeredPrice: {
+                valuation,
+                revenue:  valuation == 0 ? 0 : valuation / user?.company.revenue.ltm,
+                EBITDA: valuation == 0 ? 0 : valuation / user?.company.EBITDA.ltm,
+            }
+        }, { status: 200 });
     } catch (error: any) {
         console.error("Error:", error);
         return NextResponse.json({ message: error.message }, { status: 500 });
@@ -52,7 +63,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
             return NextResponse.json({ message: 'Investor not found' }, { status: 404 });
         }
 
-        return NextResponse.json({ message: 'Investor Data Updated Successfully'}, { status: 200 });
+        return NextResponse.json({ message: 'Investor Data Updated Successfully' }, { status: 200 });
     } catch (error: any) {
         console.error('Error:', error);
         return NextResponse.json({ message: error.message }, { status: 500 });
@@ -72,9 +83,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
         if (!updatedInvestor) {
             return NextResponse.json({ message: 'Investor not found' }, { status: 404 });
-        } 
+        }
         await Investor.deleteOne({ user: data.user.id, _id: params.id })
-        return NextResponse.json({ message: 'Investor Data Deleted Successfully'}, { status: 200 });
+        return NextResponse.json({ message: 'Investor Data Deleted Successfully' }, { status: 200 });
     } catch (error: any) {
         console.error('Error:', error);
         return NextResponse.json({ message: error.message }, { status: 500 });
