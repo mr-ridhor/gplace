@@ -11,12 +11,12 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const data = await getServerSession(authOptions);
+    
+    const { companyInfo, investmentBio, targetInfo, paidInfo, primaryContact, offeredPriceValuation } = await req.json();
 
-    const { companyInfo, investmentBio, targetInfo, paidInfo, primaryContact } =
-      await req.json();
     const user = await User.findById(data?.user.id).select("company");
-    if (!user)
-      return NextResponse.json({ message: "User not found" }, { status: 500 });
+    if (!user) return NextResponse.json({ message: "User not found" }, { status: 500 });
+    const valuation: number = offeredPriceValuation
 
     const { revenue, EBITDA, industry } = user.company;
 
@@ -33,6 +33,11 @@ export async function POST(req: NextRequest) {
       investmentBio,
       targetInfo,
       paidInfo,
+      offeredPrice: {
+        valuation,
+        revenue: parseFloat((valuation / user?.company.revenue.ltm).toFixed(1)),
+        EBITDA: parseFloat((valuation / user?.company.EBITDA.ltm).toFixed(1)),
+      },
       primaryContact,
     });
 
@@ -89,7 +94,7 @@ export async function GET(req: NextRequest) {
   try {
     // Ensure the database is connected
     await connectDB();
-    
+
     // Get the user session
     const user = await getServerSession(authOptions);
 

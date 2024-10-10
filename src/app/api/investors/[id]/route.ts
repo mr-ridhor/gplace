@@ -23,18 +23,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                 { status: 404 }
             );
         }
-
-        const investorObj = investor.toObject()
-        const valuation = investor.targetInfo.offeredPrice || 0
-
-        return NextResponse.json({
-            ...investorObj, 
-            offeredPrice: {
-                valuation,
-                revenue:  valuation == 0 ? 0 : parseFloat((valuation / user?.company.revenue.ltm).toFixed(1)),
-                EBITDA: valuation == 0 ? 0 : parseFloat((valuation / user?.company.EBITDA.ltm).toFixed(1)),
-            }
-        }, { status: 200 });
+        return NextResponse.json(investor, { status: 200 });
     } catch (error: any) {
         console.error("Error:", error);
         return NextResponse.json({ message: error.message }, { status: 500 });

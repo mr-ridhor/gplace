@@ -31,6 +31,11 @@ export interface InvestorInterface extends Document {
         revenue: { from: number; to: number };
         EBITDA: { from: number; to: number };
     };
+    offeredPrice: {
+        valuation: number;
+        revenue: number;
+        EBITDA: number;
+    };
     primaryContact: {
         name: string;
         surname: string;
@@ -81,12 +86,16 @@ const investorSchema = new Schema<InvestorInterface>({
         revenue: { from: { type: Number, required: true }, to: { type: Number, required: true } },
         EBITDA: { from: { type: Number, required: true }, to: { type: Number, required: true } },
         dealSize: { from: { type: Number, required: true }, to: { type: Number, required: true } },
-        offeredPrice: { type: Number, required: true },
     },
     paidInfo: {
         valuation: { from: { type: Number, required: true }, to: { type: Number, required: true } },
         revenue: { from: { type: Number, required: true }, to: { type: Number, required: true } },
         EBITDA: { from: { type: Number, required: true }, to: { type: Number, required: true } },
+    },
+    offeredPrice: {
+        valuation: { type: Number, required: true },
+        revenue: { type: Number, required: true },
+        EBITDA: { type: Number, required: true },
     },
     primaryContact: {
         name: { type: String, required: true },
