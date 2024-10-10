@@ -91,6 +91,7 @@ const Contact = () => {
         },
         offeredPrice: {
           to: target.offeredPrice,
+          from: 0,
         },
       },
       paidInfo: {

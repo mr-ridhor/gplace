@@ -31,9 +31,18 @@ const dataSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    deleteContactData(state, action) {
+      state.data = state.data.filter(
+        (contact) => contact._id !== action.payload
+      );
+    },
   },
 });
 
-export const { fetchDataStart, fetchDataSuccess, fetchDataFailure } =
-  dataSlice.actions;
+export const {
+  fetchDataStart,
+  fetchDataSuccess,
+  fetchDataFailure,
+  deleteContactData,
+} = dataSlice.actions;
 export default dataSlice.reducer;

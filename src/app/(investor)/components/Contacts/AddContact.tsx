@@ -79,14 +79,13 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
         contactType: contactType,
       });
       fetchData();
-
-      toast("Contact added successfully", {
-        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
-      });
       form.reset();
       setTimeout(() => {
         onClose();
       }, 2000);
+      toast("Contact added successfully", {
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
     } catch (error: any) {
       console.error(error.message);
       toast("All fields must be filled", {
@@ -223,7 +222,7 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
                   >
                     {form.formState.isSubmitting ? (
                       <div className="w-full h-72 flex items-center justify-center">
-                        <LuLoader className="w-8 h-8 text-white" />
+                        <LuLoader className="w-8 h-8 animate-spin text-white" />
                       </div>
                     ) : (
                       <p

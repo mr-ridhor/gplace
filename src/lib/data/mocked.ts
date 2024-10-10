@@ -311,11 +311,15 @@ export interface RevenueEBITDA {
   from: string;
   to: string;
 }
-
+export interface offeredPrice {
+  from: string;
+  to: string;
+}
 export interface TargetInfo {
   revenue: RevenueEBITDA;
   EBITDA: RevenueEBITDA;
   dealSize: RevenueEBITDA;
+  offeredPrice: offeredPrice;
 }
 
 export interface PaidInfo {
