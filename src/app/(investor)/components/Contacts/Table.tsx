@@ -31,6 +31,7 @@ const Table: React.FC<Props> = ({ id }) => {
       dispatch(fetchDataStart()); // Dispatch loading state
       try {
         const response = await axios.get(`/api/investors/${id}/contact`);
+        // if(response.status == 404) dispatch(fetchDataSuccess('No contact found'))
 
         dispatch(fetchDataSuccess(response.data)); // Dispatch success action with typed data
       } catch (error: any) {
