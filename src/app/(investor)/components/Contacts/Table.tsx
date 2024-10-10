@@ -34,7 +34,8 @@ const Table: React.FC<Props> = ({ id }) => {
 
         dispatch(fetchDataSuccess(response.data)); // Dispatch success action with typed data
       } catch (error: any) {
-        dispatch(fetchDataFailure(error.message || "No contact found")); // Dispatch error action
+        console.log("error:", error);
+        dispatch(fetchDataFailure(error || "No contact found")); // Dispatch error action
       }
     };
 
@@ -47,8 +48,8 @@ const Table: React.FC<Props> = ({ id }) => {
         <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
       </div>
     );
-
-  if (error) return <p>{error}</p>; // Display error if any
+  // console.log(error);
+  // if (error) return <p>{error}</p>; // Display error if any
 
   return (
     <div>

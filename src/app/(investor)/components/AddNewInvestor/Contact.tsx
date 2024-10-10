@@ -89,6 +89,9 @@ const Contact = () => {
           from: target.dealsz,
           to: price.evEbd,
         },
+        offeredPrice: {
+          to: target.offeredPrice,
+        },
       },
       paidInfo: {
         valuation: {

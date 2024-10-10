@@ -25,12 +25,12 @@ const initialState = {
     rev: "",
     ebdt: "",
     dealsz: "",
+    offeredPrice: "",
   },
   price: {
     val: "",
     evRev: "",
     evEbd: "",
-    offeredPrice: "",
   },
   //   companyInfo: {
   //     name: "",

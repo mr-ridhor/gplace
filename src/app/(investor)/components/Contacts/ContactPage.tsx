@@ -44,10 +44,10 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
                     View record <BiLogoTelegram />
                   </Button>
                 </DialogTrigger>
-                <AddContact
+                {/* <AddContact
                   selectedItem={selectedItem}
                   onClose={handleCloseDialog}
-                />
+                /> */}
               </Dialog>
             </div>
           </div>

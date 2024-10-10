@@ -199,7 +199,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Investor } from "@/lib/data/mocked";
 import { Row } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { Contact, MoreHorizontal } from "lucide-react";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -228,6 +228,7 @@ import moment from "moment";
 import { LuLoader } from "react-icons/lu";
 import AddInvestorForm from "../AddInvestorForm";
 import { mockedInfoType } from "@/lib/data/mockedInfo";
+import axios from "axios";
 
 interface Props<TData extends mockedInfoType> {
   row: Row<TData>;
@@ -251,7 +252,18 @@ const ContactActionCell = <TData extends mockedInfoType>({
     setIsDeleteOpen(true);
     setIsMenuOpen(false);
   };
-
+  const loadInvestors = async () => {
+    dispatch(fetchInvestorsRequest());
+    try {
+      const { data } = await axios.get(
+        `/api/investors/${row.original.investor}/contact`
+      );
+      dispatch(fetchInvestorsSuccess(data));
+    } catch (error: any) {
+      dispatch(fetchInvestorsFailure(error.response.data.message));
+      // toast()
+    }
+  };
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
@@ -264,7 +276,7 @@ const ContactActionCell = <TData extends mockedInfoType>({
           },
         }
       );
-
+      // loadInvestors();
       setIsDeleting(false);
       setIsDeleteOpen(false); // Close the dialog after deletion
       toast("Investor deleted successfully", {
