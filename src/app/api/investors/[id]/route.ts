@@ -31,8 +31,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
             ...investorObj, 
             offeredPrice: {
                 valuation,
-                revenue:  valuation == 0 ? 0 : valuation / user?.company.revenue.ltm,
-                EBITDA: valuation == 0 ? 0 : valuation / user?.company.EBITDA.ltm,
+                revenue:  valuation == 0 ? 0 : parseFloat((valuation / user?.company.revenue.ltm).toFixed(1)),
+                EBITDA: valuation == 0 ? 0 : parseFloat((valuation / user?.company.EBITDA.ltm).toFixed(1)),
             }
         }, { status: 200 });
     } catch (error: any) {
