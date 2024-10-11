@@ -14,9 +14,11 @@ export const targetSchema = z.object({
   rev: z.string().min(1, "Revenue is required"), // Equivalent to Yup's required
   ebdt: z.string().min(1, "EBITDA is required"),
   dealsz: z.string().min(1, "Deal size is required"),
-  offeredPrice: z.object({
-    valuation: z.number().min(1, "Valuation is required"), // Valuation is required
-    ebidta: z.number().optional(), // Optional fields in Zod
-    revenue: z.number().optional(),
-  }),
+  valuation: z.string().min(1, "Valuation is required"), // Valuation is required
+
+  // offeredPrice: z.object({
+  //   valuation: z.string().min(1, "Valuation is required"), // Valuation is required
+  //   ebidta: z.number().optional(), // Optional fields in Zod
+  //   revenue: z.number().optional(),
+  // }),
 });

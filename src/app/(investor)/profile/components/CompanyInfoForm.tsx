@@ -52,7 +52,7 @@ const CompanyInfoForm = () => {
       EBITDA: data.EBITDA || { ltm: "", previousYear: "" },
     };
 
-    // console.log("Submit Data:", submitData);
+    console.log("Submit Data:", submitData);
     dispatch(updateCompanyInfo(submitData));
   };
   const formatNumberWithCommas = (value: string | number): string => {

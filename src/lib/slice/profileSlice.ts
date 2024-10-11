@@ -8,8 +8,8 @@ export interface Bio {
   country: string;
   email: string;
   phone: string;
-  linkedIn: string;
-  x: string;
+  linkedIn?: string;
+  x?: string;
   address: string;
 }
 

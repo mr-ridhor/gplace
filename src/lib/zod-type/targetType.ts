@@ -16,9 +16,10 @@ export type targetType = {
   rev: string;
   ebdt: string;
   dealsz: string;
-  offeredPrice: {
-    valuation: string;
-    ebidta?: string;
-    revenue?: string;
-  }; // Integrating offeredPriceType here
+  valuation: string;
+  // offeredPrice: {
+  //   valuation: string;
+  //   // ebidta?: string;
+  //   // revenue?: string;
+  // }; // Integrating offeredPriceType here
 };

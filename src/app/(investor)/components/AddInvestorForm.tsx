@@ -11,7 +11,7 @@ import Contact from "./AddNewInvestor/Contact";
 import { invcomType } from "@/lib/zod-type/invtcomType";
 import { invproType } from "@/lib/zod-type/invproType";
 import { invpro2Type } from "@/lib/zod-type/invpro2Type";
-import { tragetType } from "@/lib/zod-type/targetType";
+import { targetType } from "@/lib/zod-type/targetType";
 import { priceType } from "@/lib/zod-type/priceType";
 import { contType } from "@/lib/zod-type/contType";
 import { companyType } from "@/lib/zod-type/companyType";
@@ -126,9 +126,11 @@ const AddInvestorForm: React.FC = () => {
           />
 
           <Contact
-          // submit={handleSubmit}
-          // conct={contact}
-          // setContact={setContact}
+            onBack={handleBackTab}
+
+            // submit={handleSubmit}
+            // conct={contact}
+            // setContact={setContact}
           />
           {/* No "Next" button on the last tab */}
         </Tabs>

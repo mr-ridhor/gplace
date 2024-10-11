@@ -178,9 +178,9 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) =>
-      // <p>{formatNumberWithCommas(`${row.original.offeredPrice.valuation}`)}</p>
-      "",
+    cell: ({ row }) => (
+      <p>{formatNumberWithCommas(`${row.original.offeredPrice.valuation}`)}</p>
+    ),
     enableSorting: true,
     enableHiding: false,
   },

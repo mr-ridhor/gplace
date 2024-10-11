@@ -34,7 +34,12 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
-const Contact = () => {
+interface Props {
+  onBack: () => void;
+  // price: priceType;
+  // setPri: React.Dispatch<React.SetStateAction<priceType>>;
+}
+const Contact = ({ onBack }: Props) => {
   const dispatch = useDispatch();
   // const router = useRouter;
   const { data: session } = useSession();
@@ -97,11 +102,7 @@ const Contact = () => {
           to: price.evEbd,
         },
       },
-      offeredPrice: {
-        valuation: Number(target.offeredPrice?.valuation ?? 0),
-        EBITDA: Number(3),
-        revenue: Number(4),
-      },
+      offeredPriceValuation: Number(target.valuation),
 
       paidInfo: {
         valuation: {
@@ -125,20 +126,15 @@ const Contact = () => {
         title: data.title,
       },
     };
-    console.log(typeof payload.offeredPrice.valuation);
+    console.log(payload);
 
     dispatch(setContact(data));
     try {
-      const res = await axios.post(`/api/investors`, payload, {
-        headers: {
-          // Authorization: `Bearer ${session?.user.dbToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-      // console.log(res);
-      dispatch(resetPayload());
+      const res = await axios.post(`/api/investors`, payload);
+      console.log(res);
       // window.location.reload();
       loadInvestors();
+      dispatch(resetPayload());
       // if (response.status !== 200) {
       //   throw new Error("Failed to submit the data");
       // }
@@ -260,11 +256,22 @@ const Contact = () => {
                 />
               </div>
               <DialogFooter className="sm:justify-start">
-                <DialogClose asChild>
-                  <div className="w-full flex items-center gap-x-4">
+                <div className="w-full flex gap-x-4 items-center">
+                  <div className="w-1/2">
+                    <Button
+                      onClick={onBack}
+                      className={`w-full h-10 bg-[#DCF8FC] hover:bg-[#B9E5EB]  rounded-md flex items-center justify-center
+                    `}
+                      type="button"
+                    >
+                      <p className={` font-bold`}>Back</p>
+                    </Button>
+                  </div>
+                  {/* <DialogClose asChild> */}
+                  <div className="w-1/2 flex items-center gap-x-4">
                     <Button
                       disabled={!form.formState.isValid}
-                      className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
+                      className={`w-full h-10  rounded-md flex items-center justify-center
                         `}
                       type="submit"
                     >
@@ -283,7 +290,8 @@ const Contact = () => {
                       )}
                     </Button>
                   </div>
-                </DialogClose>
+                  {/* </DialogClose> */}
+                </div>
               </DialogFooter>
             </div>
           </form>
