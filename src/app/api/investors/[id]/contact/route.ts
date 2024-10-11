@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../../utils/authOptions";
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-    const { name, surname, email, phone, title } = await req.json();
+    const { name, surname, email, phone, title, contactType } = await req.json();
     const user = await getServerSession(authOptions)
 
     if (!user || !user.user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         email,
         phone,
         title,
-        contactType: 'Primary'
+        contactType
     });
 
     // Save the contact to the database
