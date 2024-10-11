@@ -25,7 +25,7 @@ const initialState = {
     rev: "",
     ebdt: "",
     dealsz: "",
-    offeredPrice: "",
+    // offeredPrice: "",
   },
   price: {
     val: "",
@@ -33,9 +33,9 @@ const initialState = {
     evEbd: "",
   },
   offeredPrice: {
-    offerPriceValuattion: 0,
-    ebidta: "",
-    revenue: "",
+    valuation: "",
+    EBIDTA: "0",
+    revenue: "0",
   },
   contact: {
     name: "",

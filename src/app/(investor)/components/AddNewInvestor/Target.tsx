@@ -13,13 +13,17 @@ import {
   formatNumberWithCommas,
   numeralFormatter,
 } from "@/lib/numeralFormatter";
-import { getInvestor, setTarget } from "@/lib/slice/addInvestorSlice";
+import {
+  getInvestor,
+  setTarget,
+  setOfferedPrice,
+} from "@/lib/slice/addInvestorSlice";
 import { invpro2Schema } from "@/lib/zod-schema/invpro2Schema";
 import { targetSchema } from "@/lib/zod-schema/targetSchema";
 
 import { invpro2Type } from "@/lib/zod-type/invpro2Type";
 import { offeredPriceType } from "@/lib/zod-type/offerPriceType";
-import { tragetType } from "@/lib/zod-type/targetType";
+import { targetType } from "@/lib/zod-type/targetType";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
@@ -34,12 +38,12 @@ interface Props {
 const Target: React.FC<Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const target = useSelector(getInvestor);
-  const form = useForm<tragetType & { offeredPrice: offeredPriceType }>({
+  const form = useForm<targetType>({
     resolver: zodResolver(targetSchema),
     mode: "onChange",
     defaultValues: target,
   });
-  const onSubmit = (data: tragetType) => {
+  const onSubmit = (data: targetType) => {
     console.log(data);
     dispatch(setTarget(data));
 
@@ -125,30 +129,30 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
                   )}
                 />
               </div>
-              {/* <div className="w-full space-y-2">
+              <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-sm">
                   Offered Price
                 </FormLabel>
                 <FormField
                   control={form.control}
-                  name="offeredPrice.offeredPriceValuation" 
+                  name="offeredPrice.valuation"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                           {...field}
-                          value={formatNumberWithCommas(field.value || "")}
-                          onChange={(e) =>
-                            field.onChange(numeralFormatter(e.target.value))
-                          }
+                          // value={formatNumberWithCommas(field.value || "")}
+                          // onChange={(e) =>
+                          //   field.onChange(numeralFormatter(e.target.value))
+                          // }
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div> */}
+              </div>
               <div className="w-full flex items-center gap-x-4">
                 <Button
                   onClick={onBack}

@@ -13,27 +13,6 @@ export interface Bio {
   address: string;
 }
 
-// export interface Company {
-//   name: string;
-//   country: string;
-//   city: string;
-//   email: string;
-//   foundingYear: number;
-//   industry?: string;
-//   website: string;
-//   revenue: {
-//     ltm: number;
-//     previousYear: number;
-//   };
-//   grossProfit: {
-//     ltm: number;
-//     previousYear: number;
-//   };
-//   EBITDA: {
-//     ltm: number;
-//     previousYear: number;
-//   };
-// }
 export type Company = {
   name: string;
   country: string;

@@ -116,9 +116,11 @@ const Navbar = () => {
   return (
     <div className="w-full h-16 px-5 sticky top-0 z-10 flex items-center justify-between bg-[#F5F8FA]">
       <div className="flex">
-        <div className="w-max">
-          <Logo width={180} height={60} />
-        </div>
+        <Link href={"/dashboard"}>
+          <div className="w-max">
+            <Logo width={180} height={60} />
+          </div>
+        </Link>
 
         <Tabs value={tab || "detail"} className="w-full p-2 md:flex hidden">
           <TabsList className="w-full bg-inherit rounded-none rounded-t-md h-12 p-0">

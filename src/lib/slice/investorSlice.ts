@@ -1,35 +1,5 @@
-// // panelSlice.js
-// import { createSlice } from "@reduxjs/toolkit";
-// import axios from "axios";
-// import { Investor } from "../data/mocked";
-// interface InvestorsState {
-//   investors: Investor[];
-// }
-// const initialState: InvestorsState = {
-//   investors: [],
-// };
-// const investorsSlice = createSlice({
-//   name: "investors",
-//   initialState,
-//   reducers: {
-//     setInvestors: (state, action) => {
-//       state.investors = action.payload;
-//     },
-//     // deleteInvestor: (state, action) => {
-//     //   state.investors = state.investors.filter(
-//     //     (investor) => investor.id !== action.payload
-//     //   );
-//     // },
-//   },
-// });
-
-// // Export actions
-// export const { setInvestors } = investorsSlice.actions;
-
-// export default investorsSlice.reducer;
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Investor } from '../data/mocked';
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Investor } from "../data/mocked";
 
 interface InvestorsState {
   investors: Investor[];
@@ -49,7 +19,7 @@ const initialState: InvestorsState = {
   investors: [],
   loading: false,
   error: null,
-  searchValue: '',
+  searchValue: "",
   selectedCompany: null,
   selectedCountries: [],
   selectedDeals: null,
@@ -60,7 +30,7 @@ const initialState: InvestorsState = {
 };
 
 const investorsSlice = createSlice({
-  name: 'investors',
+  name: "investors",
   initialState,
   reducers: {
     fetchInvestorsRequest(state) {

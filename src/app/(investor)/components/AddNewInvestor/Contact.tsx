@@ -45,7 +45,7 @@ const Contact = () => {
     profile2,
     target,
     price,
-    offeredPriceValuation,
+    offeredPrice,
   } = useSelector(getInvestor);
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
@@ -96,16 +96,13 @@ const Contact = () => {
           from: target.dealsz,
           to: price.evEbd,
         },
-        offeredPrice: {
-          to: offeredPriceValuation,
-          from: 0,
-        },
       },
-      // offeredPriceValuation: {
-      //   offeredPriceValuation: Number(offeredPriceValuation),
-      //   EBIDTA: 0,
-      //   revenue: 0,
-      // },
+      offeredPrice: {
+        valuation: Number(target.offeredPrice?.valuation ?? 0),
+        EBITDA: Number(3),
+        revenue: Number(4),
+      },
+
       paidInfo: {
         valuation: {
           from: 10000000, // (required)
@@ -128,7 +125,7 @@ const Contact = () => {
         title: data.title,
       },
     };
-    // console.log(payload);
+    console.log(typeof payload.offeredPrice.valuation);
 
     dispatch(setContact(data));
     try {

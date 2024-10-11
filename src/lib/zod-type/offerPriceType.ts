@@ -1,5 +1,5 @@
 export type offeredPriceType = {
-  offeredPriceValuation: string;
+  valuation: string;
   ebidta?: string;
   revenue?: string;
 };
