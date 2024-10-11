@@ -1,0 +1,56 @@
+{
+    "companyInfo": {
+        "companyName": "Microsoft Inc",
+        "country": "United States",
+        "city": "California",
+        "website": "microsoft.us",
+        "yearFounded": 1982,
+        "employeeNumber": 1000,
+        "investorType": "Financial",
+        "description": "Big Investor"
+    },
+    "investmentBio": {
+        "industry": "Technology",
+        "geography": "",
+        "dealsInLTM": 2000000,
+        "medianDealSize": 2000000,
+        "AUM": 2000000,
+        "dealsIn5Y": 2000000
+    },
+    "targetInfo": {
+        "revenue": { 
+            "from": "2000000", 
+            "to": "20000000"
+        },
+        "EBITDA": { 
+            "from": "2000000", 
+            "to": "20000000"
+        },
+        "dealSize": { 
+            "from": "2000000", 
+            "to": "20000000"
+        }
+    },
+    "paidInfo": {
+        "valuation": { 
+            "from": "2000000", 
+            "to": "20000000"
+        },
+        "revenue": { 
+            "from": "2000000", 
+            "to": "20000000"
+        },
+        "EBITDA": { 
+            "from": "2000000", 
+            "to": "20000000"
+        }
+    },
+    "offeredPriceValuation": 350000,
+    "primaryContact": {
+        "name": "Emiedonmokumo",
+        "surname": "Dick-Boro",
+        "email": "emieboro8@gmail.com",
+        "phone": "08109995607",
+        "title": "Director"
+    }
+}
