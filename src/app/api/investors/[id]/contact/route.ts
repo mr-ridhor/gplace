@@ -25,10 +25,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         contactType
     });
 
-    // Save the contact to the database
-    const savedContact = await newContact.save();
+    await newContact.save();
 
-    return NextResponse.json({ message: 'Contact added successfully', contact: savedContact }, { status: 200 })
+    return NextResponse.json({ message: 'Contact added successfully' }, { status: 200 })
 }
 
 //  Get Contacts
