@@ -76,7 +76,7 @@ const investorSchema = new Schema<InvestorInterface>({
     },
     investmentBio: {
         industry: { type: String, required: true },
-        geography: { type: String, required: true },
+        geography: { type: String, },
         dealsInLTM: { type: Number, required: true },
         medianDealSize: { type: Number, required: true },
         AUM: { type: Number, required: true },

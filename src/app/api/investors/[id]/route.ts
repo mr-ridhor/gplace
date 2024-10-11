@@ -3,20 +3,17 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../utils/authOptions";
 import { NextRequest, NextResponse } from "next/server";
 import Investor from "../../../../../models/Investor";
-import User, { IUser } from "../../../../../models/User";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
         await connectDB()
         const data = await getServerSession(authOptions)
 
-        // const user = await User.findById(data?.user.id);
         if (!data || !data.user) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
         const investor = await Investor.findOne({ user: data?.user.id, _id: params.id });
-        const user: IUser | any = await User.findById(data.user.id)
         if (!investor) {
             return NextResponse.json(
                 { message: 'Investor not found' },
