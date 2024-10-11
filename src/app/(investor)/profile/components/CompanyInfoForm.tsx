@@ -24,6 +24,7 @@ import {
   // formatNumberWithCommas,
   numeralFormatter,
 } from "@/lib/numeralFormatter";
+import LoaderComponent from "@/components/LoaderComponent";
 
 const CompanyInfoForm = () => {
   const router = useRouter(); // Initialize router
@@ -424,10 +425,17 @@ const CompanyInfoForm = () => {
                 {/* Button Container */}
                 <div className="w-1/2 flex items-center justify-center">
                   <Button
+                    // disabled={!form.formState.isValid}
                     className="w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center"
                     type="submit"
                   >
-                    <p className="text-white font-bold">Done</p>
+                    {form.formState.isSubmitting ? (
+                      <div className="w-8 h-8">
+                        <LoaderComponent className="text-white" />
+                      </div>
+                    ) : (
+                      <p className="text-white font-bold">Done</p>
+                    )}
                   </Button>
                 </div>
               </div>
