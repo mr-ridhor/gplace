@@ -97,11 +97,7 @@ const Contact = () => {
           to: price.evEbd,
         },
       },
-      offeredPrice: {
-        valuation: Number(target.offeredPrice?.valuation ?? 0),
-        EBITDA: Number(3),
-        revenue: Number(4),
-      },
+      offeredPriceValuation: Number(target.valuation),
 
       paidInfo: {
         valuation: {
@@ -125,7 +121,7 @@ const Contact = () => {
         title: data.title,
       },
     };
-    console.log(typeof payload.offeredPrice.valuation);
+    console.log(payload);
 
     dispatch(setContact(data));
     try {

@@ -222,19 +222,16 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           <div className="col-span-1">
             <p className="">Valuation ($ mm)</p>
             <p className="">
-              35
-              {/* $
+              $
               {formatNumberWithCommas(
-                `${selectedItem.paidInfo.valuation.from} `
+                `${selectedItem.offeredPrice.valuation} `
               )}
-              - $ $
-              {formatNumberWithCommas(`${selectedItem.paidInfo.valuation.to} `)} */}
             </p>
           </div>
           <div className="col-span-1">
             <p className="">EV/Revenue</p>
             <p className="">
-              2.4x{" "}
+              {selectedItem.offeredPrice.revenue}x
               {/* $
               {formatNumberWithCommas(
                 `${selectedItem.targetInfo.revenue.from} `
@@ -245,11 +242,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
           </div>
           <div className="col-span-1">
             <p className="">EV/EBITDA</p>
-            <p className="">
-              3.4x
-              {/* ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.from}`)}{" "}
-              - ${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.to}`)} */}
-            </p>
+            <p className="">{selectedItem.offeredPrice.EBITDA}x</p>
           </div>
         </div>
       </div>

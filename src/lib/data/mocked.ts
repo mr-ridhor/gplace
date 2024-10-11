@@ -22,11 +22,11 @@ export interface RevenueEBITDA {
   from: string;
   to: string;
 }
-// export interface offeredPriceValuation {
-//   valuation: 0;
-//   revenue: string;
-//   EBIDTA: string;
-// }
+export interface offeredPriceValuation {
+  valuation: 0;
+  revenue: string;
+  EBITDA: string;
+}
 export interface TargetInfo {
   revenue: RevenueEBITDA;
   EBITDA: RevenueEBITDA;
@@ -63,7 +63,7 @@ export interface Investor {
   targetInfo: TargetInfo;
   paidInfo: PaidInfo;
   primaryContact: PrimaryContact;
-  // offeredPrice: offeredPriceValuation;
+  offeredPrice: offeredPriceValuation;
   vertical: string;
   status: string;
   matchScore: MatchScore;

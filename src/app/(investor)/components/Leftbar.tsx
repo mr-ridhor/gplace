@@ -133,8 +133,8 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
               Offered Price ($mm)
             </p>
             <div className=" rounded-md text-[12px] lg:text-sm">
-              {/* {list.companyInfo.investorType} */}
-              $35 mm
+              {/* {list.companyInfo.investorType} */}$
+              {formatNumberWithCommas(`${list.offeredPrice.valuation}`)}
             </div>
           </div>
         </div>

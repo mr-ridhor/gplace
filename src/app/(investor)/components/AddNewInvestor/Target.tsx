@@ -16,7 +16,7 @@ import {
 import {
   getInvestor,
   setTarget,
-  setOfferedPrice,
+  // setOfferedPrice,
 } from "@/lib/slice/addInvestorSlice";
 import { invpro2Schema } from "@/lib/zod-schema/invpro2Schema";
 import { targetSchema } from "@/lib/zod-schema/targetSchema";
@@ -135,17 +135,17 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
                 </FormLabel>
                 <FormField
                   control={form.control}
-                  name="offeredPrice.valuation"
+                  name="valuation"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                           {...field}
-                          // value={formatNumberWithCommas(field.value || "")}
-                          // onChange={(e) =>
-                          //   field.onChange(numeralFormatter(e.target.value))
-                          // }
+                          value={formatNumberWithCommas(field.value || "")}
+                          onChange={(e) =>
+                            field.onChange(numeralFormatter(e.target.value))
+                          }
                         />
                       </FormControl>
                       <FormMessage />

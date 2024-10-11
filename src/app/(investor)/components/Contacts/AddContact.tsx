@@ -72,7 +72,7 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
       title: data.title,
       contactType: contactType,
     };
-    console.log(payload);
+    console.log("[ayload", payload);
 
     try {
       const investorId = selectedItem?._id;

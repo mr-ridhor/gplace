@@ -6,4 +6,5 @@ export const contSchema = z.object({
   phone: z.string().min(1, "Phone is required"),
   email: z.string().email("Invalid email address"),
   title: z.string().min(1, "Title is required").optional(),
+  contactType: z.string(),
 });

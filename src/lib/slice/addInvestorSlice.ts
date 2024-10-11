@@ -32,11 +32,7 @@ const initialState = {
     evRev: "",
     evEbd: "",
   },
-  offeredPrice: {
-    valuation: "",
-    EBIDTA: "0",
-    revenue: "0",
-  },
+  offeredPriceValuation: 0,
   contact: {
     name: "",
     surname: "",
@@ -68,9 +64,9 @@ const addInvestorSlice = createSlice({
     setContact(state, action) {
       state.contact = { ...state.contact, ...action.payload };
     },
-    setOfferedPrice(state, action) {
-      state.contact = { ...state.offeredPrice, ...action.payload };
-    },
+    // setOfferedPrice(state, action) {
+    //   state.contact = { ...state.offeredPrice, ...action.payload };
+    // },
     resetPayload: () => initialState,
   },
 });
@@ -83,7 +79,7 @@ export const {
   setCompanyInfo,
   setContact,
   resetPayload,
-  setOfferedPrice,
+  // setOfferedPrice,
 } = addInvestorSlice.actions;
 
 export const getInvestor = (state: any) => state.addInvestor;
