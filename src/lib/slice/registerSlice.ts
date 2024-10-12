@@ -37,11 +37,11 @@ const initialState = {
   teamInfo: {
     team1: {
       fullName: "",
-      role: "",
+      email: "",
     },
     team2: {
       fullName: "",
-      role: "",
+      email: "",
     },
   },
   credentials: {

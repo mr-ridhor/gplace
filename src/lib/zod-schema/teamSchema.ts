@@ -13,10 +13,12 @@ import { z } from "zod";
 export const teamSchema = z.object({
   team1: z.object({
     fullName: z.string().optional(),
-    role: z.string().optional(),
+    // role: z.string().optional(),
+    email: z.string().email("Invalid email address").optional(),
   }),
   team2: z.object({
     fullName: z.string().optional(),
-    role: z.string().optional(),
+    // role: z.string().optional(),
+    email: z.string().email("Invalid email address").optional(),
   }),
 });

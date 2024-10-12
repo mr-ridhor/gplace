@@ -209,7 +209,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
             <div className="w-full flex gap-x-4 items-center s-y-2">
               <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
-                  Industry Type
+                  Industry
                 </FormLabel>
                 <FormField
                   control={form.control}
@@ -221,7 +221,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                           {...field}
                         />
-                        <Selects
+                        {/* <Selects
                           value={field.value}
                           onChange={field.onChange}
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
@@ -230,7 +230,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
                             { value: "strategic", label: "Strategic" },
                             { value: "health", label: "Health" },
                           ]}
-                        />
+                        /> */}
                       </FormControl>
                       <FormMessage />
                     </FormItem>

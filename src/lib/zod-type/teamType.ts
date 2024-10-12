@@ -8,10 +8,10 @@
 export type teamType = {
   team1?: {
     fullName?: string;
-    role?: string;
+    email?: string;
   };
   team2?: {
     fullName?: string;
-    role?: string;
+    email?: string;
   };
 };

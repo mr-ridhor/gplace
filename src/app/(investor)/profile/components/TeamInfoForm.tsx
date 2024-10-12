@@ -86,11 +86,11 @@ const TeamInfoForm = () => {
                 <div className="w-full  flex gap-x-4">
                   <div className="w-full space-y-2">
                     <FormLabel className="text-[10px] md:text-sm lg:text-base font-normal">
-                      Role
+                      Email Address
                     </FormLabel>
                     <FormField
                       control={form.control}
-                      name="team1.role"
+                      name="team1.email"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
@@ -135,11 +135,11 @@ const TeamInfoForm = () => {
                 <div className="w-full  flex gap-x-4">
                   <div className="w-full space-y-2">
                     <FormLabel className="text-[10px] md:text-sm lg:text-base font-normal">
-                      Role
+                      Email Address
                     </FormLabel>
                     <FormField
                       control={form.control}
-                      name="team2.role"
+                      name="team2.email"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
