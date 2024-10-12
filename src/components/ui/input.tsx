@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -21,5 +22,49 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 Input.displayName = "Input";
-
-export { Input };
+// const PasswordInput = ({ field }: { field: any }) => {
+//   const [show, setShow] = React.useState(false);
+//   return (
+//     <div className="w-full flex relative">
+//       <Input
+//         placeholder="Enter password"
+//         type={show ? "text" : "password"}
+//         {...field}
+//       />
+//       <button
+//         type="button"
+//         onClick={() => setShow(!show)}
+//         className="absolute h-full w-10 flex items-center justify-center right-0"
+//       >
+//         {show ? <FaRegEyeSlash /> : <FaRegEye />}
+//       </button>
+//     </div>
+//   );
+// };
+const PasswordInput = ({
+  field,
+  className,
+}: {
+  field: any;
+  className?: string;
+}) => {
+  const [show, setShow] = React.useState(false);
+  return (
+    <div className="w-full flex relative">
+      <Input
+        placeholder="Enter password"
+        type={show ? "text" : "password"}
+        {...field}
+        className={className} // Pass className prop here
+      />
+      <button
+        type="button"
+        onClick={() => setShow(!show)}
+        className="absolute h-full w-10 flex items-center justify-center right-0"
+      >
+        {show ? <FaRegEyeSlash /> : <FaRegEye />}
+      </button>
+    </div>
+  );
+};
+export { Input, PasswordInput };

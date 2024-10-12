@@ -89,7 +89,7 @@ export function DataTable<TData, TValue>({
   ];
 
   return (
-    <div className="rounded-md border w-full h-full">
+    <div className="rounded-md border pb-2 w-full h-full">
       <div className="w-full h-[90%] overflow-auto no-scrollbar">
         <Table>
           <TableHeader>
@@ -152,20 +152,20 @@ export function DataTable<TData, TValue>({
         <div className="flex items-center gap-x-2 ">
           <Button
             variant="ghost"
-            className="h-8 w-8 p-0"
+            className="h-6 lg:h-8 w-6 lgw-8 p-0"
             onClick={() => setPageIndex((old) => Math.max(old - 1, 0))}
             disabled={!table.getCanPreviousPage()}
             aria-label="Previous page"
           >
             <BiSolidLeftArrowAlt className="h-6 w-6" />
           </Button>
-          <p>
+          <p className="text-[12px] lg:text-base">
             Page <strong>{pageIndex + 1}</strong> of{" "}
             <strong>{table.getPageCount()}</strong>
           </p>
           <Button
             variant="ghost"
-            className="h-8 w-8 p-0"
+            className="h-6 lg:h-8 w-6 lg:w-8 p-0"
             onClick={() =>
               setPageIndex((old) => Math.min(old + 1, table.getPageCount() - 1))
             }
@@ -177,9 +177,9 @@ export function DataTable<TData, TValue>({
         </div>
 
         <div className="flex items-center gap-x-2  w-max  justify-end">
-          <Label>Rows per page</Label>
+          <Label className="text-[12px] lg:text-base">Rows per page</Label>
           <Selects
-            className="border flex rounded p w-[60px] focus:ring-0 ring-0"
+            className="border lg:text-base text-[12px] flex rounded p w-[60px] focus:ring-0 ring-0"
             options={options}
             placeholder="Select rows"
             value={String(pageSize)} // Use pageSize as string

@@ -25,6 +25,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
     yearFounded: list.companyInfo.yearFounded,
     companyName: list.companyInfo.companyName,
     employeeNo: list.companyInfo.employeeNumber,
+    // country:list.companyInfo.country
   });
 
   const handleDoubleClick = (field: keyof typeof editingState) => (e: any) => {
@@ -40,15 +41,13 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 
   const saveChanges = async (field: keyof typeof values) => {
     try {
-      const response = await axios.put(
-        `https://your-api-endpoint.com/company`,
-        {
-          companyName: values.companyName,
-          website: values.website,
-          yearFounded: values.yearFounded,
-          employeeNumber: values.employeeNo,
-        }
-      );
+      const response = await axios.put(`/api/investors/${list._id}`, {
+        companyName: values.companyName,
+        website: values.website,
+        yearFounded: values.yearFounded,
+        employeeNumber: values.employeeNo,
+        country: values.country,
+      });
 
       // if (response.statusText !== "ok") {
       //   throw new Error("Network response was not ok");
@@ -77,8 +76,8 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
     };
 
   return (
-    <div className="md:w-[200px] fixed w-full hidden md:flex items-start justify-center">
-      <div className="bg-[#F5F8FA] w-full rounded-md min-h-[200px] xl:min-h-[340px] 2xl:min-h-[600px] md:flex items-start justify-center overflow-y-auto no-scrollbar py-3">
+    <div className="md:w-[200px] z-30 fixed w-full hidden md:flex items-start justify-center">
+      <div className="bg-[#F5F8FA] w-full rounded-md min-h-[220px] xl:min-h-[340px] 2xl:min-h-[600px] md:flex items-start justify-center overflow-y-auto no-scrollbar py-4">
         <div className="space-y-2 xl:space-y-6 2xl:space-y-10">
           {/* <div className="my-2">
             <p className="font-bold capitalize">

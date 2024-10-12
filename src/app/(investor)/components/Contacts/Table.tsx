@@ -53,9 +53,8 @@ const Table: React.FC<Props> = ({ id }) => {
   // if (error) return <p>{error}</p>; // Display error if any
 
   return (
-    <div>
-      <DataTable columns={Column} data={data} />{" "}
-      {/* Render DataTable with typed data */}
+    <div className="h-[250px] xl:h-[400px] 2xl:h-[900px] ">
+      <DataTable columns={Column} data={data} />
     </div>
   );
 };

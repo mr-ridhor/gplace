@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Input, PasswordInput } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -40,7 +40,7 @@ const Login = () => {
 
   const onSubmit = async (data: loginType) => {
     try {
-      console.log(remember)
+      console.log(remember);
       const result = await signIn("credentials", {
         ...data,
         remember,
@@ -114,10 +114,14 @@ const Login = () => {
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
-                                <Input
+                                {/* <Input
                                   type="password"
                                   className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                                   {...field}
+                                /> */}
+                                <PasswordInput
+                                  field={field}
+                                  className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                                 />
                               </FormControl>
                               <FormMessage />
