@@ -10,15 +10,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import {
+  Bio,
   getProfile,
   setProfile,
   updatePersonalInfo,
 } from "@/lib/slice/profileSlice";
-import { personalSchema } from "@/lib/zod-schema/personalSchema";
+import { personalSchema, bioSchema } from "@/lib/zod-schema/personalSchema";
 import { personalType } from "@/lib/zod-type/personalType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import moment from "moment";
+import { title } from "process";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,8 +31,8 @@ const PersonalInfoForm = () => {
   const dispatch = useDispatch();
   const { bio } = useSelector(getProfile);
 
-  const form = useForm<personalType>({
-    resolver: zodResolver(personalSchema),
+  const form = useForm<Bio>({
+    resolver: zodResolver(bioSchema),
     defaultValues: {
       firstName: bio.firstName,
       lastName: bio.lastName,
@@ -43,20 +47,28 @@ const PersonalInfoForm = () => {
     },
   });
 
-  const onSubmit = async (data: personalType) => {
+  const onSubmit = async (data: Bio) => {
     console.log(data);
     dispatch(updatePersonalInfo(data));
 
     try {
-      const response = await axios.post("/api/profile", data, {});
+      const response = await axios.put("/api/profile", data);
       console.log(response);
-      // if (response.status === 200) {
-      //   const result = response.data;
-      //   // Handle success
-      // } else {
-      //   console.error("Failed to update profile");
-      // }
-    } catch (error) {
+      dispatch(updatePersonalInfo(data));
+
+      if (response.status === 200) {
+        const result = response.data;
+        // Handle success
+        toast({
+          title: `${result.message}`,
+          description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: `${error.data.message}`,
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
       console.error("Error updating profile:", error);
     }
   };
@@ -255,7 +267,7 @@ const PersonalInfoForm = () => {
             </div>
             <div className="w-full">
               <Button
-                onClick={() => alert("Button clicked")}
+                // onClick={() => alert("Button clicked")}
                 className="w-full h-10 mt-3   gap-x-1 rounded-md "
                 type="submit"
               >

@@ -116,7 +116,10 @@ const Navbar = () => {
   return (
     <div className="w-full h-16 px-5 sticky top-0 z-10 flex items-center justify-between bg-[#F5F8FA]">
       <div className="flex">
-        <Link href={"/dashboard"}>
+        <Link
+          href={"/dashboard?detail=&tab=detail"}
+          onClick={handleInvestorsClick}
+        >
           <div className="w-max">
             <Logo width={180} height={60} />
           </div>
@@ -240,7 +243,10 @@ const Navbar = () => {
               <DropdownMenuLabel className="flex w-full justify-center">
                 <Button
                   className="mx-8 p-2 hover:bg-transparent bg-transparent "
-                  onClick={() => signOut({ callbackUrl: "/auth/login" })}
+                  onClick={() => {
+                    signOut({ callbackUrl: "/auth/login" });
+                    dispatch(resetSelectedRow());
+                  }}
                 >
                   Signout
                 </Button>
@@ -258,7 +264,10 @@ const Navbar = () => {
             <DropdownMenuLabel className="flex w-full justify-center">
               <Button
                 className="mx-8 p-2 hover:bg-transparent bg-transparent "
-                onClick={() => signOut({ callbackUrl: "/auth/login" })}
+                onClick={() => {
+                  signOut({ callbackUrl: "/auth/login" });
+                  dispatch(resetSelectedRow());
+                }}
               >
                 Signout
               </Button>

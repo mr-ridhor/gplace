@@ -1,11 +1,6 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import {
-//   fetchInvestorsRequest,
-//   fetchInvestorsSuccess,
-//   fetchInvestorsFailure,
-// } from "./investorsSlice";
 import axios from "axios";
 import Table from "./component/Table";
 import LoaderComponent from "@/components/LoaderComponent";
@@ -32,7 +27,7 @@ import {
   setSelectedContactTitle,
 } from "@/lib/slice/investorSlice";
 import { Investor } from "@/lib/data/mocked";
-import { getPanel, setShowFilter } from "@/lib/slice/panelSlice"; // Ensure these imports are correct
+import { getPanel, setShowFilter } from "@/lib/slice/panelSlice";
 
 const Page: React.FC = () => {
   const dispatch = useDispatch();
@@ -49,7 +44,14 @@ const Page: React.FC = () => {
     selectedGeography,
     selectedContactTitle,
   } = useSelector((state: any) => state.investors);
-  const { showFilter, showSearch } = useSelector(getPanel);
+  const { showFilter } = useSelector(getPanel);
+
+  const [countrySearch, setCountrySearch] = useState<string>("");
+  const [dealSearch, setDealSearch] = useState<string>("");
+  const [dealSizeSearch, setDealSizeSearch] = useState<string>("");
+  const [industrySearch, setIndustrySearch] = useState<string>("");
+  const [geoSearch, setGeoSearch] = useState<string>("");
+  const [contactTitleSearch, setContactTitleSearch] = useState<string>("");
 
   useEffect(() => {
     const loadInvestors = async () => {
@@ -66,8 +68,13 @@ const Page: React.FC = () => {
   }, [dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchValue(e.target.value));
-    dispatch(setSelectedCompany(null));
+    const value = e.target.value;
+    dispatch(setSearchValue(value));
+
+    // If the input is cleared, reset all filters
+    if (value === "") {
+      handleClearInput();
+    }
   };
 
   const handleClearInput = () => {
@@ -108,12 +115,67 @@ const Page: React.FC = () => {
       geographyMatches &&
       contactTitleMatches &&
       (!selectedCompany ||
-        companyName?.toLowerCase() === selectedCompany.toLowerCase()) && // Only show if selectedCompany matches
+        companyName?.toLowerCase() === selectedCompany.toLowerCase()) &&
       (searchValue
         ? companyName?.toLowerCase().includes(searchValue.toLowerCase())
-        : true) // Show all if searchValue is empty
+        : true)
     );
   });
+
+  const uniqueCompanies = [
+    ...new Set(
+      investors.map(
+        (inv: { companyInfo: { companyName: any } }) =>
+          inv.companyInfo.companyName
+      )
+    ),
+  ];
+  const uniqueCountries = [
+    ...new Set(
+      investors.map(
+        (inv: { companyInfo: { country: any } }) => inv.companyInfo.country
+      )
+    ),
+  ];
+  const uniqueDeals = [
+    ...new Set(
+      investors.map(
+        (inv: { investmentBio: { dealsIn5Y: any } }) =>
+          inv.investmentBio.dealsIn5Y
+      )
+    ),
+  ];
+  const uniqueDealSizes = [
+    ...new Set(
+      investors.map(
+        (inv: { investmentBio: { medianDealSize: any } }) =>
+          inv.investmentBio.medianDealSize
+      )
+    ),
+  ];
+  const uniqueIndustries = [
+    ...new Set(
+      investors.map(
+        (inv: { investmentBio: { industry: any } }) =>
+          inv.investmentBio.industry
+      )
+    ),
+  ];
+  const uniqueGeographies = [
+    ...new Set(
+      investors.map(
+        (inv: { investmentBio: { geography: any } }) =>
+          inv.investmentBio.geography
+      )
+    ),
+  ];
+  const uniqueContactTitles = [
+    ...new Set(
+      investors.map(
+        (inv: { primaryContact: { title: any } }) => inv.primaryContact.title
+      )
+    ),
+  ];
 
   if (loading) {
     return (
@@ -127,7 +189,7 @@ const Page: React.FC = () => {
   return (
     <div className="relative h-[90%] 2xl:h-[98%] py-4 no-scrollbar overflow-y-auto flex gap-x-4">
       {showFilter && (
-        <div className="w-[200px] space-y-2 border rounded-md h-full bg p-">
+        <div className="w-[200px] space-y-2 border rounded-md h-full bg">
           <div className="h-[5%] justify-between flex items-center gap-x-3 bg-[#DEDEDE] px-4 w-full">
             <div className="flex gap-x-2 h-full items-center">
               <Filter />
@@ -141,13 +203,14 @@ const Page: React.FC = () => {
           <div className="px-4 overflow-y-auto no-scrollbar h-[90%]">
             <div className="h-max bg-[#F5F8FA] rounded-md overflow-y-auto no-scrollbar">
               <div className="gap-x-4 h-10 px-3 w-full flex items-center">
+                <SearchIcon className="h-4 w-4 text-[#3F3F3F]" />
+
                 <input
                   className="w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit"
                   placeholder="Type name to search"
                   value={searchValue}
                   onChange={handleInputChange}
                 />
-                <SearchIcon className="h-4 w-4 text-[#3F3F3F]" />
                 <GrClose
                   className="cursor-pointer"
                   onClick={handleClearInput}
@@ -156,27 +219,20 @@ const Page: React.FC = () => {
               <hr className="bg-black" />
               {searchValue && (
                 <div className="space-y-2 px-3 mt-2">
-                  {investors
-                    .filter((investor: Investor) =>
-                      investor.companyInfo.companyName
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase())
+                  {uniqueCompanies
+                    .filter((company: any) =>
+                      company.toLowerCase().includes(searchValue.toLowerCase())
                     )
-
-                    .map((investor: Investor) => (
+                    .map((company: any) => (
                       <div
-                        key={investor._id}
+                        key={company}
                         className="text-[12px] cursor-pointer hover:bg-[#03AAC1] hover:text-white"
                         onClick={() => {
-                          dispatch(
-                            setSelectedCompany(investor.companyInfo.companyName)
-                          );
-                          dispatch(
-                            setSearchValue(investor.companyInfo.companyName)
-                          );
+                          dispatch(setSelectedCompany(company));
+                          dispatch(setSearchValue(company));
                         }}
                       >
-                        {investor.companyInfo.companyName}
+                        {company}
                       </div>
                     ))}
                 </div>
@@ -184,18 +240,25 @@ const Page: React.FC = () => {
             </div>
 
             <Accordion type="single" collapsible>
+              {/* Country Accordion */}
               <AccordionItem value="country">
                 <AccordionTrigger className="2xl:text-base text-sm">
                   Country
                 </AccordionTrigger>
                 <AccordionContent>
-                  {investors
-                    .map((investor: Investor) => investor.companyInfo.country)
-                    .filter(
-                      (country: string, index: number, self: string[]) =>
-                        self.indexOf(country) === index
+                  <input
+                    placeholder="Search country"
+                    value={countrySearch}
+                    onChange={(e) => setCountrySearch(e.target.value)}
+                    className="mb-2 w-full"
+                  />
+                  {uniqueCountries
+                    .filter((country: any) =>
+                      country
+                        .toLowerCase()
+                        .includes(countrySearch.toLowerCase())
                     )
-                    .map((country: string, idx: number) => (
+                    .map((country: any, idx) => (
                       <div
                         key={idx}
                         className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
@@ -209,48 +272,49 @@ const Page: React.FC = () => {
                 </AccordionContent>
               </AccordionItem>
 
+              {/* Deals Accordion */}
               <AccordionItem value="deals">
                 <AccordionTrigger className="2xl:text-base text-sm">
                   Deals in 5 years
                 </AccordionTrigger>
                 <AccordionContent>
-                  {investors
-                    .map(
-                      (investor: Investor) => investor.investmentBio.dealsIn5Y
-                    )
-                    .filter(
-                      (deals: number, index: number, self: number[]) =>
-                        self.indexOf(deals) === index
-                    )
-                    .map((deals: number, idx: number) => (
+                  <input
+                    placeholder="Search deals"
+                    value={dealSearch}
+                    onChange={(e) => setDealSearch(e.target.value)}
+                    className="mb-2 w-full"
+                  />
+                  {uniqueDeals
+                    .filter((deal) => String(deal).includes(dealSearch))
+                    .map((deal: any, idx) => (
                       <div
                         key={idx}
-                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover :text-white"
+                        className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
                         onClick={() => {
-                          dispatch(setSelectedDeals(String(deals)));
+                          dispatch(setSelectedDeals(String(deal)));
                         }}
                       >
-                        {deals}
+                        {deal}
                       </div>
                     ))}
                 </AccordionContent>
               </AccordionItem>
 
+              {/* Median Deal Size Accordion */}
               <AccordionItem value="dealSize">
                 <AccordionTrigger className="2xl:text-base text-sm">
                   Median Deal Size
                 </AccordionTrigger>
                 <AccordionContent>
-                  {investors
-                    .map(
-                      (investor: Investor) =>
-                        investor.investmentBio.medianDealSize
-                    )
-                    .filter(
-                      (size: number, index: number, self: number[]) =>
-                        self.indexOf(size) === index
-                    )
-                    .map((size: number, idx: number) => (
+                  <input
+                    placeholder="Search deal size"
+                    value={dealSizeSearch}
+                    onChange={(e) => setDealSizeSearch(e.target.value)}
+                    className="mb-2 w-full"
+                  />
+                  {uniqueDealSizes
+                    .filter((size) => String(size).includes(dealSizeSearch))
+                    .map((size: any, idx) => (
                       <div
                         key={idx}
                         className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
@@ -264,20 +328,25 @@ const Page: React.FC = () => {
                 </AccordionContent>
               </AccordionItem>
 
+              {/* Industry Accordion */}
               <AccordionItem value="industry">
                 <AccordionTrigger className="2xl:text-base text-sm">
                   Industry
                 </AccordionTrigger>
                 <AccordionContent>
-                  {investors
-                    .map(
-                      (investor: Investor) => investor.investmentBio.industry
+                  <input
+                    placeholder="Search industry"
+                    value={industrySearch}
+                    onChange={(e) => setIndustrySearch(e.target.value)}
+                    className="mb-2 w-full"
+                  />
+                  {uniqueIndustries
+                    .filter((industry: any) =>
+                      industry
+                        .toLowerCase()
+                        .includes(industrySearch.toLowerCase())
                     )
-                    .filter(
-                      (industry: string, index: number, self: string[]) =>
-                        self.indexOf(industry) === index
-                    )
-                    .map((industry: string, idx: number) => (
+                    .map((industry: any, idx) => (
                       <div
                         key={idx}
                         className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
@@ -291,20 +360,23 @@ const Page: React.FC = () => {
                 </AccordionContent>
               </AccordionItem>
 
+              {/* Geography Accordion */}
               <AccordionItem value="geography">
                 <AccordionTrigger className="2xl:text-base text-sm">
                   Geography
                 </AccordionTrigger>
                 <AccordionContent>
-                  {investors
-                    .map(
-                      (investor: Investor) => investor.investmentBio.geography
+                  <input
+                    placeholder="Search geography"
+                    value={geoSearch}
+                    onChange={(e) => setGeoSearch(e.target.value)}
+                    className="mb-2 w-full"
+                  />
+                  {uniqueGeographies
+                    .filter((geo: any) =>
+                      geo.toLowerCase().includes(geoSearch.toLowerCase())
                     )
-                    .filter(
-                      (geo: string, index: number, self: string[]) =>
-                        self.indexOf(geo) === index
-                    )
-                    .map((geo: string, idx: number) => (
+                    .map((geo: any, idx) => (
                       <div
                         key={idx}
                         className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
@@ -318,18 +390,25 @@ const Page: React.FC = () => {
                 </AccordionContent>
               </AccordionItem>
 
+              {/* Contact Title Accordion */}
               <AccordionItem value="contactTitle">
                 <AccordionTrigger className="2xl:text-base text-sm">
                   Contact Title
                 </AccordionTrigger>
                 <AccordionContent>
-                  {investors
-                    .map((investor: Investor) => investor.primaryContact.title)
-                    .filter(
-                      (title: string, index: number, self: string[]) =>
-                        self.indexOf(title) === index
+                  <input
+                    placeholder="Search contact title"
+                    value={contactTitleSearch}
+                    onChange={(e) => setContactTitleSearch(e.target.value)}
+                    className="mb-2 w-full"
+                  />
+                  {uniqueContactTitles
+                    .filter((title: any) =>
+                      title
+                        .toLowerCase()
+                        .includes(contactTitleSearch.toLowerCase())
                     )
-                    .map((title: string, idx: number) => (
+                    .map((title: any, idx) => (
                       <div
                         key={idx}
                         className="text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white"
@@ -347,12 +426,9 @@ const Page: React.FC = () => {
         </div>
       )}
 
-      {/* <div className="h-full w-full overflow-y-auto">
-        <Table investors={filteredInvestors} />
-      </div> */}
       <div
         className={`h-full flex ${
-          showFilter || showSearch ? "flex-1 overflow-x-auto" : "w-full"
+          showFilter ? "flex-1 overflow-x-auto" : "w-full"
         }`}
       >
         <Table investors={filteredInvestors} />

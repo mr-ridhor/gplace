@@ -64,9 +64,7 @@ const addInvestorSlice = createSlice({
     setContact(state, action) {
       state.contact = { ...state.contact, ...action.payload };
     },
-    // setOfferedPrice(state, action) {
-    //   state.contact = { ...state.offeredPrice, ...action.payload };
-    // },
+
     resetPayload: () => initialState,
   },
 });

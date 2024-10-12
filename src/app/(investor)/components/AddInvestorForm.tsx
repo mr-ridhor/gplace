@@ -50,6 +50,10 @@ const AddInvestorForm: React.FC = () => {
       handleTabChange(prevTab);
     }
   };
+  const resetTab = () => {
+    setCurrentTab("company"); // Reset to the default tab
+    setVisitedTabs(["company"]); // Optionally reset visited tabs
+  };
   return (
     <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[400px] md:w-[600px] my3 overflow-auto no-scrollbar">
       <div className="spacey-3">
@@ -127,7 +131,7 @@ const AddInvestorForm: React.FC = () => {
 
           <Contact
             onBack={handleBackTab}
-
+            onTabReset={resetTab}
             // submit={handleSubmit}
             // conct={contact}
             // setContact={setContact}

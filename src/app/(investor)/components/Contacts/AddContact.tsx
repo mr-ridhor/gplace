@@ -246,27 +246,29 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
               </div>
 
               <DialogFooter>
-                <div className="w-full flex items-center gap-x-4">
-                  <Button
-                    disabled={!form.formState.isValid}
-                    className={`w-full h-10 mt-3 rounded-md flex items-center justify-center`}
-                    type="submit"
-                  >
-                    {form.formState.isSubmitting ? (
-                      <div className="w-full h-72 flex items-center justify-center">
-                        <LuLoader className="w-8 h-8 animate-spin text-white" />
-                      </div>
-                    ) : (
-                      <p
-                        className={`${
-                          !form.formState.isValid ? "" : "text-white"
-                        } font-bold`}
-                      >
-                        Done!
-                      </p>
-                    )}
-                  </Button>
-                </div>
+                <DialogClose asChild>
+                  <div className="w-full flex items-center gap-x-4">
+                    <Button
+                      disabled={!form.formState.isValid}
+                      className={`w-full h-10 mt-3 rounded-md flex items-center justify-center`}
+                      type="submit"
+                    >
+                      {form.formState.isSubmitting ? (
+                        <div className="w-full h-72 flex items-center justify-center">
+                          <LuLoader className="w-8 h-8 animate-spin text-white" />
+                        </div>
+                      ) : (
+                        <p
+                          className={`${
+                            !form.formState.isValid ? "" : "text-white"
+                          } font-bold`}
+                        >
+                          Done!
+                        </p>
+                      )}
+                    </Button>
+                  </div>
+                </DialogClose>
               </DialogFooter>
             </div>
           </form>

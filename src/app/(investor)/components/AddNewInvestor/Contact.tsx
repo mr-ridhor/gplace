@@ -36,22 +36,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
   onBack: () => void;
+  onTabReset: () => void;
   // price: priceType;
   // setPri: React.Dispatch<React.SetStateAction<priceType>>;
 }
-const Contact = ({ onBack }: Props) => {
+const Contact = ({ onBack, onTabReset }: Props) => {
   const dispatch = useDispatch();
   // const router = useRouter;
   const { data: session } = useSession();
-  const {
-    contact,
-    companyInfo,
-    profile,
-    profile2,
-    target,
-    price,
-    offeredPrice,
-  } = useSelector(getInvestor);
+  const { contact, companyInfo, profile, profile2, target, price } =
+    useSelector(getInvestor);
   const form = useForm<contType>({
     resolver: zodResolver(contSchema),
     mode: "onChange",
@@ -61,12 +55,18 @@ const Contact = ({ onBack }: Props) => {
     dispatch(fetchInvestorsRequest());
     try {
       const { data } = await axios.get("/api/investors");
+      console.log("Fetched investors:", data); // Log the fetched data
       dispatch(fetchInvestorsSuccess(data));
     } catch (error: any) {
-      dispatch(fetchInvestorsFailure(error.response.data.message));
-      // toast()
+      console.error("Error fetching investors:", error); // Log the error
+      dispatch(
+        fetchInvestorsFailure(
+          error.response?.data?.message || "Failed to fetch"
+        )
+      );
     }
   };
+
   const onSubmit = async (data: contType) => {
     // console.log(data);
     const payload = {
@@ -135,9 +135,11 @@ const Contact = ({ onBack }: Props) => {
       // window.location.reload();
       loadInvestors();
       dispatch(resetPayload());
-      // if (response.status !== 200) {
-      //   throw new Error("Failed to submit the data");
-      // }
+      if (res.status == 200) {
+        loadInvestors();
+        dispatch(resetPayload());
+        onTabReset();
+      }
     } catch (error) {
       // console.log(error);
       console.error("Error submitting data:", error);
@@ -267,30 +269,30 @@ const Contact = ({ onBack }: Props) => {
                       <p className={` font-bold`}>Back</p>
                     </Button>
                   </div>
-                  {/* <DialogClose asChild> */}
-                  <div className="w-1/2 flex items-center gap-x-4">
-                    <Button
-                      disabled={!form.formState.isValid}
-                      className={`w-full h-10  rounded-md flex items-center justify-center
+                  <DialogClose asChild>
+                    <div className="w-1/2 flex items-center gap-x-4">
+                      <Button
+                        disabled={!form.formState.isValid}
+                        className={`w-full h-10  rounded-md flex items-center justify-center
                         `}
-                      type="submit"
-                    >
-                      {form.formState.isSubmitting ? (
-                        <div className="w-8 h-8">
-                          <LoaderComponent className="text-white" />
-                        </div>
-                      ) : (
-                        <p
-                          className={`${
-                            !form.formState.isValid ? "" : "text-white"
-                          } font-bold`}
-                        >
-                          Done!
-                        </p>
-                      )}
-                    </Button>
-                  </div>
-                  {/* </DialogClose> */}
+                        type="submit"
+                      >
+                        {form.formState.isSubmitting ? (
+                          <div className="w-8 h-8">
+                            <LoaderComponent className="text-white" />
+                          </div>
+                        ) : (
+                          <p
+                            className={`${
+                              !form.formState.isValid ? "" : "text-white"
+                            } font-bold`}
+                          >
+                            Done!
+                          </p>
+                        )}
+                      </Button>
+                    </div>
+                  </DialogClose>
                 </div>
               </DialogFooter>
             </div>

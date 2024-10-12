@@ -42,3 +42,31 @@ export const companySchema = z.object({
     previousYear: z.string(),
   }),
 });
+
+const revenueSchema = z.object({
+  ltm: z.string().min(1, "LTM revenue is required"),
+  previousYear: z.string().min(1, "Previous year revenue is required"),
+});
+
+const grossProfitSchema = z.object({
+  ltm: z.string().min(1, "LTM gross profit is required"),
+  previousYear: z.string().min(1, "Previous year gross profit is required"),
+});
+
+const ebitdaSchema = z.object({
+  ltm: z.string().min(1, "LTM EBITDA is required"),
+  previousYear: z.string().min(1, "Previous year EBITDA is required"),
+});
+
+export const CompanySchema = z.object({
+  name: z.string().min(1, "Company name is required"),
+  country: z.string().min(1, "Country is required"),
+  city: z.string().min(1, "City is required"),
+  email: z.string().email("Invalid email format"),
+  website: z.string().url("Invalid website URL").optional(),
+  industry: z.string().min(1, "Industry is required"),
+  foundingYear: z.string().min(1, "Founding year is required"),
+  revenue: revenueSchema,
+  grossProfit: grossProfitSchema,
+  EBITDA: ebitdaSchema,
+});
