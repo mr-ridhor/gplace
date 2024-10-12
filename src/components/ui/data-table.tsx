@@ -123,7 +123,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell, index) => (
                     <TableCell
                       key={cell.id}
-                      className={`${index < 3 ? "text-left" : "text-center"}`}
+                      className={`${index < 4 ? "text-left" : "text-center"}`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

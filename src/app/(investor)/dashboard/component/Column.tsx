@@ -14,25 +14,21 @@ export const Column: ColumnDef<Investor>[] = [
   {
     id: "name",
     accessorKey: "Name",
-    header: ({ column }) => {
-      const isSorted = column.getIsSorted();
-      return (
-        <div className="text-left w-max flex-row flex gap-x-2 items-center">
-          Name
-          <TiArrowUnsorted
-            className=" h-4 w-4 text-[#898989]"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          />
-        </div>
-      );
-    },
-    cell: ({ row }) => (
-      <p className="capitalize">{row.original.companyInfo.companyName}</p>
+    header: ({ column }) => (
+      <div className="text-left flex items-center">
+        Name
+        <TiArrowUnsorted
+          onClick={() => column.toggleSorting()}
+          className={`ml-2 cursor-pointer ${
+            column.getIsSorted() === "asc" ? "rotate-180" : ""
+          }`}
+        />
+      </div>
     ),
+    cell: ({ row }) => <p>{row.original.companyInfo.companyName}</p>,
     enableSorting: true,
-    enableHiding: false,
-    size: 60,
   },
+
   {
     id: "country",
     accessorKey: "Country",
@@ -78,7 +74,7 @@ export const Column: ColumnDef<Investor>[] = [
     header: ({ column }) => {
       const isSorted = column.getIsSorted();
       return (
-        <div className="text-center w-max flex-row flex gap-x-2 items-center">
+        <div className="text-left w-max flex-row flex gap-x-2 items-center">
           Investment Industry
         </div>
       );

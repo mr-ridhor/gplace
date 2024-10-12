@@ -51,7 +51,7 @@ const Navbar = () => {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const selectedRowId = localStorage.getItem("selectedRowId");
-
+  const [openSearch, setOpenSearch] = React.useState(false);
   const activeTab = useSelector(getActiveTab);
   const shouldClosePanels = () => {
     return (
@@ -181,9 +181,10 @@ const Navbar = () => {
             </div>
 
             <div
-              className="h-1/2 items-center flex gap-x bordr w-1/4 cursor-pointer"
+              className="h-1/2 items-center flex gap-x border rounded-md w-2/4 px-2 cursor-pointer relative"
               onClick={() => {
-                shouldRender() && dispatch(toggleSearchPanel());
+                // shouldRender() && dispatch(toggleSearchPanel());
+                setOpenSearch(!openSearch);
               }}
             >
               <Search size={14} />
@@ -191,16 +192,21 @@ const Navbar = () => {
                 placeholder="Search Investors"
                 className="focus-visible:outline-none h-1/2 px-2 w-[90%] cursor-pointer placeholder:text-sm bg-inherit"
               />
+              {openSearch && (
+                <div className="w-[400px] top-10 right-1 h-[300px] shadow-xl bg-white opacity rounded-md absolute z-40">
+                  fjfjjfjf
+                </div>
+              )}
             </div>
-            <Dialog>
+            {/* <Dialog>
               <DialogTrigger className="flex gap-x-2 text-sm h-14 items-center">
-                <Button className="hover:bg-[#0691A5] text-white h-10 items-center gap-x-2">
+                <Button className="hover:bg-[#0691A5] text-white h-10 items-center gap-x-2 text-sm">
                   <FaPlus />
-                  Add New
+                  Add Investor Manually
                 </Button>
               </DialogTrigger>
               <AddInvestorForm />
-            </Dialog>
+            </Dialog> */}
           </>
         ) : (
           <Link href={"profile"}>
