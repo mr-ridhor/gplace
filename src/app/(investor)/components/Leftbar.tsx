@@ -50,9 +50,9 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      // if (response.statusText !== "ok") {
+      //   throw new Error("Network response was not ok");
+      // }
 
       // const data = await response.json();
       console.log("Update successful:", response);
