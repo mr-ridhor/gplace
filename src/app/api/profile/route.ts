@@ -22,62 +22,29 @@ export async function PUT(req: NextRequest) {
     const { bio, company, team } = await req.json();
 
     // Find the user by ID
-    const user = await User.findById(currentUser?.id);
+    const user = await User.findById(currentUser?.id).lean();
     if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
 
-    // Build the update object using $set
-    const updateFields: any = {};
-    
-    if (bio) {
-      Object.keys(bio).forEach((key) => {
-        updateFields[`bio.${key}`] = bio[key];
-      });
-    }
-    
-    if (company) {
-      Object.keys(company).forEach((key) => {
-        updateFields[`company.${key}`] = company[key];
-      });
-    }
+    // Update only the provided fields, while keeping the existing data
+    const updatedBio = bio ? { ...user.bio, ...bio } : user.bio;
+    const updatedCompany = company ? { ...user.company, ...company } : user.company;
+    const updatedTeam = team ? { ...user.team, ...team } : user.team;
 
-    if (team) {
-      Object.keys(team).forEach((key) => {
-        updateFields[`team.${key}`] = team[key];
-      });
-    }
-
-    // Update only the provided fields
-    await User.updateOne(
-      { _id: currentUser?.id },
-      { $set: updateFields }
+    // Apply the updates using findByIdAndUpdate with the { new: true } option to return the updated document
+    const updatedUser = await User.findByIdAndUpdate(
+      currentUser?.id,
+      {
+        $set: {
+          bio: updatedBio,
+          company: updatedCompany,
+          team: updatedTeam,
+        },
+      },
+      { new: true } // Return updated document and apply schema validation
     );
 
-    if (company.revenue?.ltm || company.EBITDA?.ltm) {
-      const investors = await Investor.find({ user: currentUser.id });
-
-      // Loop through each investor and calculate the new revenue and EBITDA based on the valuation
-      const bulkOperations = investors.map((investor) => {
-        const valuation = investor.offeredPrice.valuation;
-        const revenue = parseFloat((valuation / user.company.revenue.ltm).toFixed(1));
-        const EBITDA = parseFloat((valuation / user.company.EBITDA.ltm).toFixed(1));
-
-        // Return the update object for bulk write
-        return {
-          updateOne: {
-            filter: { _id: investor._id },
-            update: {
-              $set: {
-                'offeredPrice.revenue': revenue,
-                'offeredPrice.EBITDA': EBITDA,
-              },
-            },
-          },
-        };
-      });
-
-      if (bulkOperations.length > 0) {
-        await Investor.bulkWrite(bulkOperations);
-      }
+    if (!updatedUser) {
+      return NextResponse.json({ message: 'Update failed' }, { status: 500 });
     }
 
     return NextResponse.json({ message: 'User and respective Investors Updated Successfully' }, { status: 200 });
@@ -85,3 +52,33 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ message: 'Error updating user', error: error.message }, { status: 500 });
   }
 }
+
+
+
+// if (company.revenue?.ltm || company.EBITDA?.ltm) {
+//   const investors = await Investor.find({ user: currentUser.id });
+
+//   // Loop through each investor and calculate the new revenue and EBITDA based on the valuation
+//   const bulkOperations = investors.map((investor) => {
+//     const valuation = investor.offeredPrice.valuation;
+//     const revenue = parseFloat((valuation / user.company.revenue.ltm).toFixed(1));
+//     const EBITDA = parseFloat((valuation / user.company.EBITDA.ltm).toFixed(1));
+
+//     // Return the update object for bulk write
+//     return {
+//       updateOne: {
+//         filter: { _id: investor._id },
+//         update: {
+//           $set: {
+//             'offeredPrice.revenue': revenue,
+//             'offeredPrice.EBITDA': EBITDA,
+//           },
+//         },
+//       },
+//     };
+//   });
+
+//   if (bulkOperations.length > 0) {
+//     await Investor.bulkWrite(bulkOperations);
+//   }
+// }

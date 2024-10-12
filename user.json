@@ -1,14 +1,5 @@
 {
-    "company": {
-      "revenue": {
-        "ltm": 167000000,
-        "previousYear": 130000
-      },
-      "EBITDA": {
-        "ltm": 167000000,
-        "previousYear": 130000
-      }
-    }
+  "bio": {
+    "country": "Nigeria"
   }
-
-
+}

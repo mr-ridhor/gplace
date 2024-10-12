@@ -52,7 +52,7 @@ const PersonalInfoForm = () => {
     dispatch(updatePersonalInfo(data));
 
     try {
-      const response = await axios.put("/api/profile", data);
+      const response = await axios.put("/api/profile", { bio: data });
       console.log(response);
       // dispatch(updatePersonalInfo(data));
 
@@ -67,7 +67,8 @@ const PersonalInfoForm = () => {
     } catch (error: any) {
       console.log(error);
       toast({
-        title: `${error.data}`,
+        title: `${error.data?.message}`,
+        // title: `${error.data}`,
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
       console.error("Error updating profile:", error);
