@@ -1,9 +1,9 @@
 {
     "companyInfo": {
-        "companyName": "Microsoft Inc",
+        "companyName": "Zoom Inc",
         "country": "United States",
         "city": "California",
-        "website": "microsoft.us",
+        "website": "zoom.us",
         "yearFounded": 1982,
         "employeeNumber": 1000,
         "investorType": "Financial",
@@ -47,9 +47,9 @@
     },
     "offeredPriceValuation": 350000,
     "primaryContact": {
-        "name": "Emiedonmokumo",
-        "surname": "Dick-Boro",
-        "email": "emieboro8@gmail.com",
+        "name": "John",
+        "surname": "Doe",
+        "email": "johndoe@gmail.com",
         "phone": "08109995607",
         "title": "Director"
     }
