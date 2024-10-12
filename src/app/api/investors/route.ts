@@ -90,6 +90,8 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
+
 export async function GET(req: NextRequest) {
   try {
     // Ensure the database is connected
@@ -121,9 +123,9 @@ export async function GET(req: NextRequest) {
     // Apply filters if search parameters are present
     if (search) {
       query.$or = [
-        { "primaryContact.name": new RegExp(search, 'i') },
+        { "companyInfo.companyName": new RegExp(search, 'i') },
         { "primaryContact.surname": new RegExp(search, 'i') },
-        { "primaryContact.email": new RegExp(search, 'i') },
+        { "primaryContact.name": new RegExp(search, 'i') },
       ];
     }
     if (country) query["companyInfo.country"] = country;

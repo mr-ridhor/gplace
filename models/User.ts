@@ -84,8 +84,8 @@ const userSchema = new Schema<IUser>({
     },
   },
   team: {
-    team1: { fullName: String, role: String },
-    team2: { fullName: String, role: String },
+    team1: { fullName: String, email: String },
+    team2: { fullName: String, email: String },
   },
   credentials: {
     email: {

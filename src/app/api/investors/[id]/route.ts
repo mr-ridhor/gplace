@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../utils/authOptions";
 import { NextRequest, NextResponse } from "next/server";
 import Investor from "../../../../../models/Investor";
+import InvestorContact from "../../../../../models/InvestorContact";
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
     try {
@@ -65,11 +66,13 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
-        const updatedInvestor = await Investor.findOne({ user: data.user.id, _id: params.id });
+        const investor = await Investor.findOne({ user: data.user.id, _id: params.id });
+        const investorContact = await InvestorContact.find({ investor: investor._id })
 
-        if (!updatedInvestor) {
+        if (!investor) {
             return NextResponse.json({ message: 'Investor not found' }, { status: 404 });
         }
+        if(investorContact.length !== 0) await InvestorContact.deleteMany({ investor: investor._id })
         await Investor.deleteOne({ user: data.user.id, _id: params.id })
         return NextResponse.json({ message: 'Investor Data Deleted Successfully' }, { status: 200 });
     } catch (error: any) {

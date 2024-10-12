@@ -201,7 +201,7 @@ const page = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 w-[100%]">
           <div className="col-span-2 space-y-2">
             <p className="text-[#808080] ">Revenue (LTM, $K)</p>
-            <p>{formatPrice(profile?.company?.revenue.ltm)}</p>
+            <p>{formatPrice(profile?.company?.revenue?.ltm)}</p>
           </div>
           <div className="col-span-2 space-y-2">
             <p className="text-[#808080] ">Revenue (Previous year, $K) </p>
