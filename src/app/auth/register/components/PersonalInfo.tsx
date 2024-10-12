@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Input, PasswordInput } from "@/components/ui/input";
 import { MoveRight } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { personalSchema } from "@/lib/zod-schema/personalSchema";
@@ -194,9 +194,14 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
+                        {/* <Input
+                          type="password"
                           className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                           {...field}
+                        /> */}
+                        <PasswordInput
+                          field={field}
+                          className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                         />
                       </FormControl>
                       <FormMessage />
@@ -215,9 +220,14 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
+                      {/* <Input
+                        type="password"
                         className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                         {...field}
+                      /> */}
+                      <PasswordInput
+                        field={field}
+                        className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
                       />
                     </FormControl>
                     <FormMessage />
