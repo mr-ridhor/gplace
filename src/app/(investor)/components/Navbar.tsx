@@ -262,6 +262,13 @@ const Navbar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-10">
             <DropdownMenuLabel className="flex w-full justify-center">
+              <Link href={"profile"}>
+                <Button className="bg-transparent hover:bg-transparent ">
+                  Profile
+                </Button>
+              </Link>
+            </DropdownMenuLabel>
+            <DropdownMenuLabel className="flex w-full justify-center">
               <Button
                 className="mx-8 p-2 hover:bg-transparent bg-transparent "
                 onClick={() => {
