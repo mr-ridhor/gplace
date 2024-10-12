@@ -241,7 +241,7 @@ const EditContact: React.FC<Props> = ({ selectedItem }) => {
                       >
                         {form.formState.isSubmitting ? (
                           <div className="w-full h-72 flex items-center justify-center">
-                            <LuLoader className="w-8 h-8 text-white" />
+                            <LuLoader className="w-8 h-8 text- animate-spin" />
                             {/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
                           </div>
                         ) : (

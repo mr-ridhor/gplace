@@ -34,7 +34,13 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
-const Contact = () => {
+interface Props {
+  onBack: () => void;
+  onTabReset: () => void;
+  // price: priceType;
+  // setPri: React.Dispatch<React.SetStateAction<priceType>>;
+}
+const Contact = ({ onBack, onTabReset }: Props) => {
   const dispatch = useDispatch();
   // const router = useRouter;
   const { data: session } = useSession();
@@ -49,14 +55,20 @@ const Contact = () => {
     dispatch(fetchInvestorsRequest());
     try {
       const { data } = await axios.get("/api/investors");
+      console.log("Fetched investors:", data); // Log the fetched data
       dispatch(fetchInvestorsSuccess(data));
     } catch (error: any) {
-      dispatch(fetchInvestorsFailure(error.response.data.message));
-      // toast()
+      console.error("Error fetching investors:", error); // Log the error
+      dispatch(
+        fetchInvestorsFailure(
+          error.response?.data?.message || "Failed to fetch"
+        )
+      );
     }
   };
+
   const onSubmit = async (data: contType) => {
-    console.log(data);
+    // console.log(data);
     const payload = {
       companyInfo: {
         companyName: companyInfo.name,
@@ -90,6 +102,8 @@ const Contact = () => {
           to: price.evEbd,
         },
       },
+      offeredPriceValuation: Number(target.valuation),
+
       paidInfo: {
         valuation: {
           from: 10000000, // (required)
@@ -116,21 +130,18 @@ const Contact = () => {
 
     dispatch(setContact(data));
     try {
-      const res = await axios.post(`/api/investors`, payload, {
-        headers: {
-          // Authorization: `Bearer ${session?.user.dbToken}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const res = await axios.post(`/api/investors`, payload);
       console.log(res);
-      dispatch(resetPayload());
       // window.location.reload();
       loadInvestors();
-      // if (response.status !== 200) {
-      //   throw new Error("Failed to submit the data");
-      // }
+      dispatch(resetPayload());
+      if (res.status == 200) {
+        loadInvestors();
+        dispatch(resetPayload());
+        onTabReset();
+      }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       console.error("Error submitting data:", error);
     }
   };
@@ -247,30 +258,42 @@ const Contact = () => {
                 />
               </div>
               <DialogFooter className="sm:justify-start">
-                <DialogClose asChild>
-                  <div className="w-full flex items-center gap-x-4">
+                <div className="w-full flex gap-x-4 items-center">
+                  <div className="w-1/2">
                     <Button
-                      disabled={!form.formState.isValid}
-                      className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
-                        `}
-                      type="submit"
+                      onClick={onBack}
+                      className={`w-full h-10 bg-[#DCF8FC] hover:bg-[#B9E5EB]  rounded-md flex items-center justify-center
+                    `}
+                      type="button"
                     >
-                      {form.formState.isSubmitting ? (
-                        <div className="w-8 h-8">
-                          <LoaderComponent className="text-white" />
-                        </div>
-                      ) : (
-                        <p
-                          className={`${
-                            !form.formState.isValid ? "" : "text-white"
-                          } font-bold`}
-                        >
-                          Done!
-                        </p>
-                      )}
+                      <p className={` font-bold`}>Back</p>
                     </Button>
                   </div>
-                </DialogClose>
+                  <DialogClose asChild>
+                    <div className="w-1/2 flex items-center gap-x-4">
+                      <Button
+                        disabled={!form.formState.isValid}
+                        className={`w-full h-10  rounded-md flex items-center justify-center
+                        `}
+                        type="submit"
+                      >
+                        {form.formState.isSubmitting ? (
+                          <div className="w-8 h-8">
+                            <LoaderComponent className="text-white" />
+                          </div>
+                        ) : (
+                          <p
+                            className={`${
+                              !form.formState.isValid ? "" : "text-white"
+                            } font-bold`}
+                          >
+                            Done!
+                          </p>
+                        )}
+                      </Button>
+                    </div>
+                  </DialogClose>
+                </div>
               </DialogFooter>
             </div>
           </form>

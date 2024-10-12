@@ -1,7 +1,13 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import React from "react";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
+import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import AddContact from "./AddContact";
 import { Investor } from "@/lib/data/mocked";
@@ -9,7 +15,14 @@ import { Investor } from "@/lib/data/mocked";
 interface Props {
   selectedItem?: Investor;
 }
+
 const ContactHeader: React.FC<Props> = ({ selectedItem }) => {
+  // State to control dialog visibility
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Function to handle closing the dialog
+  const handleClose = () => setIsDialogOpen(false);
+
   return (
     <div className="w-full flex items-center gap-x-4 justify-between">
       <div className="">
@@ -23,16 +36,17 @@ const ContactHeader: React.FC<Props> = ({ selectedItem }) => {
             placeholder="Search"
           />
         </div>
-        <div className="h-full ">
+        <div className="h-full">
           <Button className="text-white h-full flex gap-x-1 items-center">
-            {/* <FaPlus />
-            Add New */}
-            <Dialog>
-              <DialogTrigger className="flex gap-x-2 text-sm items-center">
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger
+                className="flex gap-x-2 text-sm items-center"
+                onClick={() => setIsDialogOpen(true)}
+              >
                 <FaPlus />
                 Add New
               </DialogTrigger>
-              <AddContact selectedItem={selectedItem} />
+              <AddContact onClose={handleClose} selectedItem={selectedItem} />
             </Dialog>
           </Button>
         </div>

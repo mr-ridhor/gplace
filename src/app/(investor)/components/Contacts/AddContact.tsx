@@ -64,29 +64,31 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
   };
 
   const onSubmit = async (data: contType) => {
+    const payload = {
+      name: data.name,
+      surname: data.surname,
+      email: data.email,
+      phone: data.phone,
+      title: data.title,
+      contactType: contactType,
+    };
+    console.log("[ayload", payload);
+
     try {
       const investorId = selectedItem?._id;
       if (!investorId) {
         throw new Error("Investor ID is missing");
       }
 
-      await axios.post(`/api/investors/${investorId}/contact`, {
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        phone: data.phone,
-        title: data.title,
-        contactType: contactType,
-      });
+      await axios.post(`/api/investors/${investorId}/contact`, payload);
       fetchData();
-
-      toast("Contact added successfully", {
-        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
-      });
       form.reset();
       setTimeout(() => {
         onClose();
       }, 2000);
+      toast("Contact added successfully", {
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
     } catch (error: any) {
       console.error(error.message);
       toast("All fields must be filled", {
@@ -154,7 +156,36 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
                   </div>
                 </div>
               </div>
-
+              <div className="w-full space-y-2">
+                <div className="w-full grid grid-cols-2 my-3 ">
+                  <div className=" col-span-1 px-3">
+                    <Button
+                      type="button"
+                      className={`w-full ${
+                        contactType === "Primary"
+                          ? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
+                          : "bg-transparent hover:bg-transparent text-black"
+                      }`}
+                      onClick={() => setContactType("Primary")}
+                    >
+                      <p>Primary Contact</p>
+                    </Button>
+                  </div>
+                  <div className=" col-span-1 px-3">
+                    <Button
+                      className={`w-full ${
+                        contactType === "Secondary"
+                          ? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
+                          : "bg-transparent hover:bg-transparent text-black"
+                      }`}
+                      onClick={() => setContactType("Secondary")}
+                      type="button"
+                    >
+                      <p>Secondary Contact</p>
+                    </Button>
+                  </div>
+                </div>
+              </div>
               <div className="w-full space-y-2">
                 <FormLabel className="font-normal text-sm">Email</FormLabel>
                 <FormField
@@ -215,27 +246,29 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
               </div>
 
               <DialogFooter>
-                <div className="w-full flex items-center gap-x-4">
-                  <Button
-                    disabled={!form.formState.isValid}
-                    className={`w-full h-10 mt-3 rounded-md flex items-center justify-center`}
-                    type="submit"
-                  >
-                    {form.formState.isSubmitting ? (
-                      <div className="w-full h-72 flex items-center justify-center">
-                        <LuLoader className="w-8 h-8 text-white" />
-                      </div>
-                    ) : (
-                      <p
-                        className={`${
-                          !form.formState.isValid ? "" : "text-white"
-                        } font-bold`}
-                      >
-                        Done!
-                      </p>
-                    )}
-                  </Button>
-                </div>
+                <DialogClose asChild>
+                  <div className="w-full flex items-center gap-x-4">
+                    <Button
+                      disabled={!form.formState.isValid}
+                      className={`w-full h-10 mt-3 rounded-md flex items-center justify-center`}
+                      type="submit"
+                    >
+                      {form.formState.isSubmitting ? (
+                        <div className="w-full h-72 flex items-center justify-center">
+                          <LuLoader className="w-8 h-8 animate-spin text-white" />
+                        </div>
+                      ) : (
+                        <p
+                          className={`${
+                            !form.formState.isValid ? "" : "text-white"
+                          } font-bold`}
+                        >
+                          Done!
+                        </p>
+                      )}
+                    </Button>
+                  </div>
+                </DialogClose>
               </DialogFooter>
             </div>
           </form>

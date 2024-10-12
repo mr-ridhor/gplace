@@ -19,7 +19,7 @@ const SelectedRow = () => {
   const router = useRouter();
   const [selectedItem, setSelectedItem] = useState<Investor | null>(null); // State for the investor
   const [activeTab, setActiveTab] = useState<string>("detail");
-  console.log("path", pathname);
+  // console.log("path", pathname);
   const detail = searchParams.get("detail"); // Get the 'detail' parameter from the URL
   const { data: session } = useSession(); // Get the session data (assuming you're using next-auth)
 

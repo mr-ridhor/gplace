@@ -4,11 +4,11 @@ export type personalType = {
   title: string;
   email: string;
   phone: string;
-  linkedIn: string;
+  linkedIn?: string;
   country: string;
   city: string;
   address: string;
-  x: string;
+  x?: string;
   password: string;
   confirmPass?: string;
 };

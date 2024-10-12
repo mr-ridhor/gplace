@@ -15,46 +15,73 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { companyType } from "@/lib/zod-type/companyType";
-import { companySchema } from "@/lib/zod-schema/companySchema";
+import { CompanySchema, companySchema } from "@/lib/zod-schema/companySchema";
 import { useRouter } from "next/navigation";
 import { YearSelect } from "@/components/YearSelect";
 import { useDispatch, useSelector } from "react-redux";
-import { getProfile, updateCompanyInfo } from "@/lib/slice/profileSlice";
+import {
+  Company,
+  getProfile,
+  updateCompanyInfo,
+} from "@/lib/slice/profileSlice";
 import {
   // formatNumberWithCommas,
   numeralFormatter,
 } from "@/lib/numeralFormatter";
+import LoaderComponent from "@/components/LoaderComponent";
+import { toast } from "@/components/ui/use-toast";
+import moment from "moment";
+import axios from "axios";
 
 const CompanyInfoForm = () => {
   const router = useRouter(); // Initialize router
   const dispatch = useDispatch();
   const { company } = useSelector(getProfile);
-  const form = useForm<companyType>({
-    resolver: zodResolver(companySchema),
-    defaultValues: company,
+  const form = useForm<Company>({
+    resolver: zodResolver(CompanySchema),
+    defaultValues: {
+      name: company.name,
+      country: company.country,
+      city: company.city,
+      email: company.email,
+      website: company.website,
+      industry: company.industry,
+      foundingYear: company.foundingYear,
+      revenue: company.revenue || { ltm: "", previousYear: "" },
+      grossProfit: company.grossProfit || { ltm: "", previousYear: "" },
+      EBITDA: company.EBITDA || { ltm: "", previousYear: "" },
+    },
   });
-  useEffect(() => {
-    form.reset(company);
-  }, [company]);
-  console.log("company", company);
-  const onSubmit = (data: companyType) => {
-    const submitData = {
-      name: data.name,
-      country: data.country,
-      city: data.city,
-      email: data.email,
-      website: data.website,
-      industry: data.industry,
-      foundingYear: data.foundingYear,
-      revenue: data.revenue || { ltm: "", previousYear: "" },
-      grossProfit: data.grossProfit || { ltm: "", previousYear: "" },
-      EBITDA: data.EBITDA || { ltm: "", previousYear: "" },
-    };
+  // useEffect(() => {
+  //   form.reset(company);
+  // }, [company]);
+  // console.log("company", company);
+  const onSubmit = async (data: Company) => {
+    // dispatch(updateCompanyInfo(submitData));
 
-    console.log("Submit Data:", submitData);
-    dispatch(updateCompanyInfo(submitData));
+    console.log("Submit Data:", data);
+    try {
+      const response = await axios.put("/api/profile", data);
+      console.log(response);
+      dispatch(updateCompanyInfo(data));
+
+      if (response.status === 200) {
+        const result = response.data;
+        // Handle success
+        toast({
+          title: `${result.message}`,
+          description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+        });
+      }
+    } catch (error: any) {
+      toast({
+        title: `${error.data.message}`,
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
+      console.error("Error updating profile:", error);
+    }
   };
-  const formatNumberWithCommas = (value: string | number): string => {
+  const formatNumberWithCommas = (value: string): string => {
     // Ensure value is a string before calling replace
     return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
@@ -273,10 +300,8 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
-                              value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) =>
-                                field.onChange(numeralFormatter(e.target.value))
-                              }
+                              value={field.value}
+                              onChange={(e) => field.onChange(e.target.value)}
                             />
                           </FormControl>
                           <FormMessage />
@@ -302,9 +327,7 @@ const CompanyInfoForm = () => {
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
                               value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) =>
-                                field.onChange(numeralFormatter(e.target.value))
-                              }
+                              onChange={(e) => field.onChange(e.target.value)}
                             />
                           </FormControl>
                           <FormMessage />
@@ -328,9 +351,7 @@ const CompanyInfoForm = () => {
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
                               value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) =>
-                                field.onChange(numeralFormatter(e.target.value))
-                              }
+                              onChange={(e) => field.onChange(e.target.value)}
                             />
                           </FormControl>
                           <FormMessage />
@@ -356,9 +377,7 @@ const CompanyInfoForm = () => {
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
                               value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) =>
-                                field.onChange(numeralFormatter(e.target.value))
-                              }
+                              onChange={(e) => field.onChange(e.target.value)}
                             />
                           </FormControl>
                           <FormMessage />
@@ -382,9 +401,7 @@ const CompanyInfoForm = () => {
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
                               value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) =>
-                                field.onChange(numeralFormatter(e.target.value))
-                              }
+                              onChange={(e) => field.onChange(e.target.value)}
                             />
                           </FormControl>
                           <FormMessage />
@@ -410,9 +427,7 @@ const CompanyInfoForm = () => {
                             className="focus:border-0 focus-visible:ring-[#04acc2]"
                             {...field}
                             value={formatNumberWithCommas(field.value || "")}
-                            onChange={(e) =>
-                              field.onChange(numeralFormatter(e.target.value))
-                            }
+                            onChange={(e) => field.onChange(e.target.value)}
                           />
                         </FormControl>
                         <FormMessage />
@@ -424,10 +439,17 @@ const CompanyInfoForm = () => {
                 {/* Button Container */}
                 <div className="w-1/2 flex items-center justify-center">
                   <Button
+                    // disabled={!form.formState.isValid}
                     className="w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center"
                     type="submit"
                   >
-                    <p className="text-white font-bold">Done</p>
+                    {form.formState.isSubmitting ? (
+                      <div className="w-8 h-8">
+                        <LoaderComponent className="text-white" />
+                      </div>
+                    ) : (
+                      <p className="text-white font-bold">Done</p>
+                    )}
                   </Button>
                 </div>
               </div>

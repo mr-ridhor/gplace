@@ -47,7 +47,7 @@ const CompanyInfom: React.FC<Props> = ({ onNext }) => {
   const onSubmit = (data: invcomType) => {
     // alert("Hi");
     dispatch(setCompanyInfo(data));
-    console.log(data);
+    // console.log(data);
 
     onNext();
   };

@@ -11,7 +11,7 @@ import Contact from "./AddNewInvestor/Contact";
 import { invcomType } from "@/lib/zod-type/invtcomType";
 import { invproType } from "@/lib/zod-type/invproType";
 import { invpro2Type } from "@/lib/zod-type/invpro2Type";
-import { tragetType } from "@/lib/zod-type/targetType";
+import { targetType } from "@/lib/zod-type/targetType";
 import { priceType } from "@/lib/zod-type/priceType";
 import { contType } from "@/lib/zod-type/contType";
 import { companyType } from "@/lib/zod-type/companyType";
@@ -49,6 +49,10 @@ const AddInvestorForm: React.FC = () => {
       const prevTab = tabs[currentIndex - 1];
       handleTabChange(prevTab);
     }
+  };
+  const resetTab = () => {
+    setCurrentTab("company"); // Reset to the default tab
+    setVisitedTabs(["company"]); // Optionally reset visited tabs
   };
   return (
     <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[400px] md:w-[600px] my3 overflow-auto no-scrollbar">
@@ -126,9 +130,11 @@ const AddInvestorForm: React.FC = () => {
           />
 
           <Contact
-          // submit={handleSubmit}
-          // conct={contact}
-          // setContact={setContact}
+            onBack={handleBackTab}
+            onTabReset={resetTab}
+            // submit={handleSubmit}
+            // conct={contact}
+            // setContact={setContact}
           />
           {/* No "Next" button on the last tab */}
         </Tabs>

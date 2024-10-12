@@ -13,12 +13,17 @@ import {
   formatNumberWithCommas,
   numeralFormatter,
 } from "@/lib/numeralFormatter";
-import { getInvestor, setTarget } from "@/lib/slice/addInvestorSlice";
+import {
+  getInvestor,
+  setTarget,
+  // setOfferedPrice,
+} from "@/lib/slice/addInvestorSlice";
 import { invpro2Schema } from "@/lib/zod-schema/invpro2Schema";
 import { targetSchema } from "@/lib/zod-schema/targetSchema";
 
 import { invpro2Type } from "@/lib/zod-type/invpro2Type";
-import { tragetType } from "@/lib/zod-type/targetType";
+import { offeredPriceType } from "@/lib/zod-type/offerPriceType";
+import { targetType } from "@/lib/zod-type/targetType";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
@@ -33,12 +38,12 @@ interface Props {
 const Target: React.FC<Props> = ({ onNext, onBack }) => {
   const dispatch = useDispatch();
   const target = useSelector(getInvestor);
-  const form = useForm<tragetType>({
+  const form = useForm<targetType>({
     resolver: zodResolver(targetSchema),
     mode: "onChange",
     defaultValues: target,
   });
-  const onSubmit = (data: tragetType) => {
+  const onSubmit = (data: targetType) => {
     console.log(data);
     dispatch(setTarget(data));
 
@@ -130,7 +135,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
                 </FormLabel>
                 <FormField
                   control={form.control}
-                  name="offeredPrice"
+                  name="valuation"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>

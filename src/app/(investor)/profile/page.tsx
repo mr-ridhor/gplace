@@ -15,20 +15,35 @@ import formatPrice from "../../../../utils/formtPrice";
 import { signOut } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile, setProfile } from "@/lib/slice/profileSlice";
+import LoaderComponent from "@/components/LoaderComponent";
 
 const page = () => {
-  // const [profile, setProfile] = useState<any>();
+  const [loading, setLoading] = useState(true); // Add loading state
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
+
   useEffect(() => {
+    setLoading(true); // Start loading
     fetch("/api/profile")
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         dispatch(setProfile(data));
-        console.log("profile", data);
+        setLoading(false); // Stop loading when data is fetched
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setLoading(false); // Stop loading on error
+      });
   }, [dispatch]);
+
+  if (loading) {
+    return (
+      <div className="w-full h-72 flex items-center justify-center">
+        <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
+      </div>
+    ); // Render loader while loading
+  }
 
   return (
     <div className="w-full py-5 flex flex-col items-center gap-y-5 text-sm overflow-y-auto no-scrollbar h-[90%]">

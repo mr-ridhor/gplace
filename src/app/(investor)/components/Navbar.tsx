@@ -79,10 +79,10 @@ const Navbar = () => {
     return false;
   };
   const detail = searchParams.get("detail"); // Get the 'detail' parameter from the URL
-  console.log(tab);
+  // console.log(tab);
   const pathname = usePathname();
 
-  console.log(pathname);
+  // console.log(pathname);
   React.useEffect(() => {
     if (pathname === "/profile") {
       dispatch(setActiveTab(""));
@@ -116,9 +116,14 @@ const Navbar = () => {
   return (
     <div className="w-full h-16 px-5 sticky top-0 z-10 flex items-center justify-between bg-[#F5F8FA]">
       <div className="flex">
-        <div className="w-max">
-          <Logo width={180} height={60} />
-        </div>
+        <Link
+          href={"/dashboard?detail=&tab=detail"}
+          onClick={handleInvestorsClick}
+        >
+          <div className="w-max">
+            <Logo width={180} height={60} />
+          </div>
+        </Link>
 
         <Tabs value={tab || "detail"} className="w-full p-2 md:flex hidden">
           <TabsList className="w-full bg-inherit rounded-none rounded-t-md h-12 p-0">
@@ -238,7 +243,10 @@ const Navbar = () => {
               <DropdownMenuLabel className="flex w-full justify-center">
                 <Button
                   className="mx-8 p-2 hover:bg-transparent bg-transparent "
-                  onClick={() => signOut({ callbackUrl: "/auth/login" })}
+                  onClick={() => {
+                    signOut({ callbackUrl: "/auth/login" });
+                    dispatch(resetSelectedRow());
+                  }}
                 >
                   Signout
                 </Button>
@@ -256,7 +264,10 @@ const Navbar = () => {
             <DropdownMenuLabel className="flex w-full justify-center">
               <Button
                 className="mx-8 p-2 hover:bg-transparent bg-transparent "
-                onClick={() => signOut({ callbackUrl: "/auth/login" })}
+                onClick={() => {
+                  signOut({ callbackUrl: "/auth/login" });
+                  dispatch(resetSelectedRow());
+                }}
               >
                 Signout
               </Button>

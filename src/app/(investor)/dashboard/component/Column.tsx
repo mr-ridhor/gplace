@@ -7,6 +7,7 @@ import { ArrowUpDown } from "lucide-react";
 import { Line, Circle } from "rc-progress";
 import { TiArrowUnsorted } from "react-icons/ti";
 import ActionCell from "./ActionCell";
+import { formatNumberWithCommas } from "@/lib/numeralFormatter";
 const columnHelper = createColumnHelper();
 
 export const Column: ColumnDef<Investor>[] = [
@@ -25,7 +26,9 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.companyInfo.companyName,
+    cell: ({ row }) => (
+      <p className="capitalize">{row.original.companyInfo.companyName}</p>
+    ),
     enableSorting: true,
     enableHiding: false,
     size: 60,
@@ -45,7 +48,7 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.companyInfo.country,
+    cell: ({ row }) => <p className="">{row.original.companyInfo.country}</p>,
     enableSorting: true,
     enableHiding: false,
   },
@@ -110,7 +113,9 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.investmentBio.dealsIn5Y,
+    cell: ({ row }) => (
+      <p>{formatNumberWithCommas(`${row.original.investmentBio.dealsIn5Y}`)}</p>
+    ),
     enableSorting: true,
     enableHiding: false,
   },
@@ -129,7 +134,11 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.investmentBio.dealsInLTM,
+    cell: ({ row }) => (
+      <p>
+        {formatNumberWithCommas(`${row.original.investmentBio.dealsInLTM}`)}
+      </p>
+    ),
     enableSorting: true,
     enableHiding: false,
   },
@@ -148,7 +157,9 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.primaryContact.phone,
+    cell: ({ row }) => (
+      <p className="capitalize">{row.original.primaryContact.name}</p>
+    ),
     enableSorting: true,
     enableHiding: false,
   },
@@ -167,7 +178,9 @@ export const Column: ColumnDef<Investor>[] = [
         </div>
       );
     },
-    cell: ({ row }) => row.original.paidInfo.revenue.from,
+    cell: ({ row }) => (
+      <p>{formatNumberWithCommas(`${row.original.offeredPrice.valuation}`)}</p>
+    ),
     enableSorting: true,
     enableHiding: false,
   },

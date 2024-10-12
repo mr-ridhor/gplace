@@ -25,34 +25,14 @@ const initialState = {
     rev: "",
     ebdt: "",
     dealsz: "",
+    // offeredPrice: "",
   },
   price: {
     val: "",
     evRev: "",
     evEbd: "",
-    offeredPrice: "",
   },
-  //   companyInfo: {
-  //     name: "",
-  //     country: "",
-  //     city: "",
-  //     email: "",
-  //     website: "",
-  //     industry: "",
-  //     foundingYear: "",
-  //     revenue: {
-  //       ltm: "",
-  //       previousYear: "",
-  //     },
-  //     grossProfit: {
-  //       ltm: "",
-  //       previousYear: "",
-  //     },
-  //     EBITDA: {
-  //       ltm: "",
-  //       previousYear: "",
-  //     },
-  //   },
+  offeredPriceValuation: 0,
   contact: {
     name: "",
     surname: "",
@@ -84,6 +64,7 @@ const addInvestorSlice = createSlice({
     setContact(state, action) {
       state.contact = { ...state.contact, ...action.payload };
     },
+
     resetPayload: () => initialState,
   },
 });
@@ -96,6 +77,7 @@ export const {
   setCompanyInfo,
   setContact,
   resetPayload,
+  // setOfferedPrice,
 } = addInvestorSlice.actions;
 
 export const getInvestor = (state: any) => state.addInvestor;
