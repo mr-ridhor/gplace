@@ -66,7 +66,7 @@ const PersonalInfoForm = () => {
       }
     } catch (error: any) {
       toast({
-        title: `${error.data.message}`,
+        title: `${error.data?.message}`,
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
       console.error("Error updating profile:", error);
