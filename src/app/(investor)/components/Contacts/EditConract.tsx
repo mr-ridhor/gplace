@@ -55,22 +55,31 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 	});
 
 	const onSubmit = async (data: contType) => {
+		const payload = {
+			name: data.name,
+			surname: data.surname,
+			email: data.email,
+			phone: data.phone,
+			title: data.title,
+			contactType: contactType,
+		};
+		console.log(payload);
 		try {
 			const investorId = selectedItem?._id;
 
 			if (!investorId) {
 				throw new Error("Investor ID is missing");
 			}
-
-			// Use axios directly to post data
-			await axios.post(`/api/investors/${investorId}/contact`, {
+			const payload = {
 				name: data.name,
 				surname: data.surname,
 				email: data.email,
 				phone: data.phone,
 				title: data.title,
 				contactType: contactType,
-			});
+			};
+			// Use axios directly to post data
+			await axios.put(`/api/investors/${investorId}/contact`, payload);
 
 			// Refresh the data or reload the page
 			router.refresh();
@@ -79,7 +88,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
 			});
 		} catch (error: any) {
-			console.error(error.message);
+			console.error(error);
 			toast("All fields must be filled", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
 			});
