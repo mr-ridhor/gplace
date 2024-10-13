@@ -99,9 +99,6 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
 				onNext();
 				router.push(`/auth/register?step=otp`);
 			}
-			setTimeout(() => {
-				dispatch(reset());
-			}, 10000);
 
 			if (response.status !== 201) {
 				throw new Error("Failed to submit the data");
