@@ -163,7 +163,7 @@ const ContactActionCell = <TData extends mockedInfoType>({
 							Update the contact type below.
 						</DialogDescription>
 					</DialogHeader>
-					<EditContact onClose={() => setIsEditOpen(false)} />
+					<EditContact row={row} onClose={() => setIsEditOpen(false)} />
 					{/* <div className='space-y-4'>
 						<label htmlFor='contactType'>Contact Type:</label>
 						<select
