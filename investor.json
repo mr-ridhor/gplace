@@ -1,6 +1,8 @@
 {
-    "companyInfo": {
-        "country": "Botswana"
-        
+    "targetInfo": {
+      "revenue": {
+        "from": 40500,
+        "to": 13070
+      }
     }
-}
+  }
