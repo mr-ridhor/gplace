@@ -47,38 +47,36 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ message: 'Update failed' }, { status: 500 });
     }
 
+    if (company.revenue?.ltm || company.EBITDA?.ltm) {
+      const investors = await Investor.find({ user: currentUser.id });
+
+      // Loop through each investor and calculate the new revenue and EBITDA based on the valuation
+      const bulkOperations = investors.map((investor) => {
+        const valuation = investor.offeredPrice.valuation;
+        const revenue = parseFloat((valuation / user.company.revenue.ltm).toFixed(1));
+        const EBITDA = parseFloat((valuation / user.company.EBITDA.ltm).toFixed(1));
+
+        // Return the update object for bulk write
+        return {
+          updateOne: {
+            filter: { _id: investor._id },
+            update: {
+              $set: {
+                'offeredPrice.revenue': revenue,
+                'offeredPrice.EBITDA': EBITDA,
+              },
+            },
+          },
+        };
+      });
+
+      if (bulkOperations.length > 0) {
+        await Investor.bulkWrite(bulkOperations);
+      }
+    }
+
     return NextResponse.json({ message: 'User and respective Investors Updated Successfully' }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: 'Error updating user', error: error.message }, { status: 500 });
   }
 }
-
-
-
-// if (company.revenue?.ltm || company.EBITDA?.ltm) {
-//   const investors = await Investor.find({ user: currentUser.id });
-
-//   // Loop through each investor and calculate the new revenue and EBITDA based on the valuation
-//   const bulkOperations = investors.map((investor) => {
-//     const valuation = investor.offeredPrice.valuation;
-//     const revenue = parseFloat((valuation / user.company.revenue.ltm).toFixed(1));
-//     const EBITDA = parseFloat((valuation / user.company.EBITDA.ltm).toFixed(1));
-
-//     // Return the update object for bulk write
-//     return {
-//       updateOne: {
-//         filter: { _id: investor._id },
-//         update: {
-//           $set: {
-//             'offeredPrice.revenue': revenue,
-//             'offeredPrice.EBITDA': EBITDA,
-//           },
-//         },
-//       },
-//     };
-//   });
-
-//   if (bulkOperations.length > 0) {
-//     await Investor.bulkWrite(bulkOperations);
-//   }
-// }

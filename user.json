@@ -1,5 +1,9 @@
 {
-  "bio": {
-    "country": "Nigeria"
+  "company": {
+    "EBITDA": {
+      "ltm": 1600000000,
+      "previousYear": 30000050
+    }
+
   }
 }
