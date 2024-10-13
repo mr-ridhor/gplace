@@ -11,9 +11,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string, 
 
     if (!user || !user.user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    if (!name || !surname || !email || !phone || !title || !contactType) {
-        return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
-    }
+    // if (!name || !surname || !email || !phone || !title || !contactType) {
+    //     return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
+    // }
 
     try {
         // Find the contact by investor and contact ID
@@ -42,11 +42,11 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string, 
             // await InvestorContact.deleteOne({ _id: params.contactId, investor: params.id });
 
         } else {
-            await InvestorContact.updateOne({ _id: params.contactId, investor: params.id, user: user.user.id }, {
+            await InvestorContact.findOneAndUpdate({ _id: params.contactId, investor: params.id, user: user.user.id }, {
                 $set: {
                     name, surname, email, phone, title
                 }
-            })
+            }, { new: true })
         }
         return NextResponse.json({ message: 'Contact updated successfully' }, { status: 200 });
     } catch (error) {
