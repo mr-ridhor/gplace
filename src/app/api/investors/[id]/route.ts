@@ -50,12 +50,14 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         const updatedInvestmentBio = investmentBio ? { ...investor.investmentBio, ...investmentBio } : investor.investmentBio;
         const updatedTargetInfo = targetInfo ? { ...investor.targetInfo, ...targetInfo } : investor.targetInfo;
         const updatedPaidInfo = paidInfo ? { ...investor.paidInfo, ...paidInfo } : investor.paidInfo;
+
         const updatedPrimaryContact = primaryContact ? { ...investor.primaryContact, ...primaryContact } : investor.primaryContact;
+
         const updatedOfferedPrice = offeredPriceValuation ? {
             ...investor.offeredPrice, valuation: offeredPriceValuation,
-            revenue: parseFloat((offeredPriceValuation / user.company.revenue.ltm).toFixed(1)),
-            EBITDA: parseFloat((offeredPriceValuation / user.company.EBITDA.ltm).toFixed(1))
-        } : investor.targetInfo;
+            revenue: parseFloat((offeredPriceValuation / user.company.revenue?.ltm).toFixed(1)),
+            EBITDA: parseFloat((offeredPriceValuation / user.company.EBITDA?.ltm).toFixed(1))
+        } : investor.offeredPrice;
 
 
         await Investor.findOneAndUpdate(
