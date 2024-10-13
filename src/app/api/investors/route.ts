@@ -141,11 +141,6 @@ export async function GET(req: NextRequest) {
     // Fetch the investors based on the query
     const investors: InvestorInterface[] = await Investor.find(query).exec();
 
-    // Handle case when no investors are found
-    if (!investors || investors.length === 0) {
-      return NextResponse.json({ message: "No Investors found" }, { status: 404 });
-    }
-
     // Return found investors
     return NextResponse.json(investors, { status: 200 });
 
