@@ -80,10 +80,12 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 				// contactType: contactType,
 			};
 			// Use axios directly to post data
-			await axios.put(`/api/investors/${investorId}`, payload);
+			await axios.put(`/api/investors/${investorId}`, {
+				primaryContact: payload,
+			});
 
 			// Refresh the data or reload the page
-			router.refresh();
+			// router.refresh();
 			console.log("Contact added successfully"); // Handle success message
 			toast("Contact added successfully", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
@@ -106,7 +108,7 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 					</div>
 					<form
 						action=''
-						// onSubmit={form.handleSubmit(onSubmit)}
+						onSubmit={form.handleSubmit(onSubmit)}
 						className='   items-center flex flex-col h-full '
 					>
 						<div className='space-y-4 w-full'>
@@ -247,16 +249,16 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 							<DialogFooter className='sm:justify-start'>
 								<DialogClose asChild>
 									<div className='w-full flex items-center gap-x-4'>
-										<div className='w-full'>
+										<div className='w-1/2'>
 											<Button
-												className={`w-full bg-[#DCF8FC]  h-10 mt-3 rounded-md flex items-center justify-center
+												className={` w-full bg-[#DCF8FC]  h-10 mt-3 rounded-md flex items-center justify-center
                         `}
 												type='button'
 											>
-												<p className={` font-bold`}>Done!</p>
+												<p className={` font-bold`}>Close</p>
 											</Button>
 										</div>
-										{/* <div className='w-1/2'>
+										<div className='w-1/2'>
 											<Button
 												disabled={!form.formState.isValid}
 												className={`w-full h-10 mt-3 rounded-md flex items-center justify-center
@@ -266,7 +268,6 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												{form.formState.isSubmitting ? (
 													<div className='w-full h-72 flex items-center justify-center'>
 														<LuLoader className='w-8 h-8 text- animate-spin' />
-														
 													</div>
 												) : (
 													<p
@@ -278,7 +279,7 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 													</p>
 												)}
 											</Button>
-										</div> */}
+										</div>
 									</div>
 								</DialogClose>
 							</DialogFooter>
