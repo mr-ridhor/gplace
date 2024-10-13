@@ -2,31 +2,53 @@ import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../../../../../utils/authOptions";
 import { getServerSession } from "next-auth";
 import InvestorContact from "../../../../../../../models/InvestorContact";
+import Investor from "../../../../../../../models/Investor";
 
 // Update Contact 
 export async function PUT(req: NextRequest, { params }: { params: { id: string, contactId: string } }) {
-    const { name, surname, email, phone, title } = await req.json();
+    const { name, surname, email, phone, title, contactType } = await req.json();
     const user = await getServerSession(authOptions)
 
-    if(!user || !user.user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    
-    if (!name || !surname || !email || !phone || !title) {
+    if (!user || !user.user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
+    if (!name || !surname || !email || !phone || !title || !contactType) {
         return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
     }
-    // console.log(params.id)
+
     try {
         // Find the contact by investor and contact ID
         const contact = await InvestorContact.findOne({ _id: params.contactId, investor: params.id });
 
         if (!contact) {
             return NextResponse.json({ message: 'Contact not found.' }, { status: 404 });
-        }       
+        }
 
-        await InvestorContact.updateOne({ _id: params.contactId, investor: params.id }, {$set: {
-            name, surname, email, phone, title
-        }})
+        if (contactType === 'Primary') {
+            const investor = await Investor.findOne({ user: user.user.id, _id: params.id })
+            if (!investor) return NextResponse.json({ message: 'Investor not found.' }, { status: 404 });
 
-        return NextResponse.json({ message: 'Contact updated successfully', contact }, { status: 200 });
+            await Investor.updateOne({
+                _id: params.id, user: user.user.id
+            }, {
+                $set: {
+                    "primaryContact.name": name,
+                    "primaryContact.surname": surname,
+                    "primaryContact.email": email,
+                    "primaryContact.phone": phone,
+                    "primaryContact.title": title
+                }
+            })
+
+            // await InvestorContact.deleteOne({ _id: params.contactId, investor: params.id });
+
+        } else {
+            await InvestorContact.updateOne({ _id: params.contactId, investor: params.id, user: user.user.id }, {
+                $set: {
+                    name, surname, email, phone, title
+                }
+            })
+        }
+        return NextResponse.json({ message: 'Contact updated successfully' }, { status: 200 });
     } catch (error) {
         console.error("Error updating contact:", error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -42,11 +64,11 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
         if (!contact) {
             return NextResponse.json({ message: 'Contact not found.' }, { status: 404 });
-        }   
-        
+        }
+
         await InvestorContact.deleteOne({ _id: params.contactId, investor: params.id })
 
-        return NextResponse.json({ message: 'Contact updated successfully', contact }, { status: 200 });
+        return NextResponse.json({ message: 'Contact Deleted successfully' }, { status: 200 });
     } catch (error) {
         console.error("Error updating contact:", error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -61,9 +83,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string, 
 
         if (!contact) {
             return NextResponse.json({ message: 'Contact not found.' }, { status: 404 });
-        }   
+        }
 
-        return NextResponse.json({ contact }, { status: 200 });
+        return NextResponse.json(contact, { status: 200 });
     } catch (error) {
         console.error("Error updating contact:", error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
