@@ -49,7 +49,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 		};
 		try {
 			const response = await axios.put(`/api/investors/${list._id}`, {
-				company: payload,
+				companyInfo: payload,
 			});
 
 			// if (response.statusText !== "ok") {
