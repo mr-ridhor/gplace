@@ -303,13 +303,13 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							</p>
 						)}
 					</div>
-					<div>
+					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>Investor Type</p>
 						<div className='rounded-md text-[12px] lg:text-sm'>
 							{list.companyInfo.investorType}
 						</div>
 					</div>
-					<div className='space-y-'>
+					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Matching Score
 						</p>
@@ -322,7 +322,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							</div>
 						</div>
 					</div>
-					<div>
+					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Offered Price ($mm)
 						</p>

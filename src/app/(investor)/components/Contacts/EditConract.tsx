@@ -104,8 +104,8 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			<Form {...form}>
 				<div className='    space-y-6 flex flex-col items-centr w-full'>
 					<div className='w-full flex flex-col items-center  justify-center'>
-						<p className='font-bold text-xl'>View record</p>
-						<p className='font-normal'>Contact Records</p>
+						{/* <p className='font-bold text-xl'>View record</p> */}
+						<p className='font-bold'>Edit Records</p>
 					</div>
 					<form
 						action=''
