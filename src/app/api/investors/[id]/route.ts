@@ -40,7 +40,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
-        const { companyInfo, investmentBio, targetInfo, offeredPriceValuation, paidInfo } = await req.json();
+        const { companyInfo, investmentBio, targetInfo, offeredPriceValuation, paidInfo, primaryContact } = await req.json();
         const investor = await Investor.findOne({ _id: params.id, user: data.user.id })
         const user: IUser | any = await User.findById(data.user.id)
 
@@ -50,6 +50,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         const updatedInvestmentBio = investmentBio ? { ...investor.investmentBio, ...investmentBio } : investor.investmentBio;
         const updatedTargetInfo = targetInfo ? { ...investor.targetInfo, ...targetInfo } : investor.targetInfo;
         const updatedPaidInfo = paidInfo ? { ...investor.paidInfo, ...paidInfo } : investor.paidInfo;
+        const updatedPrimaryContact = primaryContact ? { ...investor.primaryContact, ...primaryContact } : investor.primaryContact;
         const updatedOfferedPrice = offeredPriceValuation ? {
             ...investor.offeredPrice, valuation: offeredPriceValuation,
             revenue: parseFloat((offeredPriceValuation / user.company.revenue.ltm).toFixed(1)),
@@ -65,7 +66,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
                     investmentBio: updatedInvestmentBio,
                     targetInfo: updatedTargetInfo,
                     paidInfo: updatedPaidInfo,
-                    offeredPrice: updatedOfferedPrice
+                    offeredPrice: updatedOfferedPrice,
+                    primaryContact: updatedPrimaryContact
                 }
             }, // Only update fields provided in updateData
             { new: true }
