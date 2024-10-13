@@ -26,6 +26,8 @@ import { LuLoader } from "react-icons/lu";
 import moment from "moment";
 import { toast } from "sonner";
 import { Row } from "@tanstack/react-table";
+import { original } from "@reduxjs/toolkit";
+import LoaderComponent from "@/components/LoaderComponent";
 
 interface Props {
 	row: any;
@@ -34,7 +36,7 @@ interface Props {
 }
 const EditContact: React.FC<Props> = ({ row, onClose }) => {
 	const router = useRouter();
-	const [contactType, setContactType] = useState("Primary");
+	const [contactType, setContactType] = useState(row.original.contactType);
 	const [info, setInfo] = useState({
 		name: row.original.name,
 		surname: row.original.surname,
@@ -43,7 +45,7 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 		title: row.original.title,
 		// contactType:selectedItem?.primaryContact.
 	});
-	console.log("here", row.original._id);
+	console.log("here", row.original);
 	const form = useForm<contType>({
 		resolver: zodResolver(contSchema),
 		mode: "onChange",
@@ -266,7 +268,7 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 												{form.formState.isSubmitting ? (
 													<div className='w-full h-72 flex items-center justify-center'>
 														<LuLoader className='w-8 h-8 text- animate-spin' />
-														{/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
+														<LoaderComponent className='w-8 h-8 text-[#03AAC1]' />
 													</div>
 												) : (
 													<p
