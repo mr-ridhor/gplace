@@ -43,7 +43,7 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 		title: row.original.title,
 		// contactType:selectedItem?.primaryContact.
 	});
-	// console.log(selectedItem);
+	console.log("here", row.original._id);
 	const form = useForm<contType>({
 		resolver: zodResolver(contSchema),
 		mode: "onChange",
@@ -88,7 +88,7 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 			);
 
 			// Refresh the data or reload the page
-			router.refresh();
+			// router.refresh();
 			console.log("Contact added successfully"); // Handle success message
 			toast("Contact added successfully", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
@@ -107,7 +107,7 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 				<div className='    space-y-6 flex flex-col items-centr w-full'>
 					<div className='w-full flex flex-col items-center  justify-center'>
 						{/* <p className='font-bold text-xl'>View record</p> */}
-						<p className='font-bold'>Edit Records</p>
+						<p className='font-bold'>Edit Contact</p>
 					</div>
 					<form
 						action=''
