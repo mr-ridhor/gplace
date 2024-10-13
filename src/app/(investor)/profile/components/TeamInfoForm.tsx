@@ -18,8 +18,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { teamSchema } from "@/lib/zod-schema/teamSchema";
 import { teamType } from "@/lib/zod-type/teamType";
 import { DialogContent } from "@/components/ui/dialog";
-import { getProfile, updateTeamInfo } from "@/lib/slice/profileSlice";
+import { getProfile, Team, updateTeamInfo } from "@/lib/slice/profileSlice";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { toast } from "@/components/ui/use-toast";
+import moment from "moment";
 
 const TeamInfoForm = () => {
   const dispatch = useDispatch();
@@ -27,14 +30,31 @@ const TeamInfoForm = () => {
   useEffect(() => {
     form.reset(team);
   }, [team]);
-  const form = useForm<teamType>({
+  const form = useForm<Team>({
     resolver: zodResolver(teamSchema),
     defaultValues: team,
   });
 
-  const onSubmit = (data: teamType) => {
+  const onSubmit = async (data: Team) => {
     console.log(data);
     dispatch(updateTeamInfo(data));
+
+    try {
+      const response = await axios.put("/api/profile", { team: data });
+
+      if (response.status === 200) {
+        toast({
+          title: `${response.data.message}`,
+          description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+      toast({
+        title: `${error.response.data.message}`,
+        description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+      });
+    }
   };
   return (
     <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar">

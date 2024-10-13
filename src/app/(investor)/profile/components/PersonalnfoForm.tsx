@@ -43,7 +43,7 @@ const PersonalInfoForm = () => {
       phone: bio.phone,
       linkedIn: bio.linkedIn,
       x: bio.x,
-      address: bio.address,
+      // address: bio.address,
     },
   });
 
@@ -52,9 +52,9 @@ const PersonalInfoForm = () => {
     dispatch(updatePersonalInfo(data));
 
     try {
-      const response = await axios.put('/api/profile', { bio: data });
+      const response = await axios.put("/api/profile", { bio: data });
       console.log(response);
-      dispatch(updatePersonalInfo(data));
+      // dispatch(updatePersonalInfo(data));
 
       if (response.status === 200) {
         const result = response.data;
@@ -65,8 +65,10 @@ const PersonalInfoForm = () => {
         });
       }
     } catch (error: any) {
+      console.log(error);
       toast({
         title: `${error.data?.message}`,
+        // title: `${error.data}`,
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
       console.error("Error updating profile:", error);

@@ -20,8 +20,8 @@ import { addInvestor } from "@/lib/actions/investorAction";
 // import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
 const AddInvestorForm: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<string>("company");
-  const [visitedTabs, setVisitedTabs] = useState<string[]>(["company"]); // 'company' as default visited
+  const [currentTab, setCurrentTab] = useState<string>("target");
+  const [visitedTabs, setVisitedTabs] = useState<string[]>(["target"]); // 'company' as default visited
   // const axiosAuth = useAxiosAuth();
   // List of all tabs
   const tabs = ["company", "profile", "profile2", "target", "price", "contact"];

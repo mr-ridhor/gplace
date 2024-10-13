@@ -61,8 +61,8 @@ const Table: React.FC<Props> = ({ investors }) => {
         <DataTable
           columns={Column}
           data={investors} // investors prop is an array, safe to pass
-          columnVisibility={columnVisibility}
-          setColumnVisibility={handleSetColumnVisibility}
+          // columnVisibility={columnVisibility}
+          // setColumnVisibility={handleSetColumnVisibility}
           onRowClick={handleRowClick}
         />
       ) : (

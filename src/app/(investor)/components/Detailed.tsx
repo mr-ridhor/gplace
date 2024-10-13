@@ -36,7 +36,7 @@ const Detailed: React.FC<Props> = ({ selectedItem }) => {
               className="text-[10px] lg:text-sm  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:bg-[#DCF8FC] rounded-md data-[state=active]:shadow-none"
               value="inactive"
             >
-              Inactive Offer
+              Initial Offer
             </TabsTrigger>
             <TabsTrigger
               className="text-[10px] lg:text-sm  data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:bg-[#DCF8FC] rounded-md data-[state=active]:shadow-none"

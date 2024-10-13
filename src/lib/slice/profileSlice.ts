@@ -13,6 +13,27 @@ export interface Bio {
   address: string;
 }
 
+// export type Company = {
+//   name: string;
+//   country: string;
+//   city: string;
+//   email: string;
+//   website?: string;
+//   industry: string;
+//   foundingYear: string;
+//   revenue: {
+//     ltm: string;
+//     previousYear: string;
+//   };
+//   grossProfit: {
+//     ltm: string;
+//     previousYear: string;
+//   };
+//   EBITDA: {
+//     ltm: string;
+//     previousYear: string;
+//   };
+// };
 export type Company = {
   name: string;
   country: string;
@@ -20,29 +41,28 @@ export type Company = {
   email: string;
   website?: string;
   industry: string;
-  foundingYear: string;
+  foundingYear: number; // Changed to number
   revenue: {
-    ltm: string;
-    previousYear: string;
+    ltm: number; // Changed to number
+    previousYear: number; // Changed to number
   };
   grossProfit: {
-    ltm: string;
-    previousYear: string;
+    ltm: number; // Changed to number
+    previousYear: number; // Changed to number
   };
   EBITDA: {
-    ltm: string;
-    previousYear: string;
+    ltm: number; // Changed to number
+    previousYear: number; // Changed to number
   };
 };
-
 export interface Team {
   team1?: {
     fullName?: string;
-    role?: string;
+    email?: string;
   };
   team2?: {
     fullName?: string;
-    role?: string;
+    email?: string;
   };
 }
 

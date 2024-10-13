@@ -47,44 +47,74 @@ const CompanyInfoForm = () => {
       website: company.website,
       industry: company.industry,
       foundingYear: company.foundingYear,
-      revenue: company.revenue || { ltm: "", previousYear: "" },
-      grossProfit: company.grossProfit || { ltm: "", previousYear: "" },
-      EBITDA: company.EBITDA || { ltm: "", previousYear: "" },
+
+      revenue: {
+        ltm: company.revenue.ltm,
+        previousYear: company.revenue.previousYear,
+      },
+      grossProfit: {
+        ltm: company.grossProfit.ltm,
+        previousYear: company.grossProfit.previousYear,
+      },
+      EBITDA: {
+        ltm: company.EBITDA.ltm,
+        previousYear: company.EBITDA.previousYear,
+      },
     },
   });
-  // useEffect(() => {
-  //   form.reset(company);
-  // }, [company]);
+  useEffect(() => {
+    form.reset(company);
+  }, [company]);
   // console.log("company", company);
+  const formatNumberWithCommas = (value: string) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+  // alert(typeof company.foundingYear);
+  // Helper function to remove commas for submission
+  const removeCommas = (value: string) => {
+    return value.replace(/,/g, "");
+  };
   const onSubmit = async (data: Company) => {
-    // dispatch(updateCompanyInfo(submitData));
+    const formData = {
+      ...data,
+      revenue: {
+        ltm: data.revenue.ltm,
+        previousYear: data.revenue.previousYear,
+      },
+      EDITDA: {
+        ltm: data.EBITDA.ltm,
+        previousYear: data.EBITDA.previousYear,
+      },
+      grossProfit: {
+        ltm: data.grossProfit.ltm,
+        previousYear: data.grossProfit.previousYear,
+      },
+    };
+    dispatch(updateCompanyInfo(formData));
+    // alert(JSON.stringify(formData));
 
-    console.log("Submit Data:", data);
     try {
-      const response = await axios.put("/api/profile", data);
-      console.log(response);
-      dispatch(updateCompanyInfo(data));
+      const response = await axios.put("/api/profile", { company: formData });
 
       if (response.status === 200) {
-        const result = response.data;
-        // Handle success
         toast({
-          title: `${result.message}`,
+          title: `${response.data.message}`,
           description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
         });
       }
     } catch (error: any) {
+      console.log(error);
       toast({
-        title: `${error.data.message}`,
+        title: `${error.response.data.message}`,
         description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
       });
-      console.error("Error updating profile:", error);
     }
   };
-  const formatNumberWithCommas = (value: string): string => {
-    // Ensure value is a string before calling replace
-    return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
+
+  // const formatNumberWithCommas = (value: string): string => {
+  //   // Ensure value is a string before calling replace
+  //   return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  // };
 
   return (
     <DialogContent className="h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar">
@@ -275,7 +305,7 @@ const CompanyInfoForm = () => {
                       <FormItem>
                         <FormControl>
                           <YearSelect
-                            value={field.value}
+                            value={String(field.value)}
                             onChange={field.onChange}
                             className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                             placeholder="Select Year"
@@ -300,8 +330,14 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
-                              value={field.value}
-                              onChange={(e) => field.onChange(e.target.value)}
+                              value={formatNumberWithCommas(
+                                String(field.value)
+                              )}
+                              onChange={(e) =>
+                                field.onChange(
+                                  Number(removeCommas(e.target.value))
+                                )
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -326,8 +362,14 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
-                              value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) => field.onChange(e.target.value)}
+                              value={formatNumberWithCommas(
+                                String(field.value)
+                              )}
+                              onChange={(e) =>
+                                field.onChange(
+                                  Number(removeCommas(e.target.value))
+                                )
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -350,8 +392,14 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
-                              value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) => field.onChange(e.target.value)}
+                              value={formatNumberWithCommas(
+                                String(field.value)
+                              )}
+                              onChange={(e) =>
+                                field.onChange(
+                                  Number(removeCommas(e.target.value))
+                                )
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -376,8 +424,14 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
-                              value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) => field.onChange(e.target.value)}
+                              value={formatNumberWithCommas(
+                                String(field.value)
+                              )}
+                              onChange={(e) =>
+                                field.onChange(
+                                  Number(removeCommas(e.target.value))
+                                )
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -400,8 +454,14 @@ const CompanyInfoForm = () => {
                             <Input
                               className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
                               {...field}
-                              value={formatNumberWithCommas(field.value || "")}
-                              onChange={(e) => field.onChange(e.target.value)}
+                              value={formatNumberWithCommas(
+                                String(field.value)
+                              )}
+                              onChange={(e) =>
+                                field.onChange(
+                                  Number(removeCommas(e.target.value))
+                                )
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -411,6 +471,7 @@ const CompanyInfoForm = () => {
                   </div>
                 </div>
               </div>
+
               <div className="w-full flex items-center gap-x-4">
                 {/* Input Field Container */}
                 <div className="w-1/2 flex flex-col space-y-2">
@@ -426,8 +487,12 @@ const CompanyInfoForm = () => {
                           <Input
                             className="focus:border-0 focus-visible:ring-[#04acc2]"
                             {...field}
-                            value={formatNumberWithCommas(field.value || "")}
-                            onChange={(e) => field.onChange(e.target.value)}
+                            value={formatNumberWithCommas(String(field.value))}
+                            onChange={(e) =>
+                              field.onChange(
+                                Number(removeCommas(e.target.value))
+                              )
+                            }
                           />
                         </FormControl>
                         <FormMessage />

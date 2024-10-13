@@ -77,7 +77,14 @@ const ContactActionCell = <TData extends mockedInfoType>({
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            // onClick={handleOpenDelete}
+            className="cursor-pointer"
+          >
+            Edit
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={handleOpenDelete}
             className="cursor-pointer"

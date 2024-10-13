@@ -220,7 +220,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
               </Link>
             )}
           </div> */}
-          <div>
+          <div className="px-3">
             <p className="text-sm lg:text-base text-[#A7A7A7]">Website</p>
             {editingState.website ? (
               <input
