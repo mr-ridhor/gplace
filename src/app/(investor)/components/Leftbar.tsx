@@ -17,6 +17,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 		yearFounded: false,
 		companyName: false,
 		employeeNo: false,
+		offerPrice: false,
 	});
 
 	const [values, setValues] = useState({
@@ -25,6 +26,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 		yearFounded: list.companyInfo.yearFounded,
 		companyName: list.companyInfo.companyName,
 		employeeNo: list.companyInfo.employeeNumber,
+		offerPrice: list.offeredPrice.valuation,
 		// country:list.companyInfo.country
 	});
 
@@ -50,6 +52,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 		try {
 			const response = await axios.put(`/api/investors/${list._id}`, {
 				companyInfo: payload,
+				offeredPriceValuation: values.offerPrice,
 			});
 
 			// if (response.statusText !== "ok") {
