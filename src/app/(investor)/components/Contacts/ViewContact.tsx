@@ -30,7 +30,7 @@ interface Props {
 	selectedItem?: Investor;
 	onClose: () => void;
 }
-const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
+const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 	const router = useRouter();
 	const [contactType, setContactType] = useState("Primary");
 	const [info, setInfo] = useState({
@@ -62,7 +62,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			email: data.email,
 			phone: data.phone,
 			title: data.title,
-			contactType: contactType,
+			// contactType: contactType,
 		};
 		console.log(payload);
 		try {
@@ -77,16 +77,15 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 				email: data.email,
 				phone: data.phone,
 				title: data.title,
-				contactType: contactType,
+				// contactType: contactType,
 			};
 			// Use axios directly to post data
-			await axios.put(
-				`/api/investors/${investorId}/contact/${selectedItem._id}`,
-				payload
-			);
+			await axios.put(`/api/investors/${investorId}`, {
+				primaryContact: payload,
+			});
 
 			// Refresh the data or reload the page
-			router.refresh();
+			// router.refresh();
 			console.log("Contact added successfully"); // Handle success message
 			toast("Contact added successfully", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
@@ -104,8 +103,8 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			<Form {...form}>
 				<div className='    space-y-6 flex flex-col items-centr w-full'>
 					<div className='w-full flex flex-col items-center  justify-center'>
-						{/* <p className='font-bold text-xl'>View record</p> */}
-						<p className='font-bold'>Edit Records</p>
+						<p className='font-bold text-xl'>View record</p>
+						<p className='font-normal'>Contact Records</p>
 					</div>
 					<form
 						action=''
@@ -127,6 +126,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 													<Input
 														className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 														{...field}
+														// readOnly
 													/>
 												</FormControl>
 												<FormMessage />
@@ -148,6 +148,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
+															// readOnly
 														/>
 													</FormControl>
 													<FormMessage />
@@ -158,7 +159,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 								</div>
 							</div>
 
-							<div className='w-full space-y-2'>
+							{/* <div className='w-full space-y-2'>
 								<div className='w-full grid grid-cols-2 my-3 '>
 									<div className=' col-span-1 px-3'>
 										<Button
@@ -197,13 +198,14 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												<Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
+													// readOnly
 												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
-							</div>
+							</div> */}
 							<div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-sm'>
 									Phone number
@@ -217,6 +219,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												<Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
+													// readOnly
 												/>
 											</FormControl>
 											<FormMessage />
@@ -235,6 +238,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												<Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
+													// readOnly
 												/>
 											</FormControl>
 											<FormMessage />
@@ -247,7 +251,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 									<div className='w-full flex items-center gap-x-4'>
 										<div className='w-1/2'>
 											<Button
-												className={`w-full bg-[#DCF8FC]  h-10 mt-3 rounded-md flex items-center justify-center
+												className={` w-full bg-[#DCF8FC]  h-10 mt-3 rounded-md flex items-center justify-center
                         `}
 												type='button'
 											>
@@ -264,7 +268,6 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												{form.formState.isSubmitting ? (
 													<div className='w-full h-72 flex items-center justify-center'>
 														<LuLoader className='w-8 h-8 text- animate-spin' />
-														{/* <LoaderComponent className="w-8 h-8 text-[#03AAC1]" /> */}
 													</div>
 												) : (
 													<p
@@ -288,4 +291,4 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 	);
 };
 
-export default EditContact;
+export default ViewContact;

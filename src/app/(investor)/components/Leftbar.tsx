@@ -17,6 +17,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 		yearFounded: false,
 		companyName: false,
 		employeeNo: false,
+		offerPrice: false,
 	});
 
 	const [values, setValues] = useState({
@@ -25,6 +26,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 		yearFounded: list.companyInfo.yearFounded,
 		companyName: list.companyInfo.companyName,
 		employeeNo: list.companyInfo.employeeNumber,
+		offerPrice: list.offeredPrice.valuation,
 		// country:list.companyInfo.country
 	});
 
@@ -49,7 +51,8 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 		};
 		try {
 			const response = await axios.put(`/api/investors/${list._id}`, {
-				company: payload,
+				companyInfo: payload,
+				offeredPriceValuation: values.offerPrice,
 			});
 
 			// if (response.statusText !== "ok") {
@@ -300,13 +303,13 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							</p>
 						)}
 					</div>
-					<div>
+					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>Investor Type</p>
 						<div className='rounded-md text-[12px] lg:text-sm'>
 							{list.companyInfo.investorType}
 						</div>
 					</div>
-					<div className='space-y-'>
+					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Matching Score
 						</p>
@@ -319,7 +322,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							</div>
 						</div>
 					</div>
-					<div>
+					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Offered Price ($mm)
 						</p>

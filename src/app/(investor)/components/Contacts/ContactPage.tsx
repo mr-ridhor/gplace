@@ -8,6 +8,7 @@ import { Investor } from "@/lib/data/mocked";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddContact from "./AddContact"; // Adjust import based on your filename
 import EditContact from "./EditConract";
+import ViewContact from "./ViewContact";
 
 interface Props {
 	selectedItem: Investor;
@@ -48,7 +49,7 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
 										View record <BiLogoTelegram />
 									</Button>
 								</DialogTrigger>
-								<EditContact
+								<ViewContact
 									selectedItem={selectedItem}
 									onClose={handleCloseDialog}
 								/>
