@@ -27,7 +27,8 @@ import moment from "moment";
 import { toast } from "sonner";
 
 interface Props {
-	selectedItem?: Investor;
+	row: Row<TData>;
+
 	onClose: () => void;
 }
 const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
