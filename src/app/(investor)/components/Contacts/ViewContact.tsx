@@ -124,7 +124,7 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 													<Input
 														className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 														{...field}
-														readOnly
+														// readOnly
 													/>
 												</FormControl>
 												<FormMessage />
@@ -146,7 +146,7 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															readOnly
+															// readOnly
 														/>
 													</FormControl>
 													<FormMessage />
@@ -196,7 +196,7 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												<Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
-													readOnly
+													// readOnly
 												/>
 											</FormControl>
 											<FormMessage />
@@ -217,7 +217,7 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												<Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
-													readOnly
+													// readOnly
 												/>
 											</FormControl>
 											<FormMessage />
@@ -236,7 +236,7 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 												<Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
-													readOnly
+													// readOnly
 												/>
 											</FormControl>
 											<FormMessage />
