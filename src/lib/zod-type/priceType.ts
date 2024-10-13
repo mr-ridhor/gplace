@@ -1,6 +1,15 @@
 export type priceType = {
-  val: string;
-  evRev: string;
-  evEbd: string;
-  // offeredPrice: string;
+	val: {
+		from: string;
+		to: string;
+	};
+	evRev: {
+		from: string;
+		to: string;
+	};
+	evEbd: {
+		from: string;
+		to: string;
+	};
+	// offeredPrice: string;
 };

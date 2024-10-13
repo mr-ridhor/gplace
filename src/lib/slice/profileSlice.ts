@@ -58,11 +58,11 @@ export type Company = {
 export interface Team {
   team1?: {
     fullName?: string;
-    role?: string;
+    email?: string;
   };
   team2?: {
     fullName?: string;
-    role?: string;
+    email?: string;
   };
 }
 

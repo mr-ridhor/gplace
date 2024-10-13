@@ -11,14 +11,21 @@ import { offeredPriceSchema } from "./offeredPriceSchema";
 
 // Define the Zod schema
 export const targetSchema = z.object({
-  rev: z.string().min(1, "Revenue is required"), // Equivalent to Yup's required
-  ebdt: z.string().min(1, "EBITDA is required"),
-  dealsz: z.string().min(1, "Deal size is required"),
-  valuation: z.string().min(1, "Valuation is required"), // Valuation is required
-
-  // offeredPrice: z.object({
-  //   valuation: z.string().min(1, "Valuation is required"), // Valuation is required
-  //   ebidta: z.number().optional(), // Optional fields in Zod
-  //   revenue: z.number().optional(),
-  // }),
+	// rev: z.string().min(1, "Revenue is required"), // Equivalent to Yup's required
+	// ebdt: z.string().min(1, "EBITDA is required"),
+	// dealsz: z.string().min(1, "Deal size is required"),
+	// valuation: z.string().min(1, "Valuation is required"), // Valuation is required
+	rev: z.object({
+		from: z.string(),
+		to: z.string(),
+	}),
+	ebdt: z.object({
+		from: z.string(),
+		to: z.string(),
+	}),
+	dealsz: z.object({
+		from: z.string(),
+		to: z.string(),
+	}),
+	valuation: z.string().min(1, "Valuation is required"),
 });

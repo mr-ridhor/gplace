@@ -77,10 +77,10 @@ const CompanyInfoForm = () => {
   const onSubmit = async (data: Company) => {
     const formData = {
       ...data,
-      // revenue: {
-      //   ltm: 10000,
-      //   previousYear: 4000,
-      // },
+      revenue: {
+        ltm: data.revenue.ltm,
+        previousYear: data.revenue.previousYear,
+      },
       EDITDA: {
         ltm: data.EBITDA.ltm,
         previousYear: data.EBITDA.previousYear,
@@ -90,11 +90,11 @@ const CompanyInfoForm = () => {
         previousYear: data.grossProfit.previousYear,
       },
     };
-    // dispatch(updateCompanyInfo(formData));
+    dispatch(updateCompanyInfo(formData));
     // alert(JSON.stringify(formData));
 
     try {
-      const response = await axios.put("/api/profile", formData);
+      const response = await axios.put("/api/profile", { company: formData });
 
       if (response.status === 200) {
         toast({

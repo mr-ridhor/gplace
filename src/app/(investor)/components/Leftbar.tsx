@@ -76,7 +76,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
     };
 
   return (
-    <div className="md:w-[220px] z-30 fixed w-full hidden md:flex items-start justify-center">
+    <div className="md:w-[200px] z-30 fixed w-full hidden md:flex items-start justify-center">
       <div className="bg-[#F5F8FA] w-full rounded-md min-h-[220px] xl:min-h-[340px] 2xl:min-h-[600px] md:flex items-start justify-center overflow-y-auto no-scrollbar py-4">
         <div className="space-y-2 xl:space-y-6 2xl:space-y-10">
           {/* <div className="my-2">
