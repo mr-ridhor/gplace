@@ -325,7 +325,7 @@ const Navbar = () => {
 			</div>
 			{/* Dialog Component */}
 			<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-				<AddInvestorForm />
+				<AddInvestorForm onClose={() => setIsDialogOpen(false)} />
 			</Dialog>
 		</div>
 	);
