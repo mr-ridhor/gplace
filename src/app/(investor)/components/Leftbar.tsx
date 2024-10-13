@@ -5,6 +5,7 @@ import { formatNumberWithCommas } from "@/lib/numeralFormatter";
 import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
+import { calculateTextLength } from "../../../../utils/textLenth";
 
 interface LeftbarProps {
 	list: Investor; // Expecting a MockedData object
@@ -80,7 +81,8 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 				handleBlur(field)();
 			}
 		};
-
+	const length = calculateTextLength(values.website);
+	// alert(length);
 	return (
 		<div className='md:w-[200px] z-30 fixed w-full hidden md:flex items-start justify-center'>
 			<div className='bg-[#F5F8FA] w-full rounded-md min-h-[220px] xl:min-h-[340px] 2xl:min-h-[600px] md:flex items-start justify-center overflow-y-auto no-scrollbar py-4'>
@@ -251,7 +253,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 									window.open(values.website, "_blank"); // Open the link on single click
 								}}
 							>
-								{values.website}
+								{length > 20 ? values.companyName : values.website}
 							</span>
 						)}
 					</div>

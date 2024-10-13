@@ -129,11 +129,13 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															placeholder='From 1.00x'
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={formatTwoDecimals(field.value || "")}
+															value={
+																field.value !== undefined
+																	? field.value.toString()
+																	: ""
+															}
 															onChange={(e) =>
-																field.onChange(
-																	formatTwoDecimals(e.target.value)
-																)
+																handleDecimalInputChange(field, e.target.value)
 															}
 														/>
 													</FormControl>
