@@ -253,7 +253,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 									window.open(values.website, "_blank"); // Open the link on single click
 								}}
 							>
-								{length > 20 ? values.companyName : values.website}
+								{length > 24 ? values.companyName : values.website}
 							</span>
 						)}
 					</div>
