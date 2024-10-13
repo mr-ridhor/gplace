@@ -41,6 +41,12 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 		return isNaN(parseFloat(formattedValue)) ? "" : formattedValue;
 	};
 
+	const handleDecimalInputChange = (field: any, value: string) => {
+		// Convert input to a number, format to two decimals
+		const numericValue = parseFloat(value);
+		const formattedValue = isNaN(numericValue) ? "" : numericValue.toFixed(2);
+		field.onChange(formattedValue);
+	};
 	const onSubmit = (data: priceType) => {
 		console.log(data);
 		dispatch(setPrice(data));
@@ -178,11 +184,15 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
 															placeholder='From 1.00x'
-															value={formatTwoDecimals(field.value || "")}
+															// value={formatTwoDecimals(field.value || "")}
+															// onChange={(e) =>
+															// 	field.onChange(
+															// 		formatTwoDecimals(e.target.value)
+															// 	)
+															// }
+															value={field.value || ""}
 															onChange={(e) =>
-																field.onChange(
-																	formatTwoDecimals(e.target.value)
-																)
+																handleDecimalInputChange(field, e.target.value)
 															}
 														/>
 													</FormControl>

@@ -25,24 +25,25 @@ import axios from "axios";
 import { LuLoader } from "react-icons/lu";
 import moment from "moment";
 import { toast } from "sonner";
+import { Row } from "@tanstack/react-table";
 
 interface Props {
-	row: Row<TData>;
+	row: any;
 
 	onClose: () => void;
 }
-const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
+const EditContact: React.FC<Props> = ({ row, onClose }) => {
 	const router = useRouter();
 	const [contactType, setContactType] = useState("Primary");
 	const [info, setInfo] = useState({
-		name: selectedItem?.primaryContact.name,
-		surname: selectedItem?.primaryContact.surname,
-		email: selectedItem?.primaryContact.email,
-		phone: selectedItem?.primaryContact.phone,
-		title: selectedItem?.primaryContact.title,
+		name: row.original.name,
+		surname: row.original.surname,
+		email: row.original.email,
+		phone: row.original.phone,
+		title: row.original.title,
 		// contactType:selectedItem?.primaryContact.
 	});
-	console.log(selectedItem);
+	// console.log(selectedItem);
 	const form = useForm<contType>({
 		resolver: zodResolver(contSchema),
 		mode: "onChange",
@@ -67,7 +68,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 		};
 		console.log(payload);
 		try {
-			const investorId = selectedItem?._id;
+			const investorId = row.original._id;
 
 			if (!investorId) {
 				throw new Error("Investor ID is missing");
@@ -82,7 +83,7 @@ const EditContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			};
 			// Use axios directly to post data
 			await axios.put(
-				`/api/investors/${investorId}/contact/${selectedItem._id}`,
+				`/api/investors/${investorId}/contact/${row.original._id}`,
 				payload
 			);
 
