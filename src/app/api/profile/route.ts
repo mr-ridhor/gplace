@@ -27,8 +27,21 @@ export async function PUT(req: NextRequest) {
 
     // Update only the provided fields, while keeping the existing data
     const updatedBio = bio ? { ...user.bio, ...bio } : user.bio;
-    const updatedCompany = company ? { ...user.company, ...company } : user.company;
+
+    // Merge existing company data with the new input (preserve previousYear if not provided)
+    const updatedCompany = {
+      revenue: {
+        ltm: company?.revenue?.ltm ?? user?.company?.revenue?.ltm,  
+        previousYear: company?.revenue?.previousYear ?? user?.company?.revenue?.previousYear
+      },
+      EBITDA: {
+        ltm: company?.EBITDA?.ltm ?? user?.company?.EBITDA?.ltm, 
+        previousYear: company?.EBITDA?.previousYear ?? user?.company?.EBITDA?.previousYear
+      },
+    };
+
     const updatedTeam = team ? { ...user.team, ...team } : user.team;
+
 
     // Apply the updates using findByIdAndUpdate with the { new: true } option to return the updated document
     const updatedUser = await User.findByIdAndUpdate(
@@ -40,21 +53,21 @@ export async function PUT(req: NextRequest) {
           team: updatedTeam,
         },
       },
-      { new: true } // Return updated document and apply schema validation
+      { new: true }
     );
 
     if (!updatedUser) {
       return NextResponse.json({ message: 'Update failed' }, { status: 500 });
     }
 
-    if (company.revenue?.ltm || company.EBITDA?.ltm) {
+    if (company?.revenue?.ltm || company?.EBITDA?.ltm) {
       const investors = await Investor.find({ user: currentUser.id });
 
       // Loop through each investor and calculate the new revenue and EBITDA based on the valuation
       const bulkOperations = investors.map((investor) => {
         const valuation = investor.offeredPrice.valuation;
-        const revenue = parseFloat((valuation / user.company.revenue.ltm).toFixed(1));
-        const EBITDA = parseFloat((valuation / user.company.EBITDA.ltm).toFixed(1));
+        const revenue = parseFloat((valuation / user?.company?.revenue.ltm).toFixed(1));
+        const EBITDA = parseFloat((valuation / user?.company?.EBITDA.ltm).toFixed(1));
 
         // Return the update object for bulk write
         return {
