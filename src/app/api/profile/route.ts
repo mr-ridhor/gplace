@@ -30,13 +30,25 @@ export async function PUT(req: NextRequest) {
 
     // Merge existing company data with the new input (preserve previousYear if not provided)
     const updatedCompany = {
+      ...user.company,
+      name: company?.name ?? user.company.name,
+      country: company?.country ?? user.company.country,
+      city: company?.city ?? user.company.city,
+      email: company?.email ?? user.company.email,
+      website: company?.website ?? user.company.website,
+      industry: company?.industry ?? user.company.industry,
+      foundingYear: company?.foundingYear ?? user.company.foundingYear,
       revenue: {
-        ltm: company?.revenue?.ltm ?? user?.company?.revenue?.ltm,  
-        previousYear: company?.revenue?.previousYear ?? user?.company?.revenue?.previousYear
+        ltm: company?.revenue?.ltm ?? user?.company?.revenue?.ltm,
+        previousYear: company?.revenue?.previousYear ?? user?.company?.revenue?.previousYear,
+      },
+      grossProfit: {
+        ltm: company?.grossProfit?.ltm ?? user?.company?.grossProfit?.ltm,
+        previousYear: company?.grossProfit?.previousYear ?? user?.company?.grossProfit?.previousYear,
       },
       EBITDA: {
-        ltm: company?.EBITDA?.ltm ?? user?.company?.EBITDA?.ltm, 
-        previousYear: company?.EBITDA?.previousYear ?? user?.company?.EBITDA?.previousYear
+        ltm: company?.EBITDA?.ltm ?? user?.company?.EBITDA?.ltm,
+        previousYear: company?.EBITDA?.previousYear ?? user?.company?.EBITDA?.previousYear,
       },
     };
 
