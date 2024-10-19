@@ -1,14 +1,14 @@
 {
   "companyInfo": {
-    "companyName": "Zoom Inc",
-    "country": "United States",
-    "city": "California",
-    "website": "zoom.us",
+    "companyName": "Cloudfare Inc",
+    "country": "Canada",
+    "city": "Ontaria",
+    "website": "cloudfare.us",
     "yearFounded": 2000,
     "employeeNumber": 1000,
     "investorType": "Strategic",
     "description": "Big Investor",
-    "industry":"Manufacturing "
+    "industry":"Technology"
   },
   "investmentBio": {
     "industry": "Manufacturing ",
@@ -16,12 +16,12 @@
     "dealsInLTM": 200000,
     "medianDealSize": 200000,
     "AUM": 200000,
-    "dealsIn5Y": 200000
+    "dealsIn5Y": 5
   },
   "targetInfo": {
     "revenue": {
       "from": 100000,
-      "to": 250000
+      "to": 200000
     },
     "EBITDA": {
       "from": 100000,
