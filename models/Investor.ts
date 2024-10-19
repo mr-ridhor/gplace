@@ -11,6 +11,7 @@ export interface InvestorInterface extends Document {
         yearFounded: number;
         employeeNumber: number;
         investorType: 'Strategic' | 'Financial';
+        industry: string;
         description: string;
     };
     investmentBio: {
@@ -46,18 +47,18 @@ export interface InvestorInterface extends Document {
     vertical?: string;
     status?: string;
     matchScore: {
-        totalScore: number;
-        revenueScore: number;
-        ebitdaScore: number;
-        dealsScore: number;
-        investorTypeScore: number;
-        industryScore: number;
-        dealSizeScore: number;
+        revenueScore?: number;
+        ebitdaScore?: number;
+        dealsScore?: number;
+        investorTypeScore?: number;
+        industryScore?: number;
+        dealSizeScore?: number;
+        totalScore?: number;
     };
 }
 
 // Investor model interface including static methods
-interface InvestorModel extends Model<InvestorInterface> {
+export interface InvestorModel extends Model<InvestorInterface> {
     calculateMatchScore(clientMetrics: any, investor: InvestorInterface): number;
 }
 
@@ -72,6 +73,7 @@ const investorSchema = new Schema<InvestorInterface>({
         yearFounded: { type: Number, required: true },
         employeeNumber: { type: Number, required: true },
         investorType: { type: String },
+        industry: { type: String },
         description: { type: String, required: true },
     },
     investmentBio: {
@@ -113,7 +115,6 @@ const investorSchema = new Schema<InvestorInterface>({
         dealsScore: { type: Number, default: 0 },
         investorTypeScore: { type: Number, default: 0 },
         industryScore: { type: Number, default: 0 },
-        dealSizeScore: { type: Number, default: 0 },
     },
 }, { timestamps: true });
 
@@ -121,7 +122,7 @@ const investorSchema = new Schema<InvestorInterface>({
 investorSchema.statics.calculateMatchScore = function (clientMetrics: any, investor: InvestorInterface): number {
     let totalScore = 0;
 
-    if (clientMetrics.revenue >= investor.targetInfo.revenue.from && clientMetrics.revenue <= investor.targetInfo.revenue.to) {
+    if (clientMetrics.revenue >= investor.targetInfo.revenue?.from && clientMetrics.revenue <= investor.targetInfo.revenue?.to) {
         investor.matchScore.revenueScore = 50;
         totalScore += 50;
     }
@@ -141,13 +142,8 @@ investorSchema.statics.calculateMatchScore = function (clientMetrics: any, inves
         totalScore += 10;
     }
 
-    if (clientMetrics.industry === investor.vertical) {
+    if (clientMetrics.industry === investor.companyInfo.industry) {
         investor.matchScore.industryScore = 10;
-        totalScore += 10;
-    }
-
-    if (clientMetrics.dealSize >= investor.targetInfo.dealSize.from && clientMetrics.dealSize <= investor.targetInfo.dealSize.to) {
-        investor.matchScore.dealSizeScore = 10;
         totalScore += 10;
     }
 

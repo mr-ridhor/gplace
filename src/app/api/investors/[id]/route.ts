@@ -2,7 +2,7 @@ import connectDB from "../../../../../config/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../utils/authOptions";
 import { NextRequest, NextResponse } from "next/server";
-import Investor from "../../../../../models/Investor";
+import Investor, { InvestorModel } from "../../../../../models/Investor";
 import InvestorContact from "../../../../../models/InvestorContact";
 import User, { IUser } from "../../../../../models/User";
 
@@ -41,8 +41,18 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         }
 
         const { companyInfo, investmentBio, targetInfo, offeredPriceValuation, paidInfo, primaryContact } = await req.json();
+
         const investor = await Investor.findOne({ _id: params.id, user: data.user.id })
+
         const user: IUser | any = await User.findById(data.user.id)
+        if (!user) return NextResponse.json({ message: "User not found" }, { status: 500 });
+        const { revenue, EBITDA, industry } = user.company;
+
+        const clientMetrics = {
+            userRevenue: revenue.ltm, // Client's latest revenue
+            userEBITDA: EBITDA.ltm, // Client's latest EBITDA
+            userIndustry: industry,
+        };
 
         if (!investor) return NextResponse.json({ message: 'Investor not found' }, { status: 404 });
 
@@ -60,7 +70,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         } : investor.offeredPrice;
 
 
-        await Investor.findOneAndUpdate(
+        // Update the investor document in the database
+        const updatedInvestor = await Investor.findOneAndUpdate(
             { user: data.user.id, _id: params.id },
             {
                 $set: {
@@ -71,9 +82,20 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
                     offeredPrice: updatedOfferedPrice,
                     primaryContact: updatedPrimaryContact
                 }
-            }, // Only update fields provided in updateData
-            { new: true }
+            },
+            { new: true } // return the updated document
         );
+
+        if (!updatedInvestor) {
+            return NextResponse.json({ message: 'Failed to update investor' }, { status: 500 });
+        }
+
+        // Calculate match score using clientMetrics and updatedInvestor
+        if (clientMetrics) {
+            const matchScore = (Investor as InvestorModel).calculateMatchScore(clientMetrics, updatedInvestor);
+            updatedInvestor.matchScore.totalScore = matchScore;
+            await updatedInvestor.save(); // Save the updated match score
+        }
 
         return NextResponse.json({ message: 'Investor Data Updated Successfully' }, { status: 200 });
     } catch (error: any) {
