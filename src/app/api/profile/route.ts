@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "../../../../models/User";
 import { getUser } from "../../../../utils/getUser";
-import Investor from "../../../../models/Investor";
+import Investor, { InvestorModel } from "../../../../models/Investor";
 
 export async function GET(req: NextRequest) {
   const currentUser = await getUser()
@@ -81,6 +81,15 @@ export async function PUT(req: NextRequest) {
         const revenue = parseFloat((valuation / user?.company?.revenue.ltm).toFixed(1));
         const EBITDA = parseFloat((valuation / user?.company?.EBITDA.ltm).toFixed(1));
 
+        const clientMetrics = {
+          revenue: updatedCompany.revenue.ltm,
+          EBITDA: updatedCompany.EBITDA.ltm,
+          industry: updatedCompany.industry,
+          dealSize: valuation, // Assuming dealSize is based on valuation
+        };
+
+        const matchScore = (Investor as InvestorModel).calculateMatchScore(clientMetrics, investor);
+
         // Return the update object for bulk write
         return {
           updateOne: {
@@ -89,6 +98,7 @@ export async function PUT(req: NextRequest) {
               $set: {
                 'offeredPrice.revenue': revenue,
                 'offeredPrice.EBITDA': EBITDA,
+                'matchScore.totalScore': matchScore
               },
             },
           },

@@ -1,17 +1,17 @@
 {
   "companyInfo": {
-    "companyName": "Zoom Inc",
-    "country": "United State",
-    "city": "California",
-    "website": "https://zoom.us",
-    "yearFounded": 1982,
+    "companyName": "Meta",
+    "country": "Nigeria",
+    "city": "Yenagoa",
+    "website": "meta.com",
+    "yearFounded": 2000,
     "employeeNumber": 1000,
     "investorType": "Strategic",
-    "industry": "Technology",
     "description": "Big Investor"
   },
   "investmentBio": {
-    "industry": "Technology",
+    "industry": "Manufacturing ",
+    "geography": "Nil",
     "dealsInLTM": 200000,
     "medianDealSize": 200000,
     "AUM": 200000,
@@ -20,7 +20,7 @@
   "targetInfo": {
     "revenue": {
       "from": 100000,
-      "to": 500000
+      "to": 200000
     },
     "EBITDA": {
       "from": 100000,
@@ -37,19 +37,19 @@
       "to": 200000
     },
     "revenue": {
-      "from": 100000,
-      "to": 200000
+      "from": 1,
+      "to": 5
     },
     "EBITDA": {
-      "from": 100000,
-      "to": 200000
+      "from": 9,
+      "to": 30
     }
   },
   "offeredPriceValuation": 35000000,
   "primaryContact": {
-    "name": "Emie",
-    "surname": "Boro",
-    "email": "emieboro8@gmail.com",
+    "name": "Emiedonmokumo",
+    "surname": "Dick-Boro",
+    "email": "boro2dev@gmail.com",
     "phone": "08109995607",
     "title": "Director"
   }
