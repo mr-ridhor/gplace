@@ -10,7 +10,8 @@ interface IUserResponse {
   email: string;
   firstName: string;
   lastName: string;
-  remember: boolean
+  role?: string;
+  remember: boolean;
 }
 
 
@@ -91,7 +92,7 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
-        token.remember = user.remember
+        token.remember = user.remember;
       }
       return token;
     },

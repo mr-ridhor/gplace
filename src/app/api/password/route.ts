@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     if (!user) NextResponse.json({ message: 'User not found'}, { status: 404 })
 
     const verificationCode = Math.floor(10000 + Math.random() * 90000);
-    const expirationTime = new Date(Date.now() + 30 * 60 * 1000);
+    const expirationTime = new Date(Date.now() + 10 * 60 * 1000);
 
 
     user.credentials.passwordReset.code = verificationCode
@@ -30,5 +30,5 @@ export async function POST(req: NextRequest) {
     };
     await transporter.sendMail(mailOptions)
 
-    return NextResponse.json({ message: 'OTP sent'}, { status: 200 })
+    return NextResponse.json({ message: 'OTP sent', expires: expirationTime }, { status: 200 })
 }
