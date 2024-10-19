@@ -1,13 +1,14 @@
 {
   "companyInfo": {
-    "companyName": "Meta",
-    "country": "Nigeria",
-    "city": "Yenagoa",
-    "website": "meta.com",
+    "companyName": "Zoom Inc",
+    "country": "United States",
+    "city": "California",
+    "website": "zoom.us",
     "yearFounded": 2000,
     "employeeNumber": 1000,
     "investorType": "Strategic",
-    "description": "Big Investor"
+    "description": "Big Investor",
+    "industry":"Manufacturing "
   },
   "investmentBio": {
     "industry": "Manufacturing ",
@@ -20,7 +21,7 @@
   "targetInfo": {
     "revenue": {
       "from": 100000,
-      "to": 200000
+      "to": 250000
     },
     "EBITDA": {
       "from": 100000,
@@ -47,9 +48,9 @@
   },
   "offeredPriceValuation": 35000000,
   "primaryContact": {
-    "name": "Emiedonmokumo",
-    "surname": "Dick-Boro",
-    "email": "boro2dev@gmail.com",
+    "name": "John",
+    "surname": "Doe",
+    "email": "johndoe@gmail.com",
     "phone": "08109995607",
     "title": "Director"
   }
