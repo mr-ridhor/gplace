@@ -60,7 +60,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 					<form
 						action=''
 						onSubmit={form.handleSubmit(onSubmit)}
-						className='items-center flex flex-col h-full'
+						className='items-center flex flex-col h-full w-full'
 					>
 						<div className='space-y-4 w-full'>
 							<div className='w-full space-y-2'>

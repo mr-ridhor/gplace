@@ -1,13 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
+	persistStore,
+	persistReducer,
+	FLUSH,
+	REHYDRATE,
+	PAUSE,
+	PERSIST,
+	PURGE,
+	REGISTER,
 } from "redux-persist";
 import { storageService } from "./storageService";
 import selectedRowReducer from "../slice/selectedRowSlice";
@@ -20,31 +20,31 @@ import investorsReducer from "../slice/investorSlice";
 import dataReducer from "../slice/contactSlice";
 // Add "register" to the whitelist to persist its state
 const persistConfig = {
-  key: "root",
-  storage: storageService,
-  whitelist: ["row", "register"], // "register" is now persisted
+	key: "root",
+	storage: storageService,
+	whitelist: ["row", "register", "addInvestor"], // "register" is now persisted
 };
 
 const rootReducer = combineReducers({
-  row: selectedRowReducer,
-  register: registerReducer,
-  addInvestor: addInverstorReducer,
-  profile: profileReducer,
-  panel: panelReducer,
-  investors: investorsReducer,
-  data: dataReducer,
+	row: selectedRowReducer,
+	register: registerReducer,
+	addInvestor: addInverstorReducer,
+	profile: profileReducer,
+	panel: panelReducer,
+	investors: investorsReducer,
+	data: dataReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+	reducer: persistedReducer,
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+			},
+		}),
 });
 
 const persistor = persistStore(store);

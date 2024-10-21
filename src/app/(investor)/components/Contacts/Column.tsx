@@ -14,6 +14,7 @@ export const Column: ColumnDef<TableRowType>[] = [
 		header: ({ column }) => (
 			<Button
 				variant='ghost'
+				className='px-0'
 				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 			>
 				Name
@@ -31,6 +32,7 @@ export const Column: ColumnDef<TableRowType>[] = [
 		header: ({ column }) => (
 			<Button
 				variant='ghost'
+				className='px-0'
 				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 			>
 				Title
@@ -48,6 +50,7 @@ export const Column: ColumnDef<TableRowType>[] = [
 		header: ({ column }) => (
 			<Button
 				variant='ghost'
+				className='px-0'
 				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 			>
 				Email
@@ -65,6 +68,7 @@ export const Column: ColumnDef<TableRowType>[] = [
 		header: ({ column }) => (
 			<Button
 				variant='ghost'
+				className='px-0'
 				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 			>
 				Phone
@@ -82,6 +86,7 @@ export const Column: ColumnDef<TableRowType>[] = [
 		header: ({ column }) => (
 			<Button
 				variant='ghost'
+				className='px-0'
 				onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 			>
 				Contact Type
@@ -91,10 +96,10 @@ export const Column: ColumnDef<TableRowType>[] = [
 		cell: ({ row }) => {
 			console.log(row.original);
 			return (
-				<Button className='bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md h-8 px-2'>
+				<div className='bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md p-2 w-fit'>
 					{/* <p>Secondary</p> */}
 					{row.original.contactType}
-				</Button>
+				</div>
 			);
 		},
 		enableSorting: true,

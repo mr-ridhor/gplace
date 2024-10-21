@@ -86,83 +86,8 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 	return (
 		<div className='md:w-[200px] z-30 fixed w-full hidden md:flex items-start justify-center'>
 			<div className='bg-[#F5F8FA] w-full rounded-md min-h-[220px] xl:min-h-[340px] 2xl:min-h-[600px] md:flex items-start justify-center overflow-y-auto no-scrollbar py-4'>
-				<div className='space-y-2 xl:space-y-6 2xl:space-y-10'>
-					{/* <div className="my-2">
-            <p className="font-bold capitalize">
-              {list.companyInfo.companyName}
-            </p>
-          </div>
-          <div>
-            <p className="text-sm lg:text-base text-[#A7A7A7]">Country</p>
-            {isEditingCountry ? (
-              <input
-                type="text"
-                value={country}
-                onChange={handleCountryChange}
-                onBlur={handleBlurCountry}
-                onKeyPress={handleKeyPressCountry}
-                className="text-[12px] lg:text-sm border border-gray-300 rounded p-1"
-                autoFocus
-              />
-            ) : (
-              <p
-                className="text-[12px] lg:text-sm cursor-pointer"
-                onDoubleClick={handleDoubleClickCountry}
-              >
-                {country}
-              </p>
-            )}
-          </div>
-          <div>
-            <p className="text-sm lg:text-base text-[#A7A7A7]">Website</p>
-            {isEditingWebsite ? (
-              <input
-                type="text"
-                value={website}
-                onChange={handleWebsiteChange}
-                onBlur={handleBlurWebsite}
-                onKeyPress={handleKeyPressWebsite}
-                className="text-[12px] lg:text-sm border border-gray-300 rounded p-1"
-                autoFocus
-              />
-            ) : (
-              <Link href={website} passHref legacyBehavior>
-                <a
-                  className="text-[12px] lg:text-sm text-black hover:underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onDoubleClick={handleDoubleClickWebsite}
-                >
-                  {website}
-                </a>
-              </Link>
-            )}
-          </div>
-          <div>
-            <p className="text-sm lg:text-base text-[#A7A7A7]">Founded Year</p>
-            {isEditingYear ? (
-              <input
-                type="text"
-                value={yearFounded}
-                onChange={handleYearChange}
-                onBlur={handleBlurYear}
-                onKeyPress={handleKeyPressYear}
-                className="text-[12px] lg:text-sm border border-gray-300 rounded p-1"
-                autoFocus
-              />
-            ) : (
-              <p
-                className="text-[12px] lg:text-sm cursor-pointer"
-                onDoubleClick={handleDoubleClickYear}
-              >
-                {yearFounded}
-              </p>
-            )}
-          </div> */}
-					<div className='my-2 w-full px-3'>
-						{/* <p className="font-bold capitalize">
-              {list.companyInfo.companyName}
-            </p> */}
+				<div className='space-y-1.5 xl:space-y-4 2xl:space-y-10'>
+					<div className='my- w-full px-3'>
 						{editingState.companyName ? (
 							<input
 								type='text'
@@ -182,7 +107,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							</p>
 						)}
 					</div>
-					<div className='px-3'>
+					<div className='px-3 '>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>Country</p>
 						{editingState.country ? (
 							<input
@@ -279,31 +204,33 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							</p>
 						)}
 					</div>
-					<div className='px-3'>
+					<div className='px-3 w-full'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Number of Employees
 						</p>
-						<p className='text-[12px] lg:text-sm'>
-							{/* {formatNumberWithCommas(`${list.companyInfo.employeeNumber}`)} */}
-						</p>
-						{editingState.employeeNo ? (
-							<input
-								type='text'
-								value={values.employeeNo}
-								onChange={handleChange("employeeNo")}
-								onBlur={handleBlur("employeeNo")}
-								onKeyPress={handleKeyPress("employeeNo")}
-								className='text-[12px] lg:text-sm border border-gray-300 rounded p-1 w-[80%]'
-								autoFocus
-							/>
-						) : (
-							<p
-								className='text-[12px] lg:text-sm cursor-pointer'
-								onDoubleClick={handleDoubleClick("employeeNo")}
-							>
-								{values.employeeNo}
+						<div className=''>
+							<p className='text-[12px] lg:text-sm'>
+								{/* {formatNumberWithCommas(`${list.companyInfo.employeeNumber}`)} */}
 							</p>
-						)}
+							{editingState.employeeNo ? (
+								<input
+									type='text'
+									value={values.employeeNo}
+									onChange={handleChange("employeeNo")}
+									onBlur={handleBlur("employeeNo")}
+									onKeyPress={handleKeyPress("employeeNo")}
+									className='text-[12px] lg:text-sm border border-gray-300 rounded p-1 w-[80%]'
+									autoFocus
+								/>
+							) : (
+								<p
+									className='text-[12px] lg:text-sm cursor-pointer'
+									onDoubleClick={handleDoubleClick("employeeNo")}
+								>
+									{formatNumberWithCommas(`${values.employeeNo}`)}
+								</p>
+							)}
+						</div>
 					</div>
 					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>Investor Type</p>
@@ -311,25 +238,40 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							{list.companyInfo.investorType}
 						</div>
 					</div>
+
+					<div className='px-3'>
+						<p className='text-sm lg:text-base text-[#A7A7A7]'>
+							Offered Price ($ 000)
+						</p>
+						<div className='rounded-md text-[12px] lg:text-sm'>
+							{/* ${formatNumberWithCommas(`${list.offeredPrice.valuation}`)} */}
+							{editingState.offerPrice ? (
+								<input
+									type='text'
+									value={values.offerPrice}
+									onChange={handleChange("offerPrice")}
+									onBlur={handleBlur("offerPrice")}
+									onKeyPress={handleKeyPress("offerPrice")}
+									className='w-full border p-1 rounded'
+								/>
+							) : (
+								<p onDoubleClick={handleDoubleClick("offerPrice")}>
+									${formatNumberWithCommas(`${values.offerPrice}`)}
+								</p>
+							)}
+						</div>
+					</div>
 					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Matching Score
 						</p>
-						<div className='w-[70%] flex flex-col items-center'>
+						<div className='w-[70%] flex flex-col '>
 							<div className='w-fit rounded-full border bg-[#57D08D] text-gren-600'>
 								<CircularProgress
 									percentage={list.matchScore.totalScore}
 									circleWidth={40}
 								/>
 							</div>
-						</div>
-					</div>
-					<div className='px-3'>
-						<p className='text-sm lg:text-base text-[#A7A7A7]'>
-							Offered Price ($mm)
-						</p>
-						<div className='rounded-md text-[12px] lg:text-sm'>
-							${formatNumberWithCommas(`${list.offeredPrice.valuation}`)}
 						</div>
 					</div>
 				</div>

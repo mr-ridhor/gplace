@@ -92,11 +92,8 @@ export const Column: ColumnDef<Investor>[] = [
 		},
 		cell: ({ row }) => (
 			<Button
-				className={`text-black ${
-					row.original.investmentBio.industry === "Strategic"
-						? "bg-[#F5E2B7] hover:bg-[#F5E2B7]/60 "
-						: "bg-[#69E7A8] hover:bg-[#69E7A8]/60"
-				} rounded-md h-8`}
+				className={`text-black 
+						bg-[#69E7A8] hover:bg-[#69E7A8]/60  rounded-md h-8`}
 			>
 				{row.original.investmentBio.industry}
 			</Button>
@@ -165,7 +162,7 @@ export const Column: ColumnDef<Investor>[] = [
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 					className='text-center cursor-pointer w-max flex-row flex gap-x-2 items-center'
 				>
-					Primary Contract
+					Primary Contact
 					<TiArrowUnsorted
 						className=' h-4 w-4 text-[#898989]'
 						// onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}

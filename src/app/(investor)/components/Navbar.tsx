@@ -36,6 +36,8 @@ import {
 	toggleSearchPanel,
 	closeAllPanels,
 } from "@/lib/slice/panelSlice";
+import { getInvestor, setCompanyInfo } from "@/lib/slice/addInvestorSlice";
+import { useForm } from "react-hook-form";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
 
@@ -56,6 +58,8 @@ const Navbar = () => {
 	const activeTab = useSelector(getActiveTab);
 	const investors = ["John Doe", "Jane Smith", "Alice Johnson", "Bob Brown"];
 	const [searchTerm, setSearchTerm] = React.useState(""); // Tr
+	const { contact, companyInfo, profile, profile2, target, price } =
+		useSelector(getInvestor);
 	const searchContainerRef = React.useRef<HTMLDivElement>(null); // Reference for search container
 	const [results, setResults] = React.useState<string[]>([]); //
 	const shouldClosePanels = () => {
@@ -152,7 +156,11 @@ const Navbar = () => {
 			document.removeEventListener("mousedown", handleClickOutside);
 		};
 	}, []);
-
+	const form = useForm();
+	const handleClose = () => {
+		dispatch(setCompanyInfo(form.getValues()));
+		setIsDialogOpen(false);
+	};
 	return (
 		<div className='w-full h-16 px-5 sticky top-0 z-10 flex items-center justify-between bg-[#F5F8FA]'>
 			<div className='flex'>
@@ -232,12 +240,22 @@ const Navbar = () => {
 								onClick={() => setOpenSearch(true)} // Open the search on input click
 							/>
 							{openSearch && (
-								<div className='w-[400px] top-10 right-1 max-h-[300px] shadow-xl bg-white rounded-md absolute z-40 p-2'>
+								<div className='w-[400px] top-10 right-1 max-h-[300px] shadow-xl bg-white rounded-md absolute z-40 p-2 '>
 									{/* Search Results */}
 									{results.length === 0 && searchTerm ? (
-										<p className='text-center text-gray-500'>
-											No results found
-										</p>
+										<div className='flex flex-col items-center'>
+											<p className='text-center text-gray-500'>
+												No results found
+											</p>
+											{/* Button to open dialog when no investor is found */}
+											<Button
+												className='hover:bg-[#0691A5] text-white h-10 gap-x-2 mt-2 w-[60%]'
+												onClick={handleOpenDialog}
+											>
+												<FaPlus />
+												Add Investor
+											</Button>
+										</div>
 									) : (
 										<ul>
 											{results.map((result, index) => (
@@ -247,15 +265,6 @@ const Navbar = () => {
 											))}
 										</ul>
 									)}
-
-									{/* Button to open dialog */}
-									<Button
-										className='hover:bg-[#0691A5] text-white h-10 gap-x-2 mt-2 w-[60%]'
-										onClick={handleOpenDialog} // Close search and open the dialog
-									>
-										<FaPlus />
-										Add Investor Manually
-									</Button>
 								</div>
 							)}
 						</div>
@@ -325,7 +334,7 @@ const Navbar = () => {
 			</div>
 			{/* Dialog Component */}
 			<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-				<AddInvestorForm onClose={() => setIsDialogOpen(false)} />
+				<AddInvestorForm isOpen={isDialogOpen} onClose={handleClose} />
 			</Dialog>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import CompanyInfom from "./AddNewInvestor/CompanyInfom";
@@ -10,10 +10,9 @@ import Contact from "./AddNewInvestor/Contact";
 
 interface Props {
 	onClose: () => void;
-	isOpen: boolean; // New prop to determine if the dialog is open
 }
 
-const AddInvestorForm = ({ onClose, isOpen }: Props) => {
+const AddInvestorForm = ({ onClose }: Props) => {
 	const [currentTab, setCurrentTab] = useState<string>("company");
 	const [visitedTabs, setVisitedTabs] = useState<string[]>(["company"]); // 'company' as default visited
 
@@ -52,12 +51,7 @@ const AddInvestorForm = ({ onClose, isOpen }: Props) => {
 		setVisitedTabs(["company"]); // Only 'company' is visited
 		onClose();
 	};
-	useEffect(() => {
-		if (isOpen) {
-			setCurrentTab("company");
-			setVisitedTabs(["company"]);
-		}
-	}, [isOpen]);
+
 	return (
 		<DialogContent className='h-[450px] md:h-fit max-h-[550px] w-[400px] md:w-[600px] my-3 overflow-auto no-scrollbar'>
 			<div className='spacey-3'>
