@@ -1,9 +1,15 @@
 {
   "company": {
-    "EBITDA": {
-      "ltm": 1600000000,
-      "previousYear": 30000050
+    "name": "Whitebeard Inc",
+    "country": "United States",
+    "city": "California",
+    "email": "emieboro8@gmail.com",
+    "website": "whitebeard.com",
+    "industry": "Technology",
+    "foundingYear": 1983,
+    "grossProfit": {
+      "ltm": 2130000000.5,
+      "previousYear": 13927737
     }
-
   }
 }

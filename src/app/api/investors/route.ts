@@ -1,6 +1,6 @@
 // pages/api/investors/index.ts
 import { NextResponse, NextRequest } from "next/server";
-import Investor, { InvestorInterface } from "../../../../models/Investor";
+import Investor, { InvestorInterface, InvestorModel } from "../../../../models/Investor";
 import User from "../../../../models/User";
 import connectDB from "../../../../config/db";
 import { getServerSession } from "next-auth";
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
     const data = await getServerSession(authOptions);
-    
+
     const { companyInfo, investmentBio, targetInfo, paidInfo, primaryContact, offeredPriceValuation } = await req.json();
 
     const user = await User.findById(data?.user.id).select("company");
@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
 
     const { revenue, EBITDA, industry } = user.company;
 
-    const userMetric = {
-      userRevenue: revenue.ltm, // Client's latest revenue
-      userEBITDA: EBITDA.ltm, // Client's latest EBITDA
-      userIndustry: industry,
+    const clientMetrics = {
+      revenue: revenue.ltm, // Client's latest revenue
+      EBITDA: EBITDA.ltm, // Client's latest EBITDA
+      industry: industry,
     };
 
     // Create a new investor instance
@@ -41,41 +41,9 @@ export async function POST(req: NextRequest) {
       primaryContact,
     });
 
-    // Calculate the match score directly in the route
-    let totalScore = 0;
-
-    if (
-      userMetric.userRevenue >= newInvestor.targetInfo.revenue.from &&
-      userMetric.userRevenue <= newInvestor.targetInfo.revenue.to
-    ) {
-      newInvestor.matchScore.revenueScore = 50;
-      totalScore += 50;
-    }
-
-    if (
-      userMetric.userEBITDA >= newInvestor.targetInfo.EBITDA.from &&
-      userMetric.userEBITDA <= newInvestor.targetInfo.EBITDA.to
-    ) {
-      newInvestor.matchScore.ebitdaScore = 10;
-      totalScore += 10;
-    }
-
-    if (newInvestor.investmentBio.dealsInLTM > 3) {
-      newInvestor.matchScore.dealsScore = 20;
-      totalScore += 20;
-    }
-
-    if (newInvestor.companyInfo.investorType === "Strategic") {
-      newInvestor.matchScore.investorTypeScore = 10;
-      totalScore += 10;
-    }
-
-    if (userMetric.userIndustry === newInvestor.vertical) {
-      newInvestor.matchScore.industryScore = 10;
-      totalScore += 10;
-    }
-
-    newInvestor.matchScore.totalScore = totalScore;
+    const matchScore = (Investor as InvestorModel).calculateMatchScore(clientMetrics, newInvestor);
+    newInvestor.matchScore.totalScore = matchScore;
+    await newInvestor.save(); // Sa
 
     // Save the new investor document
     await newInvestor.save();

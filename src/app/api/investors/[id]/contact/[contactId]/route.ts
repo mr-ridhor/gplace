@@ -27,16 +27,22 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string, 
             const investor = await Investor.findOne({ user: user.user.id, _id: params.id })
             if (!investor) return NextResponse.json({ message: 'Investor not found.' }, { status: 404 });
 
+            await InvestorContact.findOneAndUpdate({ _id: params.contactId, investor: params.id, user: user.user.id }, {
+                name: investor.primaryContact.name,
+                surname: investor.primaryContact.surname,
+                email: investor.primaryContact.email,
+                phone: investor.primaryContact.phone,
+                title: investor.primaryContact.title
+            })
+
             await Investor.updateOne({
                 _id: params.id, user: user.user.id
             }, {
-                $set: {
-                    "primaryContact.name": name,
-                    "primaryContact.surname": surname,
-                    "primaryContact.email": email,
-                    "primaryContact.phone": phone,
-                    "primaryContact.title": title
-                }
+                "primaryContact.name": name,
+                "primaryContact.surname": surname,
+                "primaryContact.email": email,
+                "primaryContact.phone": phone,
+                "primaryContact.title": title
             })
 
             // await InvestorContact.deleteOne({ _id: params.contactId, investor: params.id });

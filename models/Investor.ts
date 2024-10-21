@@ -11,6 +11,7 @@ export interface InvestorInterface extends Document {
         yearFounded: number;
         employeeNumber: number;
         investorType: 'Strategic' | 'Financial';
+        industry: string;
         description: string;
     };
     investmentBio: {
@@ -46,18 +47,18 @@ export interface InvestorInterface extends Document {
     vertical?: string;
     status?: string;
     matchScore: {
-        totalScore: number;
-        revenueScore: number;
-        ebitdaScore: number;
-        dealsScore: number;
-        investorTypeScore: number;
-        industryScore: number;
-        dealSizeScore: number;
+        revenueScore?: number;
+        ebitdaScore?: number;
+        dealsScore?: number;
+        investorTypeScore?: number;
+        industryScore?: number;
+        dealSizeScore?: number;
+        totalScore?: number;
     };
 }
 
 // Investor model interface including static methods
-interface InvestorModel extends Model<InvestorInterface> {
+export interface InvestorModel extends Model<InvestorInterface> {
     calculateMatchScore(clientMetrics: any, investor: InvestorInterface): number;
 }
 
@@ -65,18 +66,19 @@ interface InvestorModel extends Model<InvestorInterface> {
 const investorSchema = new Schema<InvestorInterface>({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     companyInfo: {
-        companyName: { type: String, required: true },
-        country: { type: String, required: true },
-        city: { type: String, required: true },
-        website: { type: String, required: true },
+        companyName: { type: String, trim: true, required: true },
+        country: { type: String, trim: true, required: true },
+        city: { type: String, trim: true, required: true },
+        website: { type: String, trim: true, required: true },
         yearFounded: { type: Number, required: true },
         employeeNumber: { type: Number, required: true },
-        investorType: { type: String },
-        description: { type: String, required: true },
+        investorType: { type: String, enum:["Financial", "Strategic"]},
+        industry: { type: String, trim: true },
+        description: { type: String, trim: true, required: true },
     },
     investmentBio: {
-        industry: { type: String, required: true },
-        geography: { type: String, },
+        industry: { type: String, trim: true, required: true },
+        geography: { type: String, trim: true },
         dealsInLTM: { type: Number, required: true },
         medianDealSize: { type: Number, required: true },
         AUM: { type: Number, required: true },
@@ -98,14 +100,14 @@ const investorSchema = new Schema<InvestorInterface>({
         EBITDA: { type: Number, required: true },
     },
     primaryContact: {
-        name: { type: String, required: true },
-        surname: { type: String, required: true },
-        email: { type: String, required: true },
-        phone: { type: String, required: true },
-        title: { type: String, required: true },
+        name: { type: String, trim: true, required: true },
+        surname: { type: String, trim: true, required: true },
+        email: { type: String, trim: true, required: true },
+        phone: { type: String, trim: true, required: true },
+        title: { type: String, trim: true, required: true },
     },
-    vertical: { type: String },
-    status: { type: String },
+    vertical: { type: String, trim: true },
+    status: { type: String, trim: true },
     matchScore: {
         totalScore: { type: Number, default: 0 },
         revenueScore: { type: Number, default: 0 },
@@ -113,7 +115,6 @@ const investorSchema = new Schema<InvestorInterface>({
         dealsScore: { type: Number, default: 0 },
         investorTypeScore: { type: Number, default: 0 },
         industryScore: { type: Number, default: 0 },
-        dealSizeScore: { type: Number, default: 0 },
     },
 }, { timestamps: true });
 
@@ -121,7 +122,7 @@ const investorSchema = new Schema<InvestorInterface>({
 investorSchema.statics.calculateMatchScore = function (clientMetrics: any, investor: InvestorInterface): number {
     let totalScore = 0;
 
-    if (clientMetrics.revenue >= investor.targetInfo.revenue.from && clientMetrics.revenue <= investor.targetInfo.revenue.to) {
+    if (clientMetrics.revenue >= investor.targetInfo.revenue?.from && clientMetrics.revenue <= investor.targetInfo.revenue?.to) {
         investor.matchScore.revenueScore = 50;
         totalScore += 50;
     }
@@ -141,13 +142,8 @@ investorSchema.statics.calculateMatchScore = function (clientMetrics: any, inves
         totalScore += 10;
     }
 
-    if (clientMetrics.industry === investor.vertical) {
+    if (clientMetrics.industry === investor.companyInfo.industry) {
         investor.matchScore.industryScore = 10;
-        totalScore += 10;
-    }
-
-    if (clientMetrics.dealSize >= investor.targetInfo.dealSize.from && clientMetrics.dealSize <= investor.targetInfo.dealSize.to) {
-        investor.matchScore.dealSizeScore = 10;
         totalScore += 10;
     }
 

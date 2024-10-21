@@ -19,6 +19,18 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         const investor = await Investor.findOne({ user: user.user.id, _id: params.id })
         if (!investor) return NextResponse.json({ message: 'Investor not found.' }, { status: 404 });
 
+        const newContact = new InvestorContact({
+            investor: params.id,
+            user: user?.user.id,
+            name: investor.primaryContact.name,
+            surname: investor.primaryContact.surname,
+            email: investor.primaryContact.email,
+            phone: investor.primaryContact.phone,
+            title: investor.primaryContact.title
+        })
+
+        await newContact.save()
+
         await Investor.updateOne({
             _id: params.id, user: user.user.id
         }, {

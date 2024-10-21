@@ -5,7 +5,8 @@ export interface IUser extends Document {
     firstName: string;
     lastName: string;
     title: string;
-    email: string;
+    email?: string;
+    phone?: string;
     linkedIn?: string;
     X?: string;
     country: string;
@@ -16,9 +17,10 @@ export interface IUser extends Document {
     name: string;
     country: string;
     city: string;
-    email: string;
+    email?: string;
     website?: string;
     industry: string;
+    industryType?: string;
     foundingYear: number;
     revenue: {
       ltm: number; // Last Twelve Months Revenue
@@ -47,6 +49,7 @@ export interface IUser extends Document {
     isVerified?: boolean;
     verificationCode?: number;
   };
+  role: string
 }
 
 const userSchema = new Schema<IUser>({
@@ -55,7 +58,7 @@ const userSchema = new Schema<IUser>({
     lastName: { type: String, required: true },
     title: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    phone: { type: String, required: true, },
+    phone: { type: String, },
     linkedIn: { type: String },
     x: { type: String },
     country: { type: String, required: true },
@@ -66,9 +69,10 @@ const userSchema = new Schema<IUser>({
     name: { type: String, required: true },
     country: { type: String, required: true },
     city: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, },
     website: { type: String },
     industry: { type: String, required: true },
+    industryType: { type: String },
     foundingYear: { type: Number, required: true },
     revenue: {
       ltm: { type: Number, required: true }, // Last Twelve Months Revenue
@@ -104,6 +108,7 @@ const userSchema = new Schema<IUser>({
     isVerified: { type: Boolean, default: false },
     verificationCode: String,
   },
+  role: { type: String, enum:["User", "Admin"], default: 'User'}
 }, { timestamps: true });
 
 const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', userSchema);

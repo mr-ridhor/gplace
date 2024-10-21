@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "../../../../models/User";
 import { getUser } from "../../../../utils/getUser";
-import Investor from "../../../../models/Investor";
+import Investor, { InvestorModel } from "../../../../models/Investor";
 
 export async function GET(req: NextRequest) {
   const currentUser = await getUser()
@@ -27,8 +27,33 @@ export async function PUT(req: NextRequest) {
 
     // Update only the provided fields, while keeping the existing data
     const updatedBio = bio ? { ...user.bio, ...bio } : user.bio;
-    const updatedCompany = company ? { ...user.company, ...company } : user.company;
+
+    // Merge existing company data with the new input (preserve previousYear if not provided)
+    const updatedCompany = {
+      ...user.company,
+      name: company?.name ?? user.company.name,
+      country: company?.country ?? user.company.country,
+      city: company?.city ?? user.company.city,
+      email: company?.email ?? user.company.email,
+      website: company?.website ?? user.company.website,
+      industry: company?.industry ?? user.company.industry,
+      foundingYear: company?.foundingYear ?? user.company.foundingYear,
+      revenue: {
+        ltm: company?.revenue?.ltm ?? user?.company?.revenue?.ltm,
+        previousYear: company?.revenue?.previousYear ?? user?.company?.revenue?.previousYear,
+      },
+      grossProfit: {
+        ltm: company?.grossProfit?.ltm ?? user?.company?.grossProfit?.ltm,
+        previousYear: company?.grossProfit?.previousYear ?? user?.company?.grossProfit?.previousYear,
+      },
+      EBITDA: {
+        ltm: company?.EBITDA?.ltm ?? user?.company?.EBITDA?.ltm,
+        previousYear: company?.EBITDA?.previousYear ?? user?.company?.EBITDA?.previousYear,
+      },
+    };
+
     const updatedTeam = team ? { ...user.team, ...team } : user.team;
+
 
     // Apply the updates using findByIdAndUpdate with the { new: true } option to return the updated document
     const updatedUser = await User.findByIdAndUpdate(
@@ -40,21 +65,30 @@ export async function PUT(req: NextRequest) {
           team: updatedTeam,
         },
       },
-      { new: true } // Return updated document and apply schema validation
+      { new: true }
     );
 
     if (!updatedUser) {
       return NextResponse.json({ message: 'Update failed' }, { status: 500 });
     }
 
-    if (company.revenue?.ltm || company.EBITDA?.ltm) {
+    if (company?.revenue?.ltm || company?.EBITDA?.ltm) {
       const investors = await Investor.find({ user: currentUser.id });
 
       // Loop through each investor and calculate the new revenue and EBITDA based on the valuation
       const bulkOperations = investors.map((investor) => {
         const valuation = investor.offeredPrice.valuation;
-        const revenue = parseFloat((valuation / user.company.revenue.ltm).toFixed(1));
-        const EBITDA = parseFloat((valuation / user.company.EBITDA.ltm).toFixed(1));
+        const revenue = parseFloat((valuation / user?.company?.revenue.ltm).toFixed(1));
+        const EBITDA = parseFloat((valuation / user?.company?.EBITDA.ltm).toFixed(1));
+
+        const clientMetrics = {
+          revenue: updatedCompany.revenue.ltm,
+          EBITDA: updatedCompany.EBITDA.ltm,
+          industry: updatedCompany.industry,
+          dealSize: valuation, // Assuming dealSize is based on valuation
+        };
+
+        const matchScore = (Investor as InvestorModel).calculateMatchScore(clientMetrics, investor);
 
         // Return the update object for bulk write
         return {
@@ -64,6 +98,7 @@ export async function PUT(req: NextRequest) {
               $set: {
                 'offeredPrice.revenue': revenue,
                 'offeredPrice.EBITDA': EBITDA,
+                'matchScore.totalScore': matchScore
               },
             },
           },

@@ -40,4 +40,5 @@ next-env.d.ts
 
 
 src/app/test
+src/app/api/test
 investor - 2.json
