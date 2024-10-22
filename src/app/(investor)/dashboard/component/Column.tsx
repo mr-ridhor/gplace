@@ -31,7 +31,7 @@ export const Column: ColumnDef<Investor>[] = [
 		),
 		enableSorting: true,
 		enableHiding: false,
-		size: 60,
+		// size: 60,
 	},
 	{
 		id: "country",
@@ -92,11 +92,8 @@ export const Column: ColumnDef<Investor>[] = [
 		},
 		cell: ({ row }) => (
 			<Button
-				className={`text-black ${
-					row.original.investmentBio.industry === "Strategic"
-						? "bg-[#F5E2B7] hover:bg-[#F5E2B7]/60 "
-						: "bg-[#69E7A8] hover:bg-[#69E7A8]/60"
-				} rounded-md h-8`}
+				className={`text-black 
+						bg-[#69E7A8] hover:bg-[#69E7A8]/60  rounded-md h-8`}
 			>
 				{row.original.investmentBio.industry}
 			</Button>
@@ -113,7 +110,7 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer w-max flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
 					# of Deals in 5 years
 					<TiArrowUnsorted
@@ -124,7 +121,9 @@ export const Column: ColumnDef<Investor>[] = [
 			);
 		},
 		cell: ({ row }) => (
-			<p>{formatNumberWithCommas(`${row.original.investmentBio.dealsIn5Y}`)}</p>
+			<p className='flex justify-center'>
+				{formatNumberWithCommas(`${row.original.investmentBio.dealsIn5Y}`)}
+			</p>
 		),
 		enableSorting: true,
 		enableHiding: false,
@@ -137,7 +136,7 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer w-max flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
 					Typical Deal Size ($M)
 					<TiArrowUnsorted
@@ -163,7 +162,7 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer w-max flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
 					Primary Contact
 					<TiArrowUnsorted
@@ -187,7 +186,7 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer w-max flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer  justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
 					Offered Price ($M)
 					<TiArrowUnsorted
@@ -211,7 +210,7 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-centercursor-pointer w-max flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
 					Status
 					<TiArrowUnsorted
@@ -237,7 +236,7 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer w-max flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
 					Match
 					<TiArrowUnsorted
@@ -248,7 +247,7 @@ export const Column: ColumnDef<Investor>[] = [
 			);
 		},
 		cell: ({ row }) => (
-			<div className='flex items-center'>
+			<div className='flex justify-center items-center'>
 				<div className=' rounded-full border bg-[#57D08D]  text-gren-600'>
 					<CircularProgress
 						// percentage={10}

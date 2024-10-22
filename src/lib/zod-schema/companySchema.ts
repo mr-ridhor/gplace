@@ -20,27 +20,27 @@ import { companyType } from "../zod-type/companyType";
 import { z } from "zod";
 
 export const companySchema = z.object({
-  name: z.string().min(1, "Company name is required"),
-  country: z.string().min(1, "Country is required"),
-  city: z.string().min(1, "City is required"),
-  email: z.string().email("Invalid email address"),
-  website: z.string(),
-  industry: z.string().min(1, "Industry is required"),
-  foundingYear: z
-    .string()
-    .regex(/^\d{4}$/, "Founding year must be a valid 4-digit year"),
-  revenue: z.object({
-    ltm: z.string(),
-    previousYear: z.string(),
-  }),
-  grossProfit: z.object({
-    ltm: z.string(),
-    previousYear: z.string(),
-  }),
-  EBITDA: z.object({
-    ltm: z.string(),
-    previousYear: z.string(),
-  }),
+	name: z.string().min(1, "Company name is required"),
+	country: z.string().min(1, "Country is required"),
+	city: z.string().min(1, "City is required"),
+	// email: z.string().email("Invalid email address"),
+	website: z.string(),
+	industry: z.string().min(1, "Industry is required"),
+	foundingYear: z
+		.string()
+		.regex(/^\d{4}$/, "Founding year must be a valid 4-digit year"),
+	revenue: z.object({
+		ltm: z.string(),
+		previousYear: z.string(),
+	}),
+	grossProfit: z.object({
+		ltm: z.string(),
+		previousYear: z.string(),
+	}),
+	EBITDA: z.object({
+		ltm: z.string(),
+		previousYear: z.string(),
+	}),
 });
 
 // const revenueSchema = z.object({
@@ -71,35 +71,35 @@ export const companySchema = z.object({
 //   EBITDA: ebitdaSchema,
 // });
 const revenueSchema = z.object({
-  ltm: z.number().positive("LTM revenue must be a positive number"), // Changed to number
-  previousYear: z
-    .number()
-    .positive("Previous year revenue must be a positive number"), // Changed to number
+	ltm: z.number().positive("LTM revenue must be a positive number"), // Changed to number
+	previousYear: z
+		.number()
+		.positive("Previous year revenue must be a positive number"), // Changed to number
 });
 
 const grossProfitSchema = z.object({
-  ltm: z.number().positive("LTM gross profit must be a positive number"), // Changed to number
-  previousYear: z
-    .number()
-    .positive("Previous year gross profit must be a positive number"), // Changed to number
+	ltm: z.number().positive("LTM gross profit must be a positive number"), // Changed to number
+	previousYear: z
+		.number()
+		.positive("Previous year gross profit must be a positive number"), // Changed to number
 });
 
 const ebitdaSchema = z.object({
-  ltm: z.number().positive("LTM EBITDA must be a positive number"), // Changed to number
-  previousYear: z
-    .number()
-    .positive("Previous year EBITDA must be a positive number"), // Changed to number
+	ltm: z.number().positive("LTM EBITDA must be a positive number"), // Changed to number
+	previousYear: z
+		.number()
+		.positive("Previous year EBITDA must be a positive number"), // Changed to number
 });
 
 export const CompanySchema = z.object({
-  name: z.string().min(1, "Company name is required"),
-  country: z.string().min(1, "Country is required"),
-  city: z.string().min(1, "City is required"),
-  email: z.string().email("Invalid email format"),
-  website: z.string().url("Invalid website URL").optional(),
-  industry: z.string().min(1, "Industry is required"),
-  foundingYear: z.number().positive("Founding year"), // Changed to number
-  revenue: revenueSchema,
-  grossProfit: grossProfitSchema,
-  EBITDA: ebitdaSchema,
+	name: z.string().min(1, "Company name is required"),
+	country: z.string().min(1, "Country is required"),
+	city: z.string().min(1, "City is required"),
+	email: z.string().email("Invalid email format"),
+	website: z.string().url("Invalid website URL").optional(),
+	industry: z.string().min(1, "Industry is required"),
+	foundingYear: z.number().positive("Founding year"), // Changed to number
+	revenue: revenueSchema,
+	grossProfit: grossProfitSchema,
+	EBITDA: ebitdaSchema,
 });

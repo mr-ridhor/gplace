@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import CompanyInfom from "./AddNewInvestor/CompanyInfom";
@@ -10,9 +10,10 @@ import Contact from "./AddNewInvestor/Contact";
 
 interface Props {
 	onClose: () => void;
+	isOpen: boolean; // New prop to determine if the dialog is open
 }
 
-const AddInvestorForm = ({ onClose }: Props) => {
+const AddInvestorForm = ({ onClose, isOpen }: Props) => {
 	const [currentTab, setCurrentTab] = useState<string>("company");
 	const [visitedTabs, setVisitedTabs] = useState<string[]>(["company"]); // 'company' as default visited
 
@@ -51,7 +52,12 @@ const AddInvestorForm = ({ onClose }: Props) => {
 		setVisitedTabs(["company"]); // Only 'company' is visited
 		onClose();
 	};
-
+	useEffect(() => {
+		if (isOpen) {
+			setCurrentTab("company");
+			setVisitedTabs(["company"]);
+		}
+	}, [isOpen]);
 	return (
 		<DialogContent className='h-[450px] md:h-fit max-h-[550px] w-[400px] md:w-[600px] my-3 overflow-auto no-scrollbar'>
 			<div className='spacey-3'>
@@ -78,17 +84,12 @@ const AddInvestorForm = ({ onClose }: Props) => {
 						{tabs.map((tab) => (
 							<div
 								key={tab}
-								className={`text-[10px] lg:text-sm rounded-md px-3 py-1
-                                    ${
-																			visitedTabs.includes(tab)
-																				? "bg-[#04acc2] text-white" // Same color for current and visited
-																				: "bg-[#DCF8FC] text-black" // Default for unvisited
-																		}
-                                `}
-							>
-								{/* {tab.charAt(0).toUpperCase() + tab.slice(1)}{" "} */}
-								{/* Capitalize first letter */}
-							</div>
+								className={`text-[10px] lg:text-sm rounded-md px-3 py-1 ${
+									visitedTabs.includes(tab)
+										? "bg-[#04acc2] text-white"
+										: "bg-[#DCF8FC] text-black"
+								} `}
+							></div>
 						))}
 					</TabsList>
 

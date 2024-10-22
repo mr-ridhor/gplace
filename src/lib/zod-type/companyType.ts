@@ -2,7 +2,7 @@ export type companyType = {
   name: string;
   country: string;
   city: string;
-  email: string;
+  // email: string;
   website?: string;
   industry: string;
   foundingYear: string;

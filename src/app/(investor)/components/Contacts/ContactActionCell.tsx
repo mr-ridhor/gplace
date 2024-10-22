@@ -60,7 +60,11 @@ const ContactActionCell = <TData extends mockedInfoType>({
 	const handleDelete = async () => {
 		setIsDeleting(true);
 
-		const result = await deleteContact(row.original.investor, row.original._id);
+		// const result = await deleteContact(row.original.investor, row.original._id);
+		const result = await deleteContact(
+			row.original.investor ?? "",
+			row.original._id ?? ""
+		);
 
 		setIsDeleting(false);
 		setIsDeleteOpen(false);
