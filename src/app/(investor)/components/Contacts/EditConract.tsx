@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { Row } from "@tanstack/react-table";
 import { original } from "@reduxjs/toolkit";
 import LoaderComponent from "@/components/LoaderComponent";
+import { mockedInfoSchema, mockedInfoType } from "@/lib/data/mockedInfo";
 
 interface Props {
 	row: any;
@@ -46,8 +47,8 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 		// contactType:selectedItem?.primaryContact.
 	});
 	console.log("here", row.original);
-	const form = useForm<contType>({
-		resolver: zodResolver(contSchema),
+	const form = useForm<mockedInfoType>({
+		resolver: zodResolver(mockedInfoSchema),
 		mode: "onChange",
 		defaultValues: {
 			name: info.name,
@@ -59,7 +60,7 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 		},
 	});
 
-	const onSubmit = async (data: contType) => {
+	const onSubmit = async (data: mockedInfoType) => {
 		const payload = {
 			name: data.name,
 			surname: data.surname,
@@ -70,11 +71,11 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 		};
 		console.log(payload);
 		try {
-			const investorId = row.original._id;
+			const investorId = row.original.investor;
 
-			if (!investorId) {
-				throw new Error("Investor ID is missing");
-			}
+			// if (!investorId) {
+			// 	throw new Error("Investor ID is missing");
+			// }
 			const payload = {
 				name: data.name,
 				surname: data.surname,
@@ -90,7 +91,7 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 			);
 
 			// Refresh the data or reload the page
-			// router.refresh();
+			router.refresh();
 			console.log("Contact added successfully"); // Handle success message
 			toast("Contact added successfully", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),

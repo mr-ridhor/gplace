@@ -25,6 +25,7 @@ import {
 	setSelectedIndustry,
 	setSelectedGeography,
 	setSelectedContactTitle,
+	setSelectedOfferedPrice,
 } from "@/lib/slice/investorSlice";
 import { Investor } from "@/lib/data/mocked";
 import { getPanel, setShowFilter } from "@/lib/slice/panelSlice";
@@ -43,6 +44,7 @@ const Page: React.FC = () => {
 		selectedIndustry,
 		selectedGeography,
 		selectedContactTitle,
+		selectedOfferedPrice,
 	} = useSelector((state: any) => state.investors);
 	const { showFilter } = useSelector(getPanel);
 
@@ -52,6 +54,7 @@ const Page: React.FC = () => {
 	const [industrySearch, setIndustrySearch] = useState<string>("");
 	const [geoSearch, setGeoSearch] = useState<string>("");
 	const [contactTitleSearch, setContactTitleSearch] = useState<string>("");
+	const [offeredPriceSearch, setOfferedPriceSearch] = useState<string>("");
 
 	useEffect(() => {
 		const loadInvestors = async () => {
@@ -87,13 +90,16 @@ const Page: React.FC = () => {
 		dispatch(setSelectedIndustry(null));
 		dispatch(setSelectedGeography(null));
 		dispatch(setSelectedContactTitle(null));
+		dispatch(setSelectedOfferedPrice(null));
 	};
-
+	// const { offeredPrice } = investors;
+	console.log("here", investors);
 	const filteredInvestors = investors.filter((investor: Investor) => {
 		const {
 			companyInfo: { companyName, country } = {},
 			investmentBio: { dealsIn5Y, medianDealSize, industry, geography } = {},
 			primaryContact: { title } = {},
+			offeredPrice: { valuation } = {},
 		} = investor;
 
 		const countryMatches =
@@ -107,6 +113,11 @@ const Page: React.FC = () => {
 			!selectedGeography || geography === selectedGeography;
 		const contactTitleMatches =
 			!selectedContactTitle || title === selectedContactTitle;
+		// const offeredPriceMatches =
+		// 	!selectedOfferedPrice || valuation === Number(selectedOfferedPrice);
+		const offeredPriceMatches =
+			!selectedOfferedPrice ||
+			(valuation !== undefined && valuation === Number(selectedOfferedPrice)); // Added check for undefined
 
 		return (
 			countryMatches &&
@@ -115,6 +126,7 @@ const Page: React.FC = () => {
 			industryMatches &&
 			geographyMatches &&
 			contactTitleMatches &&
+			offeredPriceMatches &&
 			(!selectedCompany ||
 				companyName?.toLowerCase() === selectedCompany.toLowerCase()) &&
 			(searchValue
@@ -174,6 +186,17 @@ const Page: React.FC = () => {
 		...new Set(
 			investors.map(
 				(inv: { primaryContact: { title: any } }) => inv.primaryContact.title
+			)
+		),
+	];
+	const uniqueOffferedPrice = [
+		...new Set(
+			investors.map(
+				(inv: {
+					offeredPrice: {
+						valuation: any;
+					};
+				}) => inv.offeredPrice.valuation
 			)
 		),
 	];
@@ -247,29 +270,42 @@ const Page: React.FC = () => {
 									Country
 								</AccordionTrigger>
 								<AccordionContent>
-									<input
-										placeholder='Search country'
-										value={countrySearch}
-										onChange={(e) => setCountrySearch(e.target.value)}
-										className='mb-2 w-full'
-									/>
-									{uniqueCountries
-										.filter((country: any) =>
-											country
-												.toLowerCase()
-												.includes(countrySearch.toLowerCase())
-										)
-										.map((country: any, idx) => (
-											<div
-												key={idx}
-												className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
-												onClick={() => {
-													dispatch(setSelectedCountries([country]));
-												}}
-											>
-												{country}
-											</div>
-										))}
+									<div className='flex w-full justify-between items-center'>
+										<input
+											placeholder='Search country'
+											value={countrySearch}
+											onChange={(e) => setCountrySearch(e.target.value)}
+											className='mb-2 w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+										/>
+										<GrClose
+											className='cursor-pointer'
+											onClick={() => {
+												setCountrySearch("");
+												dispatch(setSelectedCountries([])); // Reset selected countries
+											}}
+										/>
+									</div>
+									{countrySearch && (
+										<div className='space-y-2 px-3 mt-2'>
+											{uniqueCountries
+												.filter((country: any) =>
+													country
+														.toLowerCase()
+														.includes(countrySearch.toLowerCase())
+												)
+												.map((country: any, idx) => (
+													<div
+														key={idx}
+														className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
+														onClick={() => {
+															dispatch(setSelectedCountries([country]));
+														}}
+													>
+														{country}
+													</div>
+												))}
+										</div>
+									)}
 								</AccordionContent>
 							</AccordionItem>
 
@@ -279,25 +315,40 @@ const Page: React.FC = () => {
 									Deals in 5 years
 								</AccordionTrigger>
 								<AccordionContent>
-									<input
-										placeholder='Search deals'
-										value={dealSearch}
-										onChange={(e) => setDealSearch(e.target.value)}
-										className='mb-2 w-full'
-									/>
-									{uniqueDeals
-										.filter((deal) => String(deal).includes(dealSearch))
-										.map((deal: any, idx) => (
-											<div
-												key={idx}
-												className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
-												onClick={() => {
-													dispatch(setSelectedDeals(String(deal)));
-												}}
-											>
-												{deal}
-											</div>
-										))}
+									<div className='flex w-full justify-between items-center'>
+										<input
+											placeholder='Search deals'
+											value={dealSearch}
+											onChange={(e) => setDealSearch(e.target.value)}
+											className='w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+
+											// className='mb-2 w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+										/>
+										<GrClose
+											className='cursor-pointer h-3 w-3'
+											onClick={() => {
+												setDealSearch("");
+												dispatch(setSelectedDeals(null)); // Reset selected deals
+											}}
+										/>
+									</div>
+									{dealSearch && (
+										<div className='space-y-2 px-3 mt-2'>
+											{uniqueDeals
+												.filter((deal) => String(deal).includes(dealSearch))
+												.map((deal: any, idx) => (
+													<div
+														key={idx}
+														className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
+														onClick={() => {
+															dispatch(setSelectedDeals(String(deal)));
+														}}
+													>
+														{deal}
+													</div>
+												))}
+										</div>
+									)}
 								</AccordionContent>
 							</AccordionItem>
 
@@ -307,25 +358,40 @@ const Page: React.FC = () => {
 									Median Deal Size
 								</AccordionTrigger>
 								<AccordionContent>
-									<input
-										placeholder='Search deal size'
-										value={dealSizeSearch}
-										onChange={(e) => setDealSizeSearch(e.target.value)}
-										className='mb-2 w-full'
-									/>
-									{uniqueDealSizes
-										.filter((size) => String(size).includes(dealSizeSearch))
-										.map((size: any, idx) => (
-											<div
-												key={idx}
-												className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
-												onClick={() => {
-													dispatch(setSelectedDealSize(String(size)));
-												}}
-											>
-												{size}
-											</div>
-										))}
+									<div className='flex w-full justify-between items-center'>
+										<input
+											placeholder='Search deal size'
+											value={dealSizeSearch}
+											onChange={(e) => setDealSizeSearch(e.target.value)}
+											className='w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+
+											// className='mb-2 w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+										/>
+										<GrClose
+											className='cursor-pointer'
+											onClick={() => {
+												setDealSizeSearch("");
+												dispatch(setSelectedDealSize(null)); // Reset selected countries
+											}}
+										/>
+									</div>
+									{dealSizeSearch && (
+										<div className='space-y-2 px-3 mt-2'>
+											{uniqueDealSizes
+												.filter((size) => String(size).includes(dealSizeSearch))
+												.map((size: any, idx) => (
+													<div
+														key={idx}
+														className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
+														onClick={() => {
+															dispatch(setSelectedDealSize(String(size)));
+														}}
+													>
+														{size}
+													</div>
+												))}
+										</div>
+									)}
 								</AccordionContent>
 							</AccordionItem>
 
@@ -335,29 +401,42 @@ const Page: React.FC = () => {
 									Industry
 								</AccordionTrigger>
 								<AccordionContent>
-									<input
-										placeholder='Search industry'
-										value={industrySearch}
-										onChange={(e) => setIndustrySearch(e.target.value)}
-										className='mb-2 w-full'
-									/>
-									{uniqueIndustries
-										.filter((industry: any) =>
-											industry
-												.toLowerCase()
-												.includes(industrySearch.toLowerCase())
-										)
-										.map((industry: any, idx) => (
-											<div
-												key={idx}
-												className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
-												onClick={() => {
-													dispatch(setSelectedIndustry(industry));
-												}}
-											>
-												{industry}
-											</div>
-										))}
+									<div className='flex w-full justify-between items-center'>
+										<input
+											placeholder='Search industry'
+											value={industrySearch}
+											onChange={(e) => setIndustrySearch(e.target.value)}
+											className='mb-2 w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+										/>
+										<GrClose
+											w-3className='cursor-pointer h-3 w-3'
+											onClick={() => {
+												setIndustrySearch("");
+												dispatch(setSelectedIndustry(null)); // Reset selected countries
+											}}
+										/>
+									</div>
+									{industrySearch && (
+										<div className='space-y-2 px-3 mt-2'>
+											{uniqueIndustries
+												.filter((industry: any) =>
+													industry
+														.toLowerCase()
+														.includes(industrySearch.toLowerCase())
+												)
+												.map((industry: any, idx) => (
+													<div
+														key={idx}
+														className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
+														onClick={() => {
+															dispatch(setSelectedIndustry(industry));
+														}}
+													>
+														{industry}
+													</div>
+												))}
+										</div>
+									)}
 								</AccordionContent>
 							</AccordionItem>
 
@@ -367,27 +446,40 @@ const Page: React.FC = () => {
 									Geography
 								</AccordionTrigger>
 								<AccordionContent>
-									<input
-										placeholder='Search geography'
-										value={geoSearch}
-										onChange={(e) => setGeoSearch(e.target.value)}
-										className='mb-2 w-full'
-									/>
-									{uniqueGeographies
-										.filter((geo: any) =>
-											geo.toLowerCase().includes(geoSearch.toLowerCase())
-										)
-										.map((geo: any, idx) => (
-											<div
-												key={idx}
-												className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
-												onClick={() => {
-													dispatch(setSelectedGeography(geo));
-												}}
-											>
-												{geo}
-											</div>
-										))}
+									<div className='flex w-full justify-between items-center'>
+										<input
+											placeholder='Search geography'
+											value={geoSearch}
+											onChange={(e) => setGeoSearch(e.target.value)}
+											className='mb-2 w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+										/>
+										<GrClose
+											className='cursor-pointer h-3 w-3'
+											onClick={() => {
+												setGeoSearch("");
+												dispatch(setSelectedGeography(null)); // Reset selected countries
+											}}
+										/>
+									</div>
+									{geoSearch && (
+										<div className='space-y-2 px-3 mt-2'>
+											{uniqueGeographies
+												.filter((geo: any) =>
+													geo.toLowerCase().includes(geoSearch.toLowerCase())
+												)
+												.map((geo: any, idx) => (
+													<div
+														key={idx}
+														className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
+														onClick={() => {
+															dispatch(setSelectedGeography(geo));
+														}}
+													>
+														{geo}
+													</div>
+												))}
+										</div>
+									)}
 								</AccordionContent>
 							</AccordionItem>
 
@@ -397,29 +489,85 @@ const Page: React.FC = () => {
 									Contact Title
 								</AccordionTrigger>
 								<AccordionContent>
-									<input
-										placeholder='Search contact title'
-										value={contactTitleSearch}
-										onChange={(e) => setContactTitleSearch(e.target.value)}
-										className='mb-2 w-full'
-									/>
-									{uniqueContactTitles
-										.filter((title: any) =>
-											title
-												.toLowerCase()
-												.includes(contactTitleSearch.toLowerCase())
-										)
-										.map((title: any, idx) => (
-											<div
-												key={idx}
-												className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
-												onClick={() => {
-													dispatch(setSelectedContactTitle(title));
-												}}
-											>
-												{title}
-											</div>
-										))}
+									<div className='flex w-full justify-between items-center'>
+										<input
+											placeholder='Search contact title'
+											value={contactTitleSearch}
+											onChange={(e) => setContactTitleSearch(e.target.value)}
+											className='mb-2 w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+										/>
+										<GrClose
+											className='cursor-pointer h-3 w-3'
+											onClick={() => {
+												setContactTitleSearch("");
+												dispatch(setSelectedContactTitle(null)); // Reset selected countries
+											}}
+										/>
+									</div>
+									{contactTitleSearch && (
+										<div className='space-y-2 px-3 mt-2'>
+											{uniqueContactTitles
+												.filter((title: any) =>
+													title
+														.toLowerCase()
+														.includes(contactTitleSearch.toLowerCase())
+												)
+												.map((title: any, idx) => (
+													<div
+														key={idx}
+														className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
+														onClick={() => {
+															dispatch(setSelectedContactTitle(title));
+														}}
+													>
+														{title}
+													</div>
+												))}
+										</div>
+									)}
+								</AccordionContent>
+							</AccordionItem>
+							<AccordionItem value='offeredPrice'>
+								<AccordionTrigger className='2xl:text-base text-sm'>
+									Offered Price
+								</AccordionTrigger>
+								<AccordionContent>
+									<div className='flex w-full justify-between items-center'>
+										<input
+											placeholder='Search Offer Price'
+											value={offeredPriceSearch}
+											onChange={(e) => setOfferedPriceSearch(e.target.value)}
+											className='mb-2 w-[80%] text-[10px] h-[80%] focus:outline-none bg-inherit'
+										/>
+										<GrClose
+											className='cursor-pointer h-3 w-3'
+											onClick={() => {
+												setOfferedPriceSearch("");
+												dispatch(setSelectedOfferedPrice(null)); // Reset selected countries
+											}}
+										/>
+									</div>
+									{offeredPriceSearch && (
+										<div className='space-y-2 px-3 mt-2'>
+											{uniqueOffferedPrice
+												.filter((offeredPrice) =>
+													String(offeredPrice).includes(offeredPriceSearch)
+												)
+												.map((offeredPrice: any, idx) => (
+													<div
+														key={idx}
+														className='text-sm cursor-pointer hover:bg-[#03AAC1] hover:text-white'
+														onClick={() => {
+															dispatch(
+																setSelectedOfferedPrice(String(offeredPrice))
+															);
+														}}
+													>
+														{offeredPrice}
+													</div>
+												))}
+										</div>
+									)}
 								</AccordionContent>
 							</AccordionItem>
 						</Accordion>

@@ -234,7 +234,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 					</div>
 					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>Investor Type</p>
-						<div className='rounded-md text-[12px] lg:text-sm'>
+						<div className='rounded-md text-[12px] lg:text-sm text-blue-600'>
 							{list.companyInfo.investorType}
 						</div>
 					</div>
