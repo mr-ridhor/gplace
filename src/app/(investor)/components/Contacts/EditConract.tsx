@@ -29,6 +29,8 @@ import { Row } from "@tanstack/react-table";
 import { original } from "@reduxjs/toolkit";
 import LoaderComponent from "@/components/LoaderComponent";
 import { mockedInfoSchema, mockedInfoType } from "@/lib/data/mockedInfo";
+import { updateContact } from "@/lib/slice/contactSlice";
+import { useDispatch } from "react-redux";
 
 interface Props {
 	row: any;
@@ -37,6 +39,7 @@ interface Props {
 }
 const EditContact: React.FC<Props> = ({ row, onClose }) => {
 	const router = useRouter();
+	const dispatch = useDispatch();
 	const [contactType, setContactType] = useState(row.original.contactType);
 	const [info, setInfo] = useState({
 		name: row.original.name,
@@ -59,9 +62,9 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 			// contactType: "Primary",
 		},
 	});
-
 	const onSubmit = async (data: mockedInfoType) => {
 		const payload = {
+			_id: row.original._id, // Ensure you include the ID in the payload
 			name: data.name,
 			surname: data.surname,
 			email: data.email,
@@ -69,40 +72,118 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 			title: data.title,
 			contactType: contactType,
 		};
-		console.log(payload);
+
 		try {
 			const investorId = row.original.investor;
 
-			// if (!investorId) {
-			// 	throw new Error("Investor ID is missing");
-			// }
-			const payload = {
-				name: data.name,
-				surname: data.surname,
-				email: data.email,
-				phone: data.phone,
-				title: data.title,
-				contactType: contactType,
-			};
-			// Use axios directly to post data
 			await axios.put(
 				`/api/investors/${investorId}/contact/${row.original._id}`,
 				payload
 			);
 
-			// Refresh the data or reload the page
-			router.refresh();
-			console.log("Contact added successfully"); // Handle success message
-			toast("Contact added successfully", {
+			// Update the contact in the Redux store
+			dispatch(updateContact(payload)); // Dispatch the update action
+
+			console.log("Contact updated successfully");
+			toast("Contact updated successfully", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
 			});
+
+			// Always refresh the page if contactType is different
+			if (contactType !== row.original.contactType) {
+				// router.refresh();
+				window.location.reload();
+			} else {
+				onClose(); // Close the dialog if no change in contactType
+			}
 		} catch (error: any) {
 			console.error(error);
-			toast("All fields must be filled", {
+			toast("Failed to update contact", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
 			});
 		}
 	};
+
+	// const onSubmit = async (data: mockedInfoType) => {
+	// 	const payload = {
+	// 		name: data.name,
+	// 		surname: data.surname,
+	// 		email: data.email,
+	// 		phone: data.phone,
+	// 		title: data.title,
+	// 		contactType: contactType,
+	// 	};
+	// 	console.log(payload);
+	// 	try {
+	// 		const investorId = row.original.investor;
+
+	// 		// if (!investorId) {
+	// 		// 	throw new Error("Investor ID is missing");
+	// 		// }
+	// 		const payload = {
+	// 			name: data.name,
+	// 			surname: data.surname,
+	// 			email: data.email,
+	// 			phone: data.phone,
+	// 			title: data.title,
+	// 			contactType: contactType,
+	// 		};
+	// 		// Use axios directly to post data
+	// 		await axios.put(
+	// 			`/api/investors/${investorId}/contact/${row.original._id}`,
+	// 			payload
+	// 		);
+
+	// 		// Refresh the data or reload the page
+	// 		router.refresh();
+	// 		console.log("Contact added successfully"); // Handle success message
+	// 		toast("Contact added successfully", {
+	// 			description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+	// 		});
+	// 	} catch (error: any) {
+	// 		console.error(error);
+	// 		toast("All fields must be filled", {
+	// 			description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+	// 		});
+	// 	}
+	// };
+	// const onSubmit = async (data: mockedInfoType) => {
+	// 	const payload = {
+	// 		_id: row.original._id, // Ensure you include the ID in the payload
+	// 		name: data.name,
+	// 		surname: data.surname,
+	// 		email: data.email,
+	// 		phone: data.phone,
+	// 		title: data.title,
+	// 		contactType: contactType,
+	// 	};
+
+	// 	try {
+	// 		const investorId = row.original.investor;
+
+	// 		await axios.put(
+	// 			`/api/investors/${investorId}/contact/${row.original._id}`,
+	// 			payload
+	// 		);
+
+	// 		// Update the contact in the Redux store
+	// 		dispatch(updateContact(payload)); // Dispatch the update action
+
+	// 		console.log("Contact updated successfully");
+	// 		toast("Contact updated successfully", {
+	// 			description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+	// 		});
+	// 		if (payload.contactType !== row.original.contactType) {
+	// 			router.refresh();
+	// 		}
+	// 		onClose(); // Close the dialog after submission
+	// 	} catch (error: any) {
+	// 		console.error(error);
+	// 		toast("Failed to update contact", {
+	// 			description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+	// 		});
+	// 	}
+	// };
 
 	return (
 		<DialogContent className='max-h-[550px] text-sm  w-[320px] md:w-[600px] my-3 overflow-auto no-scrollbar'>

@@ -2,62 +2,73 @@ import React, { useEffect } from "react";
 import { Column } from "./Column";
 import { DataTable } from "@/components/ui/data-table";
 import LoaderComponent from "@/components/LoaderComponent";
-// import { useAppDispatch, useAppSelector } from "@/store/hooks";
-// import {
-//   fetchDataStart,
-//   fetchDataSuccess,
-//   fetchDataFailure,
-// } from "@/store/dataSlice";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	fetchDataFailure,
 	fetchDataStart,
 	fetchDataSuccess,
 } from "@/lib/slice/contactSlice";
-import { mockedInfoType } from "@/lib/data/mockedInfo";
-// import { mockedInfoType } from "@/types"; // Import the mockedInfoType
+import { mockedInfoType } from "@/lib/data/mockedInfo"; // Adjust the path based on your structure
+import axios from "axios";
 
 interface Props {
-	id: string;
+	id: string; // Assuming this is the ID of the investor
+}
+
+// Define the shape of the Redux state for type safety
+interface RootState {
+	data: {
+		data: mockedInfoType[];
+		loading: boolean;
+		error: string | null;
+	};
 }
 
 const Table: React.FC<Props> = ({ id }) => {
 	const dispatch = useDispatch();
-	const { data, loading, error } = useSelector((state: any) => state.data); // Access global state
+	const { data, loading, error } = useSelector(
+		(state: RootState) => state.data
+	); // Access global state with type safety
 
 	useEffect(() => {
 		const fetchData = async () => {
 			dispatch(fetchDataStart()); // Dispatch loading state
 			try {
 				const response = await axios.get(`/api/investors/${id}/contact`);
-				// if(response.status == 404) dispatch(fetchDataSuccess('No contact found'))
-				console.log(response);
-				dispatch(fetchDataSuccess(response.data)); // Dispatch success action with typed data
+				dispatch(fetchDataSuccess(response.data)); // Dispatch success action with fetched data
 			} catch (error: any) {
-				console.log("error:", error);
-				dispatch(fetchDataFailure(error || "No contact found")); // Dispatch error action
+				console.error("Error fetching contacts:", error);
+				dispatch(fetchDataFailure(error.message || "Failed to fetch contacts")); // Dispatch error action
 			}
 		};
 
 		fetchData();
 	}, [id, dispatch]);
 
-	if (loading)
+	if (loading) {
 		return (
 			<div className='w-full h-72 flex items-center justify-center'>
 				<LoaderComponent className='w-8 h-8 text-[#03AAC1]' />
 			</div>
 		);
-	// console.log(error);
-	// if (error) return <p>{error}</p>; // Display error if any
+	}
+
+	if (error) {
+		return (
+			<div className='w-full h-72 flex items-center justify-center'>
+				<p className='text-red-600'>{error}</p> {/* Display error message */}
+			</div>
+		);
+	}
 
 	return (
-		<div className='h-[250px] xl:h-[400px] 2xl:h-[900px] '>
+		<div className='h-[250px] xl:h-[400px] 2xl:h-[900px]'>
 			<DataTable columns={Column} data={data} />
 		</div>
 	);
 };
+
+// export default Table;
 
 export default Table;
 // import React, { useEffect, useState } from "react";

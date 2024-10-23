@@ -36,17 +36,17 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 	});
 
 	// Helper function to ensure the value is always shown with 2 decimal places
-	const formatTwoDecimals = (value: string) => {
-		const formattedValue = parseFloat(value).toFixed(2);
-		return isNaN(parseFloat(formattedValue)) ? "" : formattedValue;
-	};
+	// const formatTwoDecimals = (value: string) => {
+	// 	const formattedValue = parseFloat(value).toFixed(2);
+	// 	return isNaN(parseFloat(formattedValue)) ? "" : formattedValue;
+	// };
 
-	const handleDecimalInputChange = (field: any, value: string) => {
-		// Convert input to a number, format to two decimals
-		const numericValue = parseFloat(value);
-		const formattedValue = isNaN(numericValue) ? "" : numericValue.toFixed(2);
-		field.onChange(formattedValue);
-	};
+	// const handleDecimalInputChange = (field: any, value: string) => {
+	// 	// Convert input to a number, format to two decimals
+	// 	const numericValue = parseFloat(value);
+	// 	const formattedValue = isNaN(numericValue) ? "" : numericValue.toFixed(2);
+	// 	field.onChange(formattedValue);
+	// };
 	const onSubmit = (data: priceType) => {
 		console.log(data);
 		dispatch(setPrice(data));
@@ -77,10 +77,12 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															placeholder='From $1B'
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={formatNumberWithCommas(field.value || "")}
-															onChange={(e) =>
-																field.onChange(numeralFormatter(e.target.value))
-															}
+															type='number'
+															step={0.0}
+															// value={formatNumberWithCommas(field.value || "")}
+															// onChange={(e) =>
+															// 	field.onChange(numeralFormatter(e.target.value))
+															// }
 														/>
 													</FormControl>
 													<FormMessage />
@@ -99,10 +101,12 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															placeholder='From $1B'
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={formatNumberWithCommas(field.value || "")}
-															onChange={(e) =>
-																field.onChange(numeralFormatter(e.target.value))
-															}
+															type='number'
+															step={0.0}
+															// value={formatNumberWithCommas(field.value || "")}
+															// onChange={(e) =>
+															// 	field.onChange(numeralFormatter(e.target.value))
+															// }
 														/>
 													</FormControl>
 													<FormMessage />
@@ -129,14 +133,16 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															placeholder='From 1.00x'
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={
-																field.value !== undefined
-																	? field.value.toString()
-																	: ""
-															}
-															onChange={(e) =>
-																handleDecimalInputChange(field, e.target.value)
-															}
+															type='number'
+															step={0.0}
+															// value={
+															// 	field.value !== undefined
+															// 		? field.value.toString()
+															// 		: ""
+															// }
+															// onChange={(e) =>
+															// 	handleDecimalInputChange(field, e.target.value)
+															// }
 														/>
 													</FormControl>
 													<FormMessage />
@@ -154,13 +160,15 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
+															type='number'
+															step={0.0}
 															placeholder='To 10.40x'
-															value={formatTwoDecimals(field.value || "")}
-															onChange={(e) =>
-																field.onChange(
-																	formatTwoDecimals(e.target.value)
-																)
-															}
+															// value={formatTwoDecimals(field.value || "")}
+															// onChange={(e) =>
+															// 	field.onChange(
+															// 		formatTwoDecimals(e.target.value)
+															// 	)
+															// }
 														/>
 													</FormControl>
 													<FormMessage />
@@ -185,6 +193,8 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
+															type='number'
+															step={0.0}
 															placeholder='From 1.00x'
 															// value={formatTwoDecimals(field.value || "")}
 															// onChange={(e) =>
@@ -192,10 +202,10 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															// 		formatTwoDecimals(e.target.value)
 															// 	)
 															// }
-															value={field.value || ""}
-															onChange={(e) =>
-																handleDecimalInputChange(field, e.target.value)
-															}
+															// value={field.value || ""}
+															// onChange={(e) =>
+															// 	handleDecimalInputChange(field, e.target.value)
+															// }
 														/>
 													</FormControl>
 													<FormMessage />
@@ -211,15 +221,17 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 												<FormItem>
 													<FormControl>
 														<Input
+															type='number'
+															step={0.0}
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
 															placeholder='To 10.40x'
-															value={formatTwoDecimals(field.value || "")}
-															onChange={(e) =>
-																field.onChange(
-																	formatTwoDecimals(e.target.value)
-																)
-															}
+															// value={formatTwoDecimals(field.value || "")}
+															// onChange={(e) =>
+															// 	field.onChange(
+															// 		formatTwoDecimals(e.target.value)
+															// 	)
+															// }
 														/>
 													</FormControl>
 													<FormMessage />

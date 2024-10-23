@@ -12,9 +12,10 @@ import ViewContact from "./ViewContact";
 
 interface Props {
 	selectedItem: Investor;
+	onUpdate: () => void;
 }
 
-const ContactPage: React.FC<Props> = ({ selectedItem }) => {
+const ContactPage: React.FC<Props> = ({ selectedItem, onUpdate }) => {
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	const handleCloseDialog = () => {
@@ -52,6 +53,7 @@ const ContactPage: React.FC<Props> = ({ selectedItem }) => {
 								<ViewContact
 									selectedItem={selectedItem}
 									onClose={handleCloseDialog}
+									onUpdate={onUpdate}
 								/>
 							</Dialog>
 						</div>

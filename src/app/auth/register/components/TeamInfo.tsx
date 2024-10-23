@@ -98,6 +98,7 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
 				});
 				onNext();
 				router.push(`/auth/register?step=otp`);
+				// reset();
 			}
 
 			if (response.status !== 201) {
