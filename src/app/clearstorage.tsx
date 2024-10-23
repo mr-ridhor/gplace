@@ -20,8 +20,6 @@ const PersistClearComponent: React.FC = () => {
 			// Dispatch the reset action to clear register state
 			dispatch(reset());
 
-			// Optionally purge redux-persist data if needed
-			persistor.purge();
 			console.log('Persisted "register" data cleared and reset dispatched.');
 		};
 
