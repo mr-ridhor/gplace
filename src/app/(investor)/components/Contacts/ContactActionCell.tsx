@@ -68,7 +68,7 @@ const ContactActionCell = <TData extends mockedInfoType>({
 
 		setIsDeleting(false);
 		setIsDeleteOpen(false);
-		dispatch(deleteContactData(row.original._id));
+		dispatch(deleteContactData(row.original._id ?? ""));
 		if (result.success) {
 			toast({
 				title: result.message,

@@ -4,14 +4,15 @@ import ContactPage from "./Contacts/ContactPage";
 import { Investor } from "@/lib/data/mocked";
 
 interface Props {
-  selectedItem: Investor;
+	selectedItem: Investor;
+	onUpdate: () => void;
 }
-const Contact: React.FC<Props> = ({ selectedItem }) => {
-  return (
-    <TabsContent value="contact" className="w-full h-full ">
-      <ContactPage selectedItem={selectedItem} />
-    </TabsContent>
-  );
+const Contact: React.FC<Props> = ({ selectedItem, onUpdate }) => {
+	return (
+		<TabsContent value='contact' className='w-full h-full '>
+			<ContactPage selectedItem={selectedItem} onUpdate={onUpdate} />
+		</TabsContent>
+	);
 };
 
 export default Contact;

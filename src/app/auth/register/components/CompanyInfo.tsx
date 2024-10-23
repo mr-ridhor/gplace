@@ -217,20 +217,31 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												<Input
+												{/* <Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base'
 													{...field}
-												/>
+												/> */}
 												{/* <Selects
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
-                          placeholder="Select  Industry Type"
-                          options={[
-                            { value: "strategic", label: "Strategic" },
-                            { value: "health", label: "Health" },
-                          ]}
-                        /> */}
+													value={field.value}
+													onChange={field.onChange}
+													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+													placeholder='Select  Industry Type'
+													options={[
+														{ value: "strategic", label: "Strategic" },
+														{ value: "health", label: "Health" },
+													]}
+												/> */}
+												<Selects
+													value={field.value}
+													onChange={field.onChange}
+													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+													placeholder='Select  Investment industry'
+													options={[
+														{ value: "Manufacturing", label: "Manufacturing" },
+														{ value: "Software", label: "Software" },
+														{ value: "Other", label: "Other" },
+													]}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>

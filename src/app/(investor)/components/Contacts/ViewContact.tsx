@@ -29,8 +29,9 @@ import { toast } from "sonner";
 interface Props {
 	selectedItem?: Investor;
 	onClose: () => void;
+	onUpdate: () => void;
 }
-const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
+const ViewContact: React.FC<Props> = ({ selectedItem, onClose, onUpdate }) => {
 	const router = useRouter();
 	const [contactType, setContactType] = useState("Primary");
 	const [info, setInfo] = useState({
@@ -83,13 +84,14 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			await axios.put(`/api/investors/${investorId}`, {
 				primaryContact: payload,
 			});
-
+			onUpdate();
 			// Refresh the data or reload the page
 			// router.refresh();
 			console.log("Contact added successfully"); // Handle success message
 			toast("Contact added successfully", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
 			});
+			// window.location.reload();
 		} catch (error: any) {
 			console.error(error);
 			toast("All fields must be filled", {
@@ -159,53 +161,6 @@ const ViewContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 								</div>
 							</div>
 
-							{/* <div className='w-full space-y-2'>
-								<div className='w-full grid grid-cols-2 my-3 '>
-									<div className=' col-span-1 px-3'>
-										<Button
-											type='button'
-											className={`w-full ${
-												contactType === "Primary"
-													? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
-													: "bg-transparent hover:bg-transparent text-black"
-											}`}
-											onClick={() => setContactType("Primary")}
-										>
-											<p>Primary Contact</p>
-										</Button>
-									</div>
-									<div className=' col-span-1 px-3'>
-										<Button
-											className={`w-full ${
-												contactType === "Secondary"
-													? "bg-[#DDE9EB] hover:bg-[#DDE9EB]/70 "
-													: "bg-transparent hover:bg-transparent text-black"
-											}`}
-											onClick={() => setContactType("Secondary")}
-											type='button'
-										>
-											<p>Secondary Contact</p>
-										</Button>
-									</div>
-								</div>
-								<FormLabel className='font-normal text-sm'>Email</FormLabel>
-								<FormField
-									control={form.control}
-									name='email'
-									render={({ field }) => (
-										<FormItem>
-											<FormControl>
-												<Input
-													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
-													{...field}
-													// readOnly
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div> */}
 							<div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-sm'>
 									Phone number
