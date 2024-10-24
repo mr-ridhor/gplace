@@ -124,9 +124,10 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			);
 			console.log(data);
 			// Dispatch addContact action to update the Redux state
-			dispatch(addContact(response.data)); // Add or update contact
+			// dispatch(addContact(response.data)); // Add or update contact
 
 			form.reset();
+			window.location.reload();
 			setTimeout(() => {
 				onClose();
 			}, 2000);
