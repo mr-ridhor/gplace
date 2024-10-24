@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../../../../../utils/authOptions";
 import { getServerSession } from "next-auth";
-import InvestorContact from "../../../../../../../models/InvestorContact";
+import InvestorContact, { IInvestorContact } from "../../../../../../../models/InvestorContact";
 import Investor from "../../../../../../../models/Investor";
 
 // Update Contact 
@@ -11,12 +11,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string, 
 
     if (!user || !user.user) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    // if (!name || !surname || !email || !phone || !title || !contactType) {
-    //     return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
-    // }
-
     try {
-        // Find the contact by investor and contact ID
         const contact = await InvestorContact.findOne({ _id: params.contactId, investor: params.id });
 
         if (!contact) {
@@ -27,7 +22,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string, 
             const investor = await Investor.findOne({ user: user.user.id, _id: params.id })
             if (!investor) return NextResponse.json({ message: 'Investor not found.' }, { status: 404 });
 
-            await InvestorContact.findOneAndUpdate({ _id: params.contactId, investor: params.id, user: user.user.id }, {
+            const updatedContact: IInvestorContact | any = await InvestorContact.findOneAndUpdate({ _id: params.contactId, investor: params.id, user: user.user.id }, {
                 name: investor.primaryContact.name,
                 surname: investor.primaryContact.surname,
                 email: investor.primaryContact.email,
@@ -46,15 +41,32 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string, 
             })
 
             // await InvestorContact.deleteOne({ _id: params.contactId, investor: params.id });
+            return NextResponse.json({
+                message: 'Contact updated successfully',
+                name: updatedContact.name,
+                surname: updatedContact.surname,
+                email: updatedContact.email,
+                phone: updatedContact.phone,
+                title: updatedContact.title,
+            }, { status: 200 });
 
         } else {
-            await InvestorContact.findOneAndUpdate({ _id: params.contactId, investor: params.id, user: user.user.id }, {
+            const investorContact: IInvestorContact | any = await InvestorContact.findOneAndUpdate({ _id: params.contactId, investor: params.id, user: user.user.id }, {
                 $set: {
                     name, surname, email, phone, title
                 }
             }, { new: true })
+
+            return NextResponse.json({ 
+                message: 'Contact updated successfully',
+                name: investorContact.name,
+                surname: investorContact.surname,
+                email: investorContact.email,
+                phone: investorContact.phone,
+                title: investorContact.title,
+                contactType: investorContact?.contactType
+         }, { status: 200 });
         }
-        return NextResponse.json({ message: 'Contact updated successfully' }, { status: 200 });
     } catch (error) {
         console.error("Error updating contact:", error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });

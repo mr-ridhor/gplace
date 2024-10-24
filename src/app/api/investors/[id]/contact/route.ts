@@ -13,7 +13,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     if (!name || !surname || !email || !phone || !title) {
         return NextResponse.json({ message: 'All fields are required.' }, { status: 400 });
     }
-    // console.log(params.id)
 
     if (contactType === 'Primary') {
         const investor = await Investor.findOne({ user: user.user.id, _id: params.id })
@@ -43,7 +42,14 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
             }
         })
 
-        return NextResponse.json({ message: 'Primary Contact Updated' }, { status: 200 })
+        return NextResponse.json({
+            message: 'Primary Contact Updated',
+            name: newContact.name,
+            surname: newContact.surname,
+            email: newContact.email,
+            phone: newContact.phone,
+            title: newContact.title,
+        }, { status: 200 })
 
         // await InvestorContact.deleteOne({ _id: params.contactId, investor: params.id });
 
@@ -60,7 +66,15 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         });
 
         await newContact.save();
-        return NextResponse.json({ message: 'Contact added successfully' }, { status: 200 })
+        return NextResponse.json({
+            message: 'Contact added successfully',
+            name: newContact.name,
+            surname: newContact.surname,
+            email: newContact.email,
+            phone: newContact.phone,
+            title: newContact.title,
+            contactType: newContact.contactType
+        }, { status: 200 })
     }
 }
 
