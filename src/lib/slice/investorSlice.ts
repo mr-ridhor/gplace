@@ -71,7 +71,7 @@ const investorsSlice = createSlice({
 			state.selectedContactTitle = action.payload;
 		},
 		setSelectedOfferedPrice(state, action: PayloadAction<string | null>) {
-			state.selectedContactTitle = action.payload;
+			state.selectedOfferedPrice = action.payload;
 		},
 	},
 });

@@ -65,7 +65,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 	};
 
 	return (
-		<TabsContent value='discussion' className='space-y-4  pb-3'>
+		<div className='space-y-4  pb-3'>
 			<div className='grid gap-x-5 grid-cols-2 gap-y-3 md:grid-cols-4 w-full'>
 				<Card className='border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] col-span-1'>
 					<CardContent className='h-[100px] gap-y-2 flex flex-col justify-center  tems-center'>
@@ -317,7 +317,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 					</div>
 				</div>
 			</div>
-		</TabsContent>
+		</div>
 	);
 };
 

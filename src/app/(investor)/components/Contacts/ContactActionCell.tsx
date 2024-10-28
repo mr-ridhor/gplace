@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Row } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -22,11 +22,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { LuLoader } from "react-icons/lu";
 import { mockedInfoType } from "@/lib/data/mockedInfo";
-import { deleteContact } from "@/lib/actions/getContact";
-import { useDispatch } from "react-redux";
-import { deleteContactData } from "@/lib/slice/contactSlice";
+// import { deleteContact } from "@/lib/actions/getContact";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	deleteContact,
+	// deleteContactData,
+	fetchContacts,
+} from "@/lib/slice/contactSlice";
 import axios from "axios";
 import EditContact from "./EditConract";
+import { AppDispatch, RootState } from "@/lib/services/StoreService";
 
 interface Props<TData extends mockedInfoType> {
 	row: Row<TData>;
@@ -45,8 +50,16 @@ const ContactActionCell = <TData extends mockedInfoType>({
 	); // Edit contactType
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
+	const { data, status, error } = useSelector(
+		(state: RootState) => state.contact
+	);
 
+	useEffect(() => {
+		if (status === "idle") {
+			dispatch(fetchContacts(row.original.investor ?? ""));
+		}
+	}, [status, dispatch, row.original.investor]);
 	const handleOpenDelete = () => {
 		setIsDeleteOpen(true);
 		setIsMenuOpen(false);
@@ -56,30 +69,49 @@ const ContactActionCell = <TData extends mockedInfoType>({
 		setIsEditOpen(true);
 		setIsMenuOpen(false);
 	};
-
+	console.log("row", row);
 	const handleDelete = async () => {
 		setIsDeleting(true);
 
-		// const result = await deleteContact(row.original.investor, row.original._id);
-		const result = await deleteContact(
-			row.original.investor ?? "",
-			row.original._id ?? ""
-		);
-
-		setIsDeleting(false);
-		setIsDeleteOpen(false);
-		dispatch(deleteContactData(row.original._id ?? ""));
-		if (result.success) {
+		try {
+			const resultAction = await dispatch(
+				deleteContact({
+					investorId: row.original.investor ?? "",
+					id: row.original._id ?? "",
+				})
+			).unwrap();
 			toast({
-				title: result.message,
-				description: result.timestamp,
+				title: resultAction.message,
+				description: new Date().toISOString(),
 			});
-		} else {
-			toast({
-				title: result.message,
-			});
-		}
+			dispatch(fetchContacts(row.original.investor ?? ""));
+			setIsDeleting(false);
+			setIsDeleteOpen(false);
+		} catch (error) {}
 	};
+	// const handleDelete = async () => {
+	// 	setIsDeleting(true);
+
+	// 	// const result = await deleteContact(row.original.investor, row.original._id);
+	// 	// const result = await deleteContact(
+	// 	// 	row.original.investor ?? "",
+	// 	// 	row.original._id ?? ""
+	// 	// );
+
+	// 	setIsDeleting(false);
+	// 	setIsDeleteOpen(false);
+	// 	// dispatch(deleteContactData(row.original._id ?? ""));
+	// 	// if (result.success) {
+	// 	// 	toast({
+	// 	// 		title: result.message,
+	// 	// 		description: result.timestamp,
+	// 	// 	});
+	// 	// } else {
+	// 	// 	toast({
+	// 	// 		title: result.message,
+	// 	// 	});
+	// 	// }
+	// };
 
 	const handleSaveEdit = async () => {
 		setIsSaving(true);

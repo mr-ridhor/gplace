@@ -77,12 +77,10 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															placeholder='From $1B'
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															type='number'
-															step={0.0}
-															// value={formatNumberWithCommas(field.value || "")}
-															// onChange={(e) =>
-															// 	field.onChange(numeralFormatter(e.target.value))
-															// }
+															value={formatNumberWithCommas(field.value || "")}
+															onChange={(e) =>
+																field.onChange(numeralFormatter(e.target.value))
+															}
 														/>
 													</FormControl>
 													<FormMessage />
@@ -101,12 +99,10 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															placeholder='From $1B'
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															type='number'
-															step={0.0}
-															// value={formatNumberWithCommas(field.value || "")}
-															// onChange={(e) =>
-															// 	field.onChange(numeralFormatter(e.target.value))
-															// }
+															value={formatNumberWithCommas(field.value || "")}
+															onChange={(e) =>
+																field.onChange(numeralFormatter(e.target.value))
+															}
 														/>
 													</FormControl>
 													<FormMessage />

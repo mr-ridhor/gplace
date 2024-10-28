@@ -29,8 +29,9 @@ import { Row } from "@tanstack/react-table";
 import { original } from "@reduxjs/toolkit";
 import LoaderComponent from "@/components/LoaderComponent";
 import { mockedInfoSchema, mockedInfoType } from "@/lib/data/mockedInfo";
-import { updateContact } from "@/lib/slice/contactSlice";
+import { editContact, fetchContacts } from "@/lib/slice/contactSlice";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/services/StoreService";
 
 interface Props {
 	row: any;
@@ -39,7 +40,7 @@ interface Props {
 }
 const EditContact: React.FC<Props> = ({ row, onClose }) => {
 	const router = useRouter();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const [contactType, setContactType] = useState(row.original.contactType);
 	const [info, setInfo] = useState({
 		name: row.original.name,
@@ -76,26 +77,20 @@ const EditContact: React.FC<Props> = ({ row, onClose }) => {
 		try {
 			const investorId = row.original.investor;
 
-			await axios.put(
-				`/api/investors/${investorId}/contact/${row.original._id}`,
-				payload
-			);
+			const resultAction = await dispatch(
+				editContact({
+					investorId: row.original.investor ?? "",
+					id: row.original._id ?? "",
+					updatedContact: payload,
+				})
+			).unwrap();
 
-			// Update the contact in the Redux store
-			dispatch(updateContact(payload)); // Dispatch the update action
+			dispatch(fetchContacts(investorId));
 
 			console.log("Contact updated successfully");
 			toast("Contact updated successfully", {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
 			});
-
-			// Always refresh the page if contactType is different
-			if (contactType !== row.original.contactType) {
-				// router.refresh();
-				window.location.reload();
-			} else {
-				onClose(); // Close the dialog if no change in contactType
-			}
 		} catch (error: any) {
 			console.error(error);
 			toast("Failed to update contact", {

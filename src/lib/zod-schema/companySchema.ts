@@ -26,6 +26,7 @@ export const companySchema = z.object({
 	// email: z.string().email("Invalid email address"),
 	website: z.string(),
 	industry: z.string().min(1, "Industry is required"),
+	industryType: z.string().min(1, "Industry type  is required"),
 	foundingYear: z
 		.string()
 		.regex(/^\d{4}$/, "Founding year must be a valid 4-digit year"),

@@ -9,7 +9,7 @@ import Contact from "./Contact";
 import Email from "./Email";
 import Notes from "./Notes";
 import { useSession } from "next-auth/react";
-import axios from "axios"; // Using axios instead of fetch
+import axios from "axios";
 import { Investor } from "@/lib/data/mocked";
 import LoaderComponent from "@/components/LoaderComponent";
 
@@ -17,18 +17,18 @@ const SelectedRow = () => {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
-	const [selectedItem, setSelectedItem] = useState<Investor | null>(null); // State for the investor
+	const [selectedItem, setSelectedItem] = useState<Investor | null>(null);
 	const [activeTab, setActiveTab] = useState<string>("detail");
-	// console.log("path", pathname);
-	const detail = searchParams.get("detail"); // Get the 'detail' parameter from the URL
-	const { data: session } = useSession(); // Get the session data (assuming you're using next-auth)
+
+	const detail = searchParams.get("detail");
+	const { data: session } = useSession();
 
 	const fetchData = async () => {
 		if (detail) {
 			try {
-				const response = await axios.get(`/api/investors/${detail}`); // Fetch investor data using Axios
+				const response = await axios.get(`/api/investors/${detail}`);
 				if (response.data) {
-					setSelectedItem(response.data); // Set the fetched data
+					setSelectedItem(response.data);
 				}
 			} catch (error) {
 				console.error("Failed to fetch investor:", error);
@@ -41,7 +41,6 @@ const SelectedRow = () => {
 		setActiveTab(currentTab);
 	}, [detail, searchParams]);
 
-	// Ensure selectedItem is loaded before rendering
 	if (!selectedItem) {
 		return (
 			<div className='w-full h-72 flex items-center justify-center'>
@@ -50,19 +49,18 @@ const SelectedRow = () => {
 		);
 	}
 
-	// Handle tab change and update URL
 	const handleTabChange = (tab: string) => {
 		setActiveTab(tab);
 		router.push(`/dashboard?detail=${detail}&tab=${tab}`);
 	};
 	const refreshData = () => {
 		if (detail) {
-			fetchData(); // Fetch data again to refresh the selectedItem
+			fetchData();
 		}
 	};
 	return (
 		<div className='flex gap-x-6 h-full w-full px-'>
-			<Leftbar list={selectedItem} /> {/* Pass selectedItem to Leftbar */}
+			<Leftbar list={selectedItem} />
 			<div className={`md:ml-[200px] w-full l p-4 `}>
 				<Tabs
 					value={activeTab}

@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react"; // Import useEffect
 import ContactHeader from "./ContactHeader";
 import { BiLogoTelegram } from "react-icons/bi";
 import Table from "./Table";
@@ -21,6 +21,11 @@ const ContactPage: React.FC<Props> = ({ selectedItem, onUpdate }) => {
 	const handleCloseDialog = () => {
 		setIsDialogOpen(false);
 	};
+
+	// UseEffect to call onUpdate when selectedItem changes
+	useEffect(() => {
+		onUpdate();
+	}, [selectedItem, onUpdate]); // Add selectedItem and onUpdate as dependencies
 
 	return (
 		<div className='w-full space-y-3 my-2 h-full'>
