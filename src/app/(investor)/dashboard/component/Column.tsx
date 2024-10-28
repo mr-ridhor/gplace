@@ -263,7 +263,7 @@ export const Column: ColumnDef<Investor>[] = [
 	{
 		id: "actions",
 		cell: ({ row }) => {
-			console.log(row.original);
+			// console.log(row.original);
 
 			return (
 				<div className='' onClick={(e) => e.stopPropagation()}>

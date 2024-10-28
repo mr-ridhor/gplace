@@ -40,6 +40,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 			name: companyInfo.name,
 			country: companyInfo.country,
 			city: companyInfo.city,
+			investorType: companyInfo.investorType,
 			// email: companyInfo.email,
 			website: companyInfo.website,
 			industry: companyInfo.industry,
@@ -166,26 +167,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 								/>
 							</div>
 						</div>
-						{/* <div className='w-full space-y-2'>
-							<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
-								Company Email
-							</FormLabel>
-							<FormField
-								control={form.control}
-								name='email'
-								render={({ field }) => (
-									<FormItem>
-										<FormControl>
-											<Input
-												className='focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base'
-												{...field}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div> */}
+
 						<div className='w-full space-y-2'>
 							<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
 								Website
@@ -207,7 +189,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 							/>
 						</div>
 						<div className='w-full flex gap-x-4 items-center s-y-2'>
-							<div className='w-full space-y-2'>
+							<div className='w-1/2 space-y-2'>
 								<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
 									Industry
 								</FormLabel>
@@ -248,26 +230,34 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 									)}
 								/>
 							</div>
-							{/* <div className="w-1/2 space-y-2">
-                <FormLabel className="font-normal text-[10px] md:text-sm lg:text-base">
-                  Industry
-                </FormLabel>
-                <FormField
-                  control={form.control}
-                  name="industry"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div> */}
+							<div className='w-1/2 space-y-2'>
+								<div className='w-full space-y-2'>
+									<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
+										Investor type
+									</FormLabel>
+									<FormField
+										control={form.control}
+										name='investorType'
+										render={({ field }) => (
+											<FormItem>
+												<FormControl>
+													<Selects
+														value={field.value}
+														onChange={field.onChange}
+														className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+														placeholder='Select  Investor Type'
+														options={[
+															{ value: "Strategic", label: "Strategic" },
+															{ value: "Financial", label: "Financial" },
+														]}
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
+							</div>
 						</div>
 						<div className='w-full  flex gap-x-4'>
 							<div className='w-1/2 space-y-2'>

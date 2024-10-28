@@ -16,7 +16,7 @@ import addInverstorReducer from "../slice/addInvestorSlice";
 import profileReducer from "../slice/profileSlice";
 import panelReducer from "../slice/panelSlice";
 import investorsReducer from "../slice/investorSlice";
-// import contactReducer from "../slice/contactSlice";
+import contactReducer from "../slice/contactSlice";
 import dataReducer from "../slice/contactSlice";
 // Add "register" to the whitelist to persist its state
 const persistConfig = {
@@ -32,7 +32,8 @@ const rootReducer = combineReducers({
 	profile: profileReducer,
 	panel: panelReducer,
 	investors: investorsReducer,
-	data: dataReducer,
+	// data: dataReducer,
+	contact: contactReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -50,3 +51,5 @@ const store = configureStore({
 const persistor = persistStore(store);
 
 export { store, persistor };
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

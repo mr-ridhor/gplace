@@ -94,7 +94,7 @@ export const Column: ColumnDef<TableRowType>[] = [
 			</Button>
 		),
 		cell: ({ row }) => {
-			console.log(row.original);
+			// console.log(row.original);
 			return (
 				<div className='bg-[#FCF0FD] hover:bg-[#FCF0FD]/90 text-[10px] md:text-sm rounded-md p-2 w-fit'>
 					{/* <p>Secondary</p> */}
