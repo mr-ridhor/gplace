@@ -40,7 +40,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
-        const { companyInfo, investmentBio, targetInfo, offeredPriceValuation, paidInfo, primaryContact } = await req.json();
+        const { companyInfo, investmentBio, targetInfo, offeredPriceValuation, paidInfo, primaryContact, status } = await req.json();
 
         const investor = await Investor.findOne({ _id: params.id, user: data.user.id })
 
@@ -60,6 +60,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         const updatedInvestmentBio = investmentBio ? { ...investor.investmentBio, ...investmentBio } : investor.investmentBio;
         const updatedTargetInfo = targetInfo ? { ...investor.targetInfo, ...targetInfo } : investor.targetInfo;
         const updatedPaidInfo = paidInfo ? { ...investor.paidInfo, ...paidInfo } : investor.paidInfo;
+        const updatedStatus = status ? status : investor.status;
 
         const updatedPrimaryContact = primaryContact ? { ...investor.primaryContact, ...primaryContact } : investor.primaryContact;
 
@@ -79,6 +80,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
                     investmentBio: updatedInvestmentBio,
                     targetInfo: updatedTargetInfo,
                     paidInfo: updatedPaidInfo,
+                    status: updatedStatus,
                     offeredPrice: updatedOfferedPrice,
                     primaryContact: updatedPrimaryContact
                 }

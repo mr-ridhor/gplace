@@ -45,7 +45,7 @@ export interface InvestorInterface extends Document {
         title: string;
     };
     vertical?: string;
-    status?: string;
+    status: string;
     matchScore: {
         revenueScore?: number;
         ebitdaScore?: number;
@@ -107,7 +107,7 @@ const investorSchema = new Schema<InvestorInterface>({
         title: { type: String, trim: true, required: true },
     },
     vertical: { type: String, trim: true },
-    status: { type: String, trim: true },
+    status: { type: String, enum:["Data Exchange", "Initial Offer", "Letter of Intent", "Due Diligence", "Closing"], default: "Data Exchange", required: true},
     matchScore: {
         totalScore: { type: Number, default: 0 },
         revenueScore: { type: Number, default: 0 },
