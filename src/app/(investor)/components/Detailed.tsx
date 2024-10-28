@@ -9,14 +9,15 @@ interface Props {
 }
 
 const Detailed: React.FC<Props> = ({ selectedItem }) => {
-	const [selectedTab, setSelectedTab] = useState("Data Exchange");
+	const [selectedTab, setSelectedTab] = useState(
+		selectedItem.status || "Data Exchange" // Default to "Data Exchange" if selectedItem.status is undefined
+	);
 
 	// Function to send data to the endpoint using Axios
 	const sendDataToEndpoint = async (tabValue: string) => {
 		try {
-			const response = await axios.post("YOUR_API_ENDPOINT", {
-				tab: tabValue,
-				selectedItem,
+			const response = await axios.put(`/api/investors/${selectedItem._id}`, {
+				status: tabValue,
 			});
 			console.log("Data sent successfully:", response.data);
 		} catch (error) {
@@ -24,16 +25,16 @@ const Detailed: React.FC<Props> = ({ selectedItem }) => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	sendDataToEndpoint(selectedTab);
-	// }, [selectedTab]); // Effect runs when selectedTab changes
-	// alert(selectedTab);
+	useEffect(() => {
+		sendDataToEndpoint(selectedTab);
+	}, [selectedTab]);
+
 	return (
 		<TabsContent value='detail' className='w-full overflow-x-auto'>
 			<div className='mt-4'>
 				<p>Transaction Status</p>
 				<Tabs
-					defaultValue='Data Exchange'
+					defaultValue={selectedTab} // Use selectedTab for default value
 					onValueChange={setSelectedTab} // Update the selected tab state
 					className='w-full text-sm overflow-x-auto'
 				>
