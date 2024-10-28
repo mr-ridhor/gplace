@@ -40,7 +40,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 			name: companyInfo.name,
 			country: companyInfo.country,
 			city: companyInfo.city,
-			investorType: companyInfo.investorType,
+			industryType: companyInfo.investorType,
 			// email: companyInfo.email,
 			website: companyInfo.website,
 			industry: companyInfo.industry,
@@ -237,7 +237,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 									</FormLabel>
 									<FormField
 										control={form.control}
-										name='investorType'
+										name='industryType'
 										render={({ field }) => (
 											<FormItem>
 												<FormControl>

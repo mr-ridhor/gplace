@@ -5,7 +5,7 @@ export type companyType = {
 	// email: string;
 	website?: string;
 	industry: string;
-	investorType: string;
+	industryType: string;
 	foundingYear: string;
 	revenue?: {
 		ltm: string;

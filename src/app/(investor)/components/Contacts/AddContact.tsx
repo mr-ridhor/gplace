@@ -44,7 +44,7 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			email: "",
 			phone: "",
 			title: "",
-			contactType: "Primary",
+			contactType: "",
 		},
 	});
 
@@ -58,9 +58,9 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 			email: data.email,
 			phone: data.phone,
 			title: data.title,
-			contactType: data.contactType,
+			contactType: contactType,
 		};
-
+		console.log("pat", payload);
 		try {
 			if (!investorId) {
 				throw new Error("Investor ID is missing");
@@ -70,6 +70,7 @@ const AddContact: React.FC<Props> = ({ selectedItem, onClose }) => {
 				addContact({ investorId, newContact: payload })
 			).unwrap();
 			dispatch(fetchContacts(investorId));
+			// console.log(resultAction)
 
 			console.log("res", resultAction);
 			form.reset();
