@@ -46,12 +46,13 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
         const user: IUser | any = await User.findById(data.user.id)
         if (!user) return NextResponse.json({ message: "User not found" }, { status: 500 });
-        const { revenue, EBITDA, industry } = user.company;
+        const { revenue, EBITDA, industry, industryType } = user.company;
 
         const clientMetrics = {
-            userRevenue: revenue.ltm, // Client's latest revenue
-            userEBITDA: EBITDA.ltm, // Client's latest EBITDA
-            userIndustry: industry,
+            revenue: revenue.ltm, // Client's latest revenue
+            EBITDA: EBITDA.ltm, // Client's latest EBITDA
+            industry,
+            industryType,
         };
 
         if (!investor) return NextResponse.json({ message: 'Investor not found' }, { status: 404 });

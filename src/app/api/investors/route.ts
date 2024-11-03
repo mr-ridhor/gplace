@@ -18,12 +18,13 @@ export async function POST(req: NextRequest) {
     if (!user) return NextResponse.json({ message: "User not found" }, { status: 500 });
     const valuation: number = offeredPriceValuation
 
-    const { revenue, EBITDA, industry } = user.company;
+    const { revenue, EBITDA, industry, industryType } = user.company;
 
     const clientMetrics = {
       revenue: revenue.ltm, // Client's latest revenue
       EBITDA: EBITDA.ltm, // Client's latest EBITDA
-      industry: industry,
+      industry,
+      industryType
     };
 
     // Create a new investor instance

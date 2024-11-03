@@ -85,6 +85,7 @@ export async function PUT(req: NextRequest) {
           revenue: updatedCompany.revenue.ltm,
           EBITDA: updatedCompany.EBITDA.ltm,
           industry: updatedCompany.industry,
+          industryType: updatedCompany.industryType,
           dealSize: valuation, // Assuming dealSize is based on valuation
         };
 

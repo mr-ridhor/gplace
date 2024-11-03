@@ -1,57 +1,5 @@
 {
-  "companyInfo": {
-    "companyName": "Cloudfare Inc",
-    "country": "Canada",
-    "city": "Ontaria",
-    "website": "cloudfare.us",
-    "yearFounded": 2000,
-    "employeeNumber": 1000,
-    "investorType": "Strategic",
-    "description": "Big Investor",
-    "industry":"Technology"
-  },
   "investmentBio": {
-    "industry": "Manufacturing ",
-    "geography": "Nil",
-    "dealsInLTM": 200000,
-    "medianDealSize": 200000,
-    "AUM": 200000,
-    "dealsIn5Y": 5
-  },
-  "targetInfo": {
-    "revenue": {
-      "from": 100000,
-      "to": 200000
-    },
-    "EBITDA": {
-      "from": 100000,
-      "to": 200000
-    },
-    "dealSize": {
-      "from": 100000,
-      "to": 200000
-    }
-  },
-  "paidInfo": {
-    "valuation": {
-      "from": 100000,
-      "to": 200000
-    },
-    "revenue": {
-      "from": 1,
-      "to": 5
-    },
-    "EBITDA": {
-      "from": 9,
-      "to": 30
-    }
-  },
-  "offeredPriceValuation": 35000000,
-  "primaryContact": {
-    "name": "John",
-    "surname": "Doe",
-    "email": "johndoe@gmail.com",
-    "phone": "08109995607",
-    "title": "Director"
+    "industry": ["Technology"]
   }
 }
