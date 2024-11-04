@@ -84,7 +84,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 				description: companyInfo.description,
 			},
 			investmentBio: {
-				industry: industryValues,
+				industry: industryValues.join(","),
 				geography: profile.invGeo,
 				dealsInLTM: profile.noLTM,
 				medianDealSize: profile2.med,
