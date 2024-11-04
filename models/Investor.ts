@@ -11,11 +11,11 @@ export interface InvestorInterface extends Document {
         yearFounded: number;
         employeeNumber: number;
         investorType: 'Strategic' | 'Financial';
-        industry: string;
+        // industry: string;
         description: string;
     };
     investmentBio: {
-        industry: string;
+        industry: string[];
         geography: string;
         dealsInLTM: number;
         medianDealSize: number;
@@ -72,12 +72,12 @@ const investorSchema = new Schema<InvestorInterface>({
         website: { type: String, trim: true, required: true },
         yearFounded: { type: Number, required: true },
         employeeNumber: { type: Number, required: true },
-        investorType: { type: String, enum:["Financial", "Strategic"]},
-        industry: { type: String, trim: true },
+        investorType: { type: String, enum: ["Financial", "Strategic"] },
+        // industry: { type: [String], required: true },
         description: { type: String, trim: true, required: true },
     },
     investmentBio: {
-        industry: { type: String, trim: true, required: true },
+        industry: { type: [String], trim: true, required: true },
         geography: { type: String, trim: true },
         dealsInLTM: { type: Number, required: true },
         medianDealSize: { type: Number, required: true },
@@ -107,7 +107,7 @@ const investorSchema = new Schema<InvestorInterface>({
         title: { type: String, trim: true, required: true },
     },
     vertical: { type: String, trim: true },
-    status: { type: String, enum:["Data Exchange", "Initial Offer", "Letter of Intent", "Due Diligence", "Closing"], default: "Data Exchange", required: true},
+    status: { type: String, enum: ["Data Exchange", "Initial Offer", "Letter of Intent", "Due Diligence", "Closing"], default: "Data Exchange", required: true },
     matchScore: {
         totalScore: { type: Number, default: 0 },
         revenueScore: { type: Number, default: 0 },
@@ -137,12 +137,15 @@ investorSchema.statics.calculateMatchScore = function (clientMetrics: any, inves
         totalScore += 20;
     }
 
-    if (investor.companyInfo.investorType === 'Strategic') {
+    if (investor.companyInfo.investorType.toLowerCase() === clientMetrics.industryType.toLowerCase()) {
         investor.matchScore.investorTypeScore = 10;
         totalScore += 10;
     }
 
-    if (clientMetrics.industry === investor.companyInfo.industry) {
+    const industryMatch = Array.isArray(investor.investmentBio.industry) &&
+        investor.investmentBio.industry.includes(clientMetrics.industry);
+
+    if (industryMatch) {
         investor.matchScore.industryScore = 10;
         totalScore += 10;
     }
