@@ -37,7 +37,7 @@ interface Props {
 
 const Target: React.FC<Props> = ({ onNext, onBack }) => {
 	const dispatch = useDispatch();
-	const target = useSelector(getInvestor);
+	const target = useSelector(getInvestor).target;
 	const form = useForm<targetType>({
 		resolver: zodResolver(targetSchema),
 		mode: "onChange",
@@ -78,7 +78,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
                           }
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-[10px]" />
                     </FormItem>
                   )}
                 /> */}
@@ -104,7 +104,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -127,7 +127,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -139,7 +139,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 								<FormLabel className='font-normal text-sm'>
 									EBITDA ($K)
 								</FormLabel>
-								<div className='flex w-full items-center gap-x-2'>
+								<div className='flex w-full  gap-x-2'>
 									<div className='w-1/2'>
 										<FormField
 											control={form.control}
@@ -157,7 +157,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -179,7 +179,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -191,7 +191,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 								<FormLabel className='font-normal text-sm'>
 									Deal size ($K)
 								</FormLabel>
-								<div className='flex w-full items-center gap-x-2'>
+								<div className='flex w-full h-fit  gap-x-2'>
 									<div className='w-1/2'>
 										<FormField
 											control={form.control}
@@ -209,7 +209,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -231,7 +231,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -257,7 +257,7 @@ const Target: React.FC<Props> = ({ onNext, onBack }) => {
 													}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>

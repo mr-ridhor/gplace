@@ -91,6 +91,11 @@ const ebitdaSchema = z.object({
 		.number()
 		.positive("Previous year EBITDA must be a positive number"), // Changed to number
 });
+const industryOptionSchema = z.object({
+	// id: z.number(),
+	label: z.string(),
+	value: z.string(),
+});
 
 export const CompanySchema = z.object({
 	name: z.string().min(1, "Company name is required"),
@@ -99,6 +104,9 @@ export const CompanySchema = z.object({
 	email: z.string().email("Invalid email format"),
 	website: z.string().url("Invalid website URL").optional(),
 	industry: z.string().min(1, "Industry is required"),
+	// industry: z
+	// 	.array(industryOptionSchema)
+	// 	.min(1, "At least one Investment industry is required"),
 	foundingYear: z.number().positive("Founding year"), // Changed to number
 	revenue: revenueSchema,
 	grossProfit: grossProfitSchema,

@@ -265,7 +265,7 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Matching Score
 						</p>
-						<div className='w-[70%] flex flex-col '>
+						<div className='w-[75%] flex flex-col items-center py-1 '>
 							<div className='w-fit rounded-full border bg-[#57D08D] text-gren-600'>
 								<CircularProgress
 									percentage={list.matchScore.totalScore}

@@ -69,6 +69,9 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 
 	const onSubmit = async (data: contType) => {
 		// console.log(data);
+		const industryValues = profile.invInd.map(
+			(industry: { value: any }) => industry.value
+		);
 		const payload = {
 			companyInfo: {
 				companyName: companyInfo.name,
@@ -81,7 +84,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 				description: companyInfo.description,
 			},
 			investmentBio: {
-				industry: profile.invInd,
+				industry: industryValues,
 				geography: profile.invGeo,
 				dealsInLTM: profile.noLTM,
 				medianDealSize: profile2.med,
@@ -98,8 +101,8 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 					to: Number(target.ebdt.to),
 				},
 				dealSize: {
-					from: Number(target.ebdt.from),
-					to: Number(target.ebdt.to),
+					from: Number(target.dealsz.from),
+					to: Number(target.dealsz.to),
 				},
 			},
 			offeredPriceValuation: Number(target.valuation),
@@ -170,7 +173,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 														{...field}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -191,7 +194,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 															{...field}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -214,7 +217,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -234,7 +237,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -252,7 +255,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>

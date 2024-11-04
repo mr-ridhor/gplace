@@ -7,8 +7,8 @@ export const priceSchema = z.object({
 	// // offeredPrice: z.string().min(1, "Offered Price size is required"),
 
 	val: z.object({
-		from: z.string(),
-		to: z.string(),
+		from: z.string().regex(/^\d+$/, "Previous Valuation must be a number"),
+		to: z.string().regex(/^\d+$/, "Current Valuation must be a number"),
 	}),
 	evRev: z.object({
 		from: z.string(),

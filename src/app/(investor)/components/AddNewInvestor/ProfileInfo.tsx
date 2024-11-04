@@ -1,3 +1,5 @@
+// import { MultiSelect } from "@/components/MultiSelect";
+import MultipleSelector from "@/components/MultiSelect";
 import { Selects } from "@/components/Selects";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabsContent } from "@/components/ui/tabs";
+import { industries } from "@/lib/data/industry";
 import {
 	formatNumberWithCommas,
 	numeralFormatter,
@@ -22,9 +25,10 @@ import {
 import { invproSchema } from "@/lib/zod-schema/invproSchema";
 import { invproType } from "@/lib/zod-type/invproType";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { countries } from "../../../../../utils/getCountries";
 
 interface Props {
 	onNext: () => void;
@@ -33,8 +37,12 @@ interface Props {
 	// profile: invproType;
 }
 const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
+	const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>([
+		"react",
+		"angular",
+	]);
 	const dispatch = useDispatch();
-	const profile = useSelector(getInvestor);
+	const profile = useSelector(getInvestor).profile;
 	const form = useForm<invproType>({
 		resolver: zodResolver(invproSchema),
 		mode: "onChange",
@@ -57,28 +65,8 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
 						className='   items-center flex flex-col h-full '
 					>
 						<div className='space-y-4 w-full'>
-							{/* <div className="w-full space-y-2">
-                <FormLabel className="text-sm font-normal">
-                  Investment industry
-                </FormLabel>
-                <FormField
-                  control={form.control}
-                  name="invInd"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input
-                          className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div> */}
 							<div className='w-full space-y-2'>
-								<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
+								<FormLabel className='font-normal text-sm'>
 									Investment industy
 								</FormLabel>
 								<FormField
@@ -87,19 +75,17 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												<Selects
-													value={field.value}
-													onChange={field.onChange}
-													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
-													placeholder='Select  Investment industry'
-													options={[
-														{ value: "Manufacturing", label: "Manufacturing" },
-														{ value: "Software", label: "Software" },
-														{ value: "Other", label: "Other" },
-													]}
-												/>
+												<>
+													<MultipleSelector
+														{...field}
+														defaultOptions={industries}
+														className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+														placeholder='Select Investment Industry(ies)...'
+														onChange={(selected) => field.onChange(selected)}
+													/>
+												</>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -114,12 +100,22 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												<Input
+												{/* <Input
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
+												/> */}
+												<Selects
+													value={field.value}
+													onChange={field.onChange}
+													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+													placeholder='Select Investment geography'
+													options={countries.map((country) => ({
+														value: country.name,
+														label: country.name,
+													}))}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -127,8 +123,8 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
 
 							<div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-sm'>
-									{/* # of deals in LTM */}
-									Typical deal size
+									# of deals in LTM
+									{/* Typical deal size */}
 								</FormLabel>
 								<FormField
 									control={form.control}
@@ -145,7 +141,7 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
 													}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>

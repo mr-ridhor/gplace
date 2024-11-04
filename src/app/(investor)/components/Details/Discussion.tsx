@@ -20,7 +20,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 		offerPrice: false,
 	});
 	const [values, setValues] = useState({
-		description: selectedItem.companyInfo.employeeNumber,
+		description: selectedItem.companyInfo.description,
 		offerPrice: selectedItem.offeredPrice.valuation,
 		// country:list.companyInfo.country
 	});
@@ -63,6 +63,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 			console.error("Error updating description:", error);
 		}
 	};
+	console.log(selectedItem);
 
 	return (
 		<div className='space-y-4  pb-3'>
@@ -158,7 +159,6 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 							<div className=''>
 								<p># of Deals in LTM</p>
 								<p>
-									$
 									{formatNumberWithCommas(
 										`${selectedItem.investmentBio.dealsInLTM}`
 									)}
@@ -250,23 +250,19 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 						<p className=''>EV/Revenue</p>
 						<p className=''>
 							{formatNumberWithCommasDp(
-								`${selectedItem.targetInfo.revenue.from} `
+								`${selectedItem.paidInfo.revenue.from} `
 							)}
 							x -
-							{formatNumberWithCommasDp(
-								`${selectedItem.targetInfo.revenue.to} `
-							)}
+							{formatNumberWithCommasDp(`${selectedItem.paidInfo.revenue.to} `)}
 							x
 						</p>
 					</div>
 					<div className='col-span-1'>
 						<p className=''>EV/EBITDA</p>
 						<p className=''>
-							{formatNumberWithCommasDp(
-								`${selectedItem.paidInfo.revenue.from}`
-							)}
+							{formatNumberWithCommasDp(`${selectedItem.paidInfo.EBITDA.from}`)}
 							x -
-							{formatNumberWithCommasDp(`${selectedItem.paidInfo.revenue.to}`)}x
+							{formatNumberWithCommasDp(`${selectedItem.paidInfo.EBITDA.to}`)}x
 						</p>
 					</div>
 				</div>
@@ -288,21 +284,6 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 				</div>
 				<div className='grid-cols-3 grid w-full'>
 					<div className='col-span-1'>
-						<p className=''>Revenue ($ 000)</p>
-						<p className=''>
-							${formatNumberWithCommas(`${selectedItem.paidInfo.revenue.from}`)}{" "}
-							- $
-							{formatNumberWithCommas(`${selectedItem.paidInfo.revenue.to} `)}
-						</p>
-					</div>
-					<div className='col-span-1'>
-						<p className=''>EBITDA ($ 000)</p>
-						<p className=''>
-							${formatNumberWithCommas(`${selectedItem.paidInfo.EBITDA.from}`)}-
-							${formatNumberWithCommas(`${selectedItem.paidInfo.EBITDA.to}`)}
-						</p>
-					</div>
-					<div className='col-span-1'>
 						<p className=''>Deal Size ($ 000)</p>
 						<p className=''>
 							$
@@ -313,6 +294,26 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 							{formatNumberWithCommas(
 								`${selectedItem.targetInfo.dealSize.to} `
 							)}
+						</p>
+					</div>
+					<div className='col-span-1'>
+						<p className=''>Revenue ($ 000)</p>
+						<p className=''>
+							$
+							{formatNumberWithCommas(
+								`${selectedItem.targetInfo.revenue.from}`
+							)}{" "}
+							- $
+							{formatNumberWithCommas(`${selectedItem.targetInfo.revenue.to} `)}
+						</p>
+					</div>
+					<div className='col-span-1'>
+						<p className=''>EBITDA ($ 000)</p>
+						<p className=''>
+							$
+							{formatNumberWithCommas(`${selectedItem.targetInfo.EBITDA.from}`)}
+							- $
+							{formatNumberWithCommas(`${selectedItem.targetInfo.EBITDA.to}`)}
 						</p>
 					</div>
 				</div>

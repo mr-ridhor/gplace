@@ -30,7 +30,7 @@ interface Props {
 
 const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
 	const dispatch = useDispatch();
-	const profile2 = useSelector(getInvestor);
+	const profile2 = useSelector(getInvestor).profile2;
 	const form = useForm<invpro2Type>({
 		resolver: zodResolver(invpro2Schema),
 		mode: "onChange",
@@ -71,7 +71,7 @@ const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
 														}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -96,7 +96,7 @@ const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
 														}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -122,7 +122,7 @@ const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
 													}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>

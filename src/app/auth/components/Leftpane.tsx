@@ -134,46 +134,46 @@ import Mail from "@/app/svgComponent/Mail";
 import Mailer from "@/app/svgComponent/Mailer";
 
 interface LeftpaneProps {
-  currentForm: number;
+	currentForm: number;
 }
 
 const Leftpane: React.FC<LeftpaneProps> = ({ currentForm }) => {
-  const registerSteps = [
-    { id: 1, step: "1 of 5", name: "Personal information", icon: <User /> },
-    { id: 2, step: "2 of 5", name: "Company information", icon: <Company /> },
-    { id: 3, step: "3 of 5", name: "Team information", icon: <Users /> },
-    { id: 4, step: "4 of 5", name: "Email Verification", icon: <Mail /> },
-    { id: 5, step: "5 of 5", name: "Subscription plan", icon: <Mailer /> },
-  ];
+	const registerSteps = [
+		{ id: 1, step: "1 of 4", name: "Personal information", icon: <User /> },
+		{ id: 2, step: "2 of 4", name: "Company information", icon: <Company /> },
+		// { id: 3, step: "3 of 4", name: "Team information", icon: <Users /> },
+		{ id: 3, step: "3 of 4", name: "Email Verification", icon: <Mail /> },
+		{ id: 4, step: "4 of 4", name: "Subscription plan", icon: <Mailer /> },
+	];
 
-  return (
-    <div className="h-screen w-[220px] space-y-5 z-20 top-0 hidden md:block fixed bg-gradient-to-b from-[#82e1ed] from-10% via-s[#8CE5F1] via-30% to-[#23ACBF] to-90% ">
-      <div className="flex w-full items-center justify-center py-5">
-        <Logo />
-      </div>
-      <div className="h-fit w-full space-y-4">
-        {registerSteps.map((item) => (
-          <div
-            key={item.id}
-            className={`flex h-[35px] xl:h-[50px] xl:space-y-6 gap-x-2 items-center justify-center w-full ${
-              item.id === currentForm ? "text-black" : "text-[#00454F]/30"
-            }`}
-          >
-            <div className="w-[20%] justify-end flex items-center h-full">
-              {item.icon}
-            </div>
-            <div className="w-[150px] items-center h-full">
-              <p className="text-[10px] lg:text-sm">{item.step}</p>
-              <p className="text-[10px] lg:text-sm ">{item.name}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="absolute bottom-0 w-[220px] xl:h-[35%] md:h-[35%]">
-        <Topo />
-      </div>
-    </div>
-  );
+	return (
+		<div className='h-screen w-[220px] space-y-5 z-20 top-0 hidden md:block fixed bg-gradient-to-b from-[#82e1ed] from-10% via-s[#8CE5F1] via-30% to-[#23ACBF] to-90% '>
+			<div className='flex w-full items-center justify-center py-5'>
+				<Logo />
+			</div>
+			<div className='h-fit w-full space-y-4'>
+				{registerSteps.map((item) => (
+					<div
+						key={item.id}
+						className={`flex h-[35px] xl:h-[50px] xl:space-y-6 gap-x-2 items-center justify-center w-full ${
+							item.id === currentForm ? "text-black" : "text-[#00454F]/30"
+						}`}
+					>
+						<div className='w-[20%] justify-end flex items-center h-full'>
+							{item.icon}
+						</div>
+						<div className='w-[150px] items-center h-full'>
+							<p className='text-[10px] lg:text-sm'>{item.step}</p>
+							<p className='text-[10px] lg:text-sm '>{item.name}</p>
+						</div>
+					</div>
+				))}
+			</div>
+			<div className='absolute bottom-0 w-[220px] xl:h-[35%] md:h-[35%]'>
+				<Topo />
+			</div>
+		</div>
+	);
 };
 
 export default Leftpane;

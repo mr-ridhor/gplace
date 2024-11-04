@@ -1,7 +1,7 @@
 "use client";
 import { Selects } from "@/components/Selects";
 import { Button } from "@/components/ui/button";
-import { DialogContent } from "@/components/ui/dialog";
+import { DialogClose, DialogContent } from "@/components/ui/dialog";
 import {
 	Form,
 	FormControl,
@@ -32,6 +32,8 @@ import LoaderComponent from "@/components/LoaderComponent";
 import { toast } from "@/components/ui/use-toast";
 import moment from "moment";
 import axios from "axios";
+import { countries } from "../../../../../utils/getCountries";
+import { industries } from "@/lib/data/industry";
 
 const CompanyInfoForm = () => {
 	const router = useRouter(); // Initialize router
@@ -152,7 +154,7 @@ const CompanyInfoForm = () => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -167,17 +169,17 @@ const CompanyInfoForm = () => {
 										render={({ field }) => (
 											<FormItem>
 												<FormControl>
-													{/* <Selects
-                            value={field.value}
-                            onChange={field.onChange}
-                            className="focus:border-0 focus-visible:ring-[#04acc2] text-sm"
-                            placeholder="Ireland"
-                            options={[
-                              { value: "fr", label: "Fr" },
-                              { value: "eng", label: "Eng" },
-                            ]}
-                          /> */}
-													<Input
+													<Selects
+														value={String(field.value)}
+														onChange={field.onChange}
+														className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+														placeholder='Select country'
+														options={countries.map((country) => ({
+															value: country.name,
+															label: country.name,
+														}))}
+													/>
+													{/* <Input
 														className='focus:border-0 focus-visible:ring-[#04acc2]'
 														{...field}
 														placeholder='Enter country'
@@ -190,9 +192,9 @@ const CompanyInfoForm = () => {
 														//     })
 														//   );
 														// }}
-													/>
+													/> */}
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -231,7 +233,7 @@ const CompanyInfoForm = () => {
 														// }}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -252,7 +254,7 @@ const CompanyInfoForm = () => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -270,7 +272,7 @@ const CompanyInfoForm = () => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -288,20 +290,17 @@ const CompanyInfoForm = () => {
 													{...field}
 												/> */}
 												<Selects
-													// value={field.value}
-													{...field}
+													value={field.value}
 													onChange={field.onChange}
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
-													placeholder='Select  Investment industry'
-													options={[
-														{ value: "Manufacturing", label: "Manufacturing" },
-														{ value: "Software", label: "Software" },
-														{ value: "Other", label: "Other" },
-														{ value: "Financial", label: "Financial" },
-													]}
+													placeholder='Select Investment industry'
+													options={industries.map((industry) => ({
+														value: industry.value,
+														label: industry.value,
+													}))}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -324,7 +323,7 @@ const CompanyInfoForm = () => {
 														placeholder='Select Year'
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -353,7 +352,7 @@ const CompanyInfoForm = () => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -385,7 +384,7 @@ const CompanyInfoForm = () => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -415,7 +414,7 @@ const CompanyInfoForm = () => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -447,7 +446,7 @@ const CompanyInfoForm = () => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -477,7 +476,7 @@ const CompanyInfoForm = () => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -501,14 +500,14 @@ const CompanyInfoForm = () => {
 														className='focus:border-0 focus-visible:ring-[#04acc2]'
 														{...field}
 														value={formatNumberWithCommas(String(field.value))}
-														onChange={(e) =>
-															field.onChange(
-																Number(removeCommas(e.target.value))
-															)
-														}
+														// onChange={(e) =>
+														// 	field.onChange(
+														// 		Number(removeCommas(e.target.value))
+														// 	)
+														// }
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -516,19 +515,21 @@ const CompanyInfoForm = () => {
 
 								{/* Button Container */}
 								<div className='w-1/2 flex items-center justify-center'>
-									<Button
-										// disabled={!form.formState.isValid}
-										className='w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center'
-										type='submit'
-									>
-										{form.formState.isSubmitting ? (
-											<div className='w-8 h-8'>
-												<LoaderComponent className='text-white' />
-											</div>
-										) : (
-											<p className='text-white font-bold'>Done</p>
-										)}
-									</Button>
+									<DialogClose asChild>
+										<Button
+											// disabled={!form.formState.isValid}
+											className='w-full h-10 mt-6 xl:mt-7 rounded-md flex items-center justify-center'
+											type='submit'
+										>
+											{form.formState.isSubmitting ? (
+												<div className='w-8 h-8'>
+													<LoaderComponent className='text-white' />
+												</div>
+											) : (
+												<p className='text-white font-bold'>Done</p>
+											)}
+										</Button>
+									</DialogClose>
 								</div>
 							</div>
 						</div>

@@ -126,6 +126,20 @@ const Navbar = () => {
 		localStorage.removeItem("selectedRowId");
 	};
 	// Handle search input changes
+	// const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const value = e.target.value;
+	// 	setSearchTerm(value);
+
+	// 	// Filter investors based on input
+	// 	if (value.trim() === "") {
+	// 		setResults([]); // Clear results if input is empty
+	// 	} else {
+	// 		const filteredResults = investors.filter((investor) =>
+	// 			investor.toLowerCase().includes(value.toLowerCase())
+	// 		);
+	// 		setResults(filteredResults);
+	// 	}
+	// };
 	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setSearchTerm(value);
@@ -229,7 +243,7 @@ const Navbar = () => {
 
 						<div
 							className='h-1/2 items-center flex gap-x border rounded-md w-2/4 px-2 cursor-pointer relative'
-							ref={searchContainerRef} // Reference for search container
+							ref={searchContainerRef}
 						>
 							<Search size={14} />
 							<input
@@ -239,34 +253,38 @@ const Navbar = () => {
 								onChange={handleSearchChange} // Bind input changes to handleSearchChange
 								onClick={() => setOpenSearch(true)} // Open the search on input click
 							/>
-							{openSearch && (
-								<div className='w-[400px] top-10 right-1 max-h-[300px] shadow-xl bg-white rounded-md absolute z-40 p-2 '>
-									{/* Search Results */}
-									{results.length === 0 && searchTerm ? (
-										<div className='flex flex-col items-center'>
-											<p className='text-center text-gray-500'>
-												No results found
-											</p>
-											{/* Button to open dialog when no investor is found */}
-											<Button
-												className='hover:bg-[#0691A5] text-white h-10 gap-x-2 mt-2 w-[60%]'
-												onClick={handleOpenDialog}
-											>
-												<FaPlus />
-												Add Investor
-											</Button>
-										</div>
-									) : (
-										<ul>
-											{results.map((result, index) => (
-												<li key={index} className='py-2 px-4 hover:bg-gray-200'>
-													{result}
-												</li>
-											))}
-										</ul>
-									)}
-								</div>
-							)}
+							{searchTerm &&
+								openSearch && ( // Show dropdown only if there's a search term and search is open
+									<div className='w-[400px] top-10 right-1 max-h-[300px] shadow-xl bg-white rounded-md absolute z-40 p-2 '>
+										{/* Search Results */}
+										{results.length === 0 ? (
+											<div className='flex flex-col items-center'>
+												<p className='text-center text-gray-500'>
+													No results found
+												</p>
+												{/* Button to open dialog when no investor is found */}
+												<Button
+													className='hover:bg-[#0691A5] text-white h-10 gap-x-2 mt-2 w-[60%]'
+													onClick={handleOpenDialog}
+												>
+													<FaPlus />
+													Add Investor
+												</Button>
+											</div>
+										) : (
+											<ul>
+												{results.map((result, index) => (
+													<li
+														key={index}
+														className='py-2 px-4 hover:bg-gray-200'
+													>
+														{result}
+													</li>
+												))}
+											</ul>
+										)}
+									</div>
+								)}
 						</div>
 					</>
 				) : (
