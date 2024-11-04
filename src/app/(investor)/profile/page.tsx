@@ -200,7 +200,7 @@ const page = () => {
 						<p>{profile?.company?.website}</p>
 					</div>
 				</div>
-				<div className='grid grid-cols-2 lg:grid-cols-4 w-[100%] text-sm lg:text-base'>
+				<div className='grid grid-cols-2 lg:grid-cols-4 w-[100%] '>
 					<div className='col-span-1 space-y-2'>
 						<p className='text-[#808080] '>Revenue (LTM, $K)</p>
 						<p>{formatPrice(profile?.company?.revenue?.ltm)}</p>
@@ -210,17 +210,17 @@ const page = () => {
 						<p>{formatPrice(profile?.company?.revenue?.previousYear)}</p>
 					</div>
 					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Gross Profit(LTM, $K) </p>
+						<p className='text-[#808080] '>Gross Profit (LTM, $K) </p>
 						<p>{formatPrice(profile?.company?.grossProfit?.ltm)}</p>
 					</div>
 					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Gross profit(Previous year, $K) </p>
+						<p className='text-[#808080] '>Gross profit (Previous year, $K) </p>
 						<p>{formatPrice(profile?.company?.grossProfit?.previousYear)}</p>
 					</div>
 				</div>
-				<div className='grid  grid-cols-2 lg:grid-cols-4 text-sm lg:text-base'>
+				<div className='grid  grid-cols-2 lg:grid-cols-4 '>
 					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>EBIDTA</p>
+						<p className='text-[#808080] '>EBIDTA (LTM, $K)</p>
 						<p>{formatPrice(profile?.company?.EBITDA?.ltm)}</p>
 					</div>
 					<div className='col-span-1 space-y-2'>
@@ -229,7 +229,7 @@ const page = () => {
 					</div>
 				</div>
 			</div>
-			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center  '>
+			{/* <div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center  '>
 				<div className='w-[85%] flex justify-between items-center'>
 					<p>Team Credential</p>
 
@@ -267,7 +267,7 @@ const page = () => {
 					<div className='col-span-1 space-y-2'></div>
 					<div className='col-span-1 space-y-2'></div>
 				</div>
-			</div>
+			</div> */}
 			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center  '>
 				<div className='w-[85%] flex justify-between items-center'>
 					<p>Log in credential</p>

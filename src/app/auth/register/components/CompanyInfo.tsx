@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MoveLeft, MoveRight } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -21,10 +21,17 @@ import { companySchema } from "@/lib/zod-schema/companySchema";
 import { YearSelect } from "@/components/YearSelect";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegister, setCompanyInfo } from "@/lib/slice/registerSlice";
+import LoaderComponent from "@/components/LoaderComponent";
+
 import {
 	formatNumberWithCommas,
 	numeralFormatter,
 } from "@/lib/numeralFormatter";
+import axios from "axios";
+import moment from "moment";
+import { toast } from "sonner";
+import { industries } from "@/lib/data/industry";
+import { countries } from "../../../../../utils/getCountries";
 
 interface CompanyInfoProps {
 	onNext: () => void;
@@ -33,7 +40,7 @@ interface CompanyInfoProps {
 const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const { companyInfo } = useSelector(getRegister);
+	const { companyInfo, personalInfo } = useSelector(getRegister);
 	const form = useForm<companyType>({
 		resolver: zodResolver(companySchema),
 		defaultValues: {
@@ -41,7 +48,6 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 			country: companyInfo.country,
 			city: companyInfo.city,
 			industryType: companyInfo.investorType,
-			// email: companyInfo.email,
 			website: companyInfo.website,
 			industry: companyInfo.industry,
 			foundingYear: companyInfo.foundingYear,
@@ -60,14 +66,65 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 		},
 	});
 
-	const onSubmit = (data: companyType) => {
+	const onSubmit = async (data: companyType) => {
 		dispatch(setCompanyInfo(data));
 
-		console.log("this", data);
+		// console.log("this", data);
+		const cleanedData = {
+			...companyInfo,
+			revenue: {
+				ltm: numeralFormatter(companyInfo.revenue.ltm),
+				previousYear: numeralFormatter(companyInfo.revenue.previousYear),
+			},
+			grossProfit: {
+				ltm: numeralFormatter(companyInfo.grossProfit.ltm),
+				previousYear: numeralFormatter(companyInfo.grossProfit.previousYear),
+			},
+			EBITDA: {
+				ltm: numeralFormatter(companyInfo.EBITDA.ltm),
+				previousYear: numeralFormatter(companyInfo.EBITDA.previousYear),
+			},
+		};
+		const credentials = {
+			email: personalInfo.email,
+			password: personalInfo.password,
+		};
+		const payload = {
+			bio: personalInfo,
+			company: cleanedData,
+			credentials,
+		};
+		console.log("cred", payload);
+		try {
+			const response = await axios.post(`/api/signup`, payload, {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			console.log("res", response);
 
-		onNext();
-		router.push("/auth/register?step=team-info");
+			if (response.status === 201) {
+				toast(response.data.message, {
+					description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+				});
+				onNext();
+				router.push(`/auth/register?step=otp`);
+				// reset();
+			}
+
+			if (response.status !== 201) {
+				throw new Error("Failed to submit the data");
+			}
+		} catch (error: any) {
+			console.error("Error submitting data:", error);
+			toast("Form can't be submitted", {
+				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+			});
+		}
+		// onNext();
+		// router.push("/auth/register?step=team-info");
 	};
+
 	return (
 		<Form {...form}>
 			<div className=' h-[70%]   space-y-6 overflow-y-auto no-scrollbar flex flex-col items-center w-full'>
@@ -110,14 +167,16 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 						</div>
 						<div className='w-full flex gap-x-4'>
 							<div className='w-1/2 space-y-2'>
-								<FormLabel className='font-normal'>Country</FormLabel>
+								<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
+									Country
+								</FormLabel>
 								<FormField
 									control={form.control}
 									name='country'
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												<Input
+												{/* <Input
 													className='focus:border-0 focus-visible:ring-[#04acc2]'
 													{...field}
 													placeholder='Enter country'
@@ -131,6 +190,16 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 													//     })
 													//   );
 													// }}
+												/> */}
+												<Selects
+													value={field.value}
+													onChange={field.onChange}
+													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+													placeholder='Select Country'
+													options={countries.map((country) => ({
+														value: country.name,
+														label: country.name,
+													}))}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -139,7 +208,9 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 								/>
 							</div>
 							<div className='w-1/2 space-y-2'>
-								<FormLabel className='font-normal'>City</FormLabel>
+								<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
+									City
+								</FormLabel>
 								<FormField
 									control={form.control}
 									name='city'
@@ -213,7 +284,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 														{ value: "health", label: "Health" },
 													]}
 												/> */}
-												<Selects
+												{/* <Selects
 													value={field.value}
 													onChange={field.onChange}
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
@@ -223,6 +294,16 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 														{ value: "Software", label: "Software" },
 														{ value: "Other", label: "Other" },
 													]}
+												/> */}
+												<Selects
+													value={field.value}
+													onChange={field.onChange}
+													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+													placeholder='Select Investment industry'
+													options={industries.map((industry) => ({
+														value: industry.value,
+														label: industry.value,
+													}))}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -460,24 +541,24 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 								{/* )} */}
 							</Button>
 							<Button
-								disabled={
-									!form.formState.isValid || form.formState.isSubmitting
-								}
-								className='w-1/2 h-10 rounded-md flex items-center justify-center '
+								disabled={!form.formState.isValid}
+								className={`w-1/2 h-10 rounded-md flex items-center justify-center
+                        `}
 								type='submit'
 							>
-								<p
-									className={`${
-										!form.formState.isValid ? "" : "text-white"
-									} font-bold`}
-								>
-									Next
-								</p>
-								<p className='text-white font-bold'></p>
-								<MoveRight
-									color={`${!form.formState.isValid ? "#B3B3B3" : "white"}`}
-								/>
-								{/* )} */}
+								{form.formState.isSubmitting ? (
+									<div className='w-8 h-8'>
+										<LoaderComponent className='text-white' />
+									</div>
+								) : (
+									<p
+										className={`${
+											!form.formState.isValid ? "" : "text-white"
+										} font-bold`}
+									>
+										Complete
+									</p>
+								)}
 							</Button>
 						</div>
 					</div>

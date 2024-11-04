@@ -1,6 +1,10 @@
 import { Selects } from "@/components/Selects";
 import { Button } from "@/components/ui/button";
-import { DialogContent, DialogHeader } from "@/components/ui/dialog";
+import {
+	DialogClose,
+	DialogContent,
+	DialogHeader,
+} from "@/components/ui/dialog";
 import {
 	Form,
 	FormControl,
@@ -96,7 +100,9 @@ const PersonalInfoForm = () => {
 						<div className='space-y-4 w-full'>
 							<div className='w-full  flex gap-x-4'>
 								<div className='w-1/2 space-y-2'>
-									<FormLabel className='font-normal'>First Name</FormLabel>
+									<FormLabel className='text-sm font-normal'>
+										First Name
+									</FormLabel>
 									<FormField
 										control={form.control}
 										name='firstName'
@@ -108,13 +114,15 @@ const PersonalInfoForm = () => {
 														{...field}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
 								</div>
 								<div className='w-1/2 space-y-2'>
-									<FormLabel className='font-normal'>Last Name</FormLabel>
+									<FormLabel className='text-sm font-normal'>
+										Last Name
+									</FormLabel>
 									<FormField
 										control={form.control}
 										name='lastName'
@@ -126,14 +134,14 @@ const PersonalInfoForm = () => {
 														{...field}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
 								</div>
 							</div>
 							<div className='w-full space-y-2'>
-								<FormLabel className='font-normal'>Title</FormLabel>
+								<FormLabel className='text-sm font-normal'>Title</FormLabel>
 								<FormField
 									control={form.control}
 									name='title'
@@ -145,7 +153,7 @@ const PersonalInfoForm = () => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
@@ -163,13 +171,13 @@ const PersonalInfoForm = () => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
 							</div>
 							<div className='w-full space-y-2'>
-								<FormLabel className='font-normal'>Phone</FormLabel>
+								<FormLabel className='text-sm font-normal'>Phone</FormLabel>
 								<FormField
 									control={form.control}
 									name='phone'
@@ -181,14 +189,16 @@ const PersonalInfoForm = () => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
 							</div>
 							<div className='w-full flex gap-x-4'>
 								<div className='w-1/2 space-y-2'>
-									<FormLabel className='font-normal'>LinkedIn</FormLabel>
+									<FormLabel className='text-sm font-normal'>
+										LinkedIn
+									</FormLabel>
 									<FormField
 										control={form.control}
 										name='linkedIn'
@@ -217,7 +227,7 @@ const PersonalInfoForm = () => {
 														{...field}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -237,7 +247,7 @@ const PersonalInfoForm = () => {
 														{...field}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
@@ -255,14 +265,14 @@ const PersonalInfoForm = () => {
 														{...field}
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage className='text-[10px]' />
 											</FormItem>
 										)}
 									/>
 								</div>
 							</div>
 							<div className='w-full space-y-2'>
-								<FormLabel className='font-normal'>Address</FormLabel>
+								<FormLabel className='text-sm font-normal'>Address</FormLabel>
 								<FormField
 									control={form.control}
 									name='address'
@@ -274,20 +284,22 @@ const PersonalInfoForm = () => {
 													{...field}
 												/>
 											</FormControl>
-											<FormMessage />
+											<FormMessage className='text-[10px]' />
 										</FormItem>
 									)}
 								/>
 							</div>
 						</div>
 						<div className='w-full'>
-							<Button
-								// onClick={() => alert("Button clicked")}
-								className='w-full h-10 mt-3   gap-x-1 rounded-md '
-								type='submit'
-							>
-								<p className={`${"text-white"} font-bold`}>Done!</p>
-							</Button>
+							<DialogClose asChild>
+								<Button
+									// onClick={() => alert("Button clicked")}
+									className='w-full h-10 mt-3   gap-x-1 rounded-md '
+									type='submit'
+								>
+									<p className={`${"text-white"} font-bold`}>Done!</p>
+								</Button>
+							</DialogClose>
 						</div>
 					</form>
 				</Form>

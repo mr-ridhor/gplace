@@ -17,10 +17,9 @@ const initialState = {
 		name: "",
 		country: "",
 		city: "",
-		email: "",
 		website: "",
 		industry: "",
-		investorType: "",
+		industryType: "",
 		foundingYear: "",
 		revenue: {
 			ltm: "",

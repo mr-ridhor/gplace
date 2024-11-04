@@ -28,7 +28,7 @@ interface Props {
 
 const Price: React.FC<Props> = ({ onNext, onBack }) => {
 	const dispatch = useDispatch();
-	const price = useSelector(getInvestor);
+	const price = useSelector(getInvestor).price;
 	const form = useForm<priceType>({
 		resolver: zodResolver(priceSchema),
 		mode: "onChange",
@@ -65,7 +65,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 						<div className='space-y-4 w-full'>
 							<div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-sm'>Valuation</FormLabel>
-								<div className='w-full gap-x-4 flex items-center'>
+								<div className='w-full gap-x-4 flex '>
 									<div className='w-1/2'>
 										<FormField
 											control={form.control}
@@ -83,7 +83,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -105,7 +105,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															}
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -141,7 +141,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															// }
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -167,7 +167,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															// }
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -204,7 +204,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															// }
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>
@@ -230,7 +230,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															// }
 														/>
 													</FormControl>
-													<FormMessage />
+													<FormMessage className='text-[10px]' />
 												</FormItem>
 											)}
 										/>

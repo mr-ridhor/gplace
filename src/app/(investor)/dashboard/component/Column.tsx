@@ -221,6 +221,8 @@ export const Column: ColumnDef<Investor>[] = [
 			);
 		},
 		cell: ({ row }) => (
+			// <div className='bg-[#EBEBEB] text-center rounded-md w-[120px] hover:bg-[#EBEBEB]/60 px-2 py-2 badge badge-gray'>
+
 			<div className='bg-[#EBEBEB] text-left rounded-md  hover:bg-[#EBEBEB]/60 px-2 py-2 badge badge-gray'>
 				{row.original.status ? row.original.status : "Data Exchange"}
 			</div>
