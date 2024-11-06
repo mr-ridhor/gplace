@@ -1,6 +1,6 @@
 import { Option } from "@/components/MultiSelect";
 
-export const industries = [
+export const industries: Option[] = [
 	{
 		label: "Agriculture & Food Production",
 		value: "Agriculture & Food Production",
