@@ -1,7 +1,4 @@
 {
-  "user": {
-    "$oid": "670bf9375643d6ca4066094a"
-  },
   "companyInfo": {
     "companyName": "Whitebeard Inc",
     "country": "United States",
@@ -10,7 +7,7 @@
     "yearFounded": 1990,
     "employeeNumber": 10,
     "investorType": "Strategic",
-    "description": "thd"
+    "description": "Big Investor"
   },
   "investmentBio": {
     "industry": ["Energy", "Software", "E-commerce"],
@@ -50,9 +47,9 @@
   },
   "offeredPriceValuation": 23456890,
   "primaryContact": {
-    "name": "Ahmed",
-    "surname": "Ballo",
-    "email": "surajudeen.ridwan.a@gmail.com",
+    "name": "John",
+    "surname": "Doe",
+    "email": "johndoe@gmail.com",
     "phone": "08107427381",
     "title": "PM"
   }

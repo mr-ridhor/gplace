@@ -1,34 +1,10 @@
 {
-  "bio": {
-    "firstName": "Emie",
-    "lastName": "Dick-Boro",
-    "title": "Director",
-    "email": "boro2dev@gmail.com",
-    "phone": "08080605941",
-    "linkedIn": "linkedin.com/emiedonmokumo",
-    "x": "x.com",
-    "country": "Nigeria",
-    "city": "Yenagoa",
-    "address": "Kpansia"
-  },
   "company": {
     "revenue": {
-      "ltm": 200000
+      "ltm": 20000
     },
     "EBITDA": {
-      "ltm": 200000
-    },
-    "name": "Whitebeard Inc",
-    "country": "Australia",
-    "city": "California",
-    "email": "emieboro8@gmail.com",
-    "website": "https://whitebeard.com",
-    "industry": "Energy",
-    "foundingYear": 1983,
-    "industryType": "Strategic"
-  },
-  "credentials": {
-    "email": "boro2dev@gmail.com",
-    "password": "12345678"
+      "ltm": 20000
+    }
   }
 }
