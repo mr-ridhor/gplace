@@ -9,6 +9,10 @@ export type invproType = {
 		label: string;
 		value: string;
 	}>;
-	invGeo: string;
+	invGeo: Array<{
+		// id: number;
+		label: string;
+		value: string;
+	}>;
 	noLTM: string;
 };

@@ -372,7 +372,7 @@ const Notes: React.FC<Props> = ({ selectedItem }) => {
 												{note.createdAt
 													? moment(note.createdAt).isValid()
 														? moment(note.createdAt).format(
-																"h:mm, A MMM D, YYYY "
+																"h:mm A, MMM D, YYYY "
 														  )
 														: "Date not available"
 													: "Date not available"}

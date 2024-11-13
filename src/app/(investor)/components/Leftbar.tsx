@@ -85,8 +85,8 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 	// alert(length);
 	return (
 		<div className='md:w-[200px] z-30 fixed w-full hidden md:flex items-start justify-center'>
-			<div className='bg-[#F5F8FA] w-full rounded-md min-h-[220px] xl:min-h-[340px] 2xl:min-h-[600px] md:flex items-start justify-center overflow-y-auto no-scrollbar py-4'>
-				<div className='space-y-1.5 xl:space-y-4 2xl:space-y-10'>
+			<div className='w-full rounded-md min-h-[220px] gap-1 xl:min-h-[340px] 2xl:min-h-[600px] md:flex flex-col items-start justify-center overflow-y-auto no-scrollbar py-4'>
+				<div className='bg-[#F5F8FA]  space-y-1.5 xl:space-y-4 2xl:space-y-10 w-full'>
 					<div className='my- w-full px-3'>
 						{editingState.companyName ? (
 							<input
@@ -238,7 +238,8 @@ const Leftbar: React.FC<LeftbarProps> = ({ list }) => {
 							{list.companyInfo.investorType}
 						</div>
 					</div>
-
+				</div>
+				<div className='bg-[#DCF8FC] rounded-md space-y-2 xl:space-y-10 py-1 w-full'>
 					<div className='px-3'>
 						<p className='text-sm lg:text-base text-[#A7A7A7]'>
 							Offered Price ($ 000)

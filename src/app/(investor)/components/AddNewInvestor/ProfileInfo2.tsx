@@ -54,7 +54,7 @@ const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
 							<div className='flex items-center gap-x-4'>
 								<div className='w-1/2 space-y-2'>
 									<FormLabel className='text-sm font-normal'>
-										Median deal Size ($ mm)
+										Median deal Size ($K)
 									</FormLabel>
 									<FormField
 										control={form.control}
@@ -79,7 +79,7 @@ const ProfileInfo2: React.FC<Props> = ({ onNext, onBack }) => {
 
 								<div className='w-1/2 space-y-2'>
 									<FormLabel className='font-normal text-sm'>
-										AUM ($ mm)
+										AUM ($K)
 									</FormLabel>
 									<FormField
 										control={form.control}
