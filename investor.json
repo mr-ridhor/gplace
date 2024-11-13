@@ -1,5 +1,59 @@
 {
+  "user": {
+    "$oid": "670bf9375643d6ca4066094a"
+  },
+  "companyInfo": {
+    "companyName": "Whitebeard Inc",
+    "country": "United States",
+    "city": "Mountain View",
+    "website": "https://www.gnld.com",
+    "yearFounded": 1990,
+    "employeeNumber": 10,
+    "investorType": "Strategic",
+    "description": "thd"
+  },
   "investmentBio": {
-    "industry": ["Technology"]
+    "industry": ["Energy", "Software", "E-commerce"],
+    "geography": "America",
+    "dealsInLTM": 37300,
+    "medianDealSize": 200,
+    "AUM": 100,
+    "dealsIn5Y": 40000
+  },
+  "targetInfo": {
+    "revenue": {
+      "from": 55555,
+      "to": 88764
+    },
+    "EBITDA": {
+      "from": 55555,
+      "to": 55555
+    },
+    "dealSize": {
+      "from": 55555,
+      "to": 55555
+    }
+  },
+  "paidInfo": {
+    "valuation": {
+      "from": 10000,
+      "to": 20200
+    },
+    "revenue": {
+      "from": 1.01,
+      "to": 3
+    },
+    "EBITDA": {
+      "from": 2.01,
+      "to": 3.01
+    }
+  },
+  "offeredPriceValuation": 23456890,
+  "primaryContact": {
+    "name": "Ahmed",
+    "surname": "Ballo",
+    "email": "surajudeen.ridwan.a@gmail.com",
+    "phone": "08107427381",
+    "title": "PM"
   }
 }

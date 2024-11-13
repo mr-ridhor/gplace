@@ -178,7 +178,7 @@ investorSchema.statics.calculateMatchScore = function (
 		totalScore += 20;
 	}
 
-	if (investor.companyInfo.investorType === clientMetrics.industryType) {
+	if (investor.companyInfo.investorType === "Strategic") {
 		investor.matchScore.investorTypeScore = 10;
 		totalScore += 10;
 	}
