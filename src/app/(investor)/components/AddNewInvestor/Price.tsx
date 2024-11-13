@@ -117,7 +117,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 								<FormLabel className='font-normal text-sm'>
 									EV/Revenue
 								</FormLabel>
-								<div className='w-full flex gap-x-4 items-center'>
+								<div className='w-full flex gap-x-4 '>
 									<div className='w-1/2'>
 										<FormField
 											control={form.control}
@@ -129,7 +129,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 															placeholder='From 1.00x'
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															type='number'
+															// type='number'
 															step={0.0}
 															// value={
 															// 	field.value !== undefined
@@ -156,7 +156,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															type='number'
+															// type='number'
 															step={0.0}
 															placeholder='To 10.40x'
 															// value={formatTwoDecimals(field.value || "")}
@@ -178,7 +178,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 							{/* EV/EBITDA Fields */}
 							<div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-sm'>EV/EBITDA</FormLabel>
-								<div className='w-full flex gap-x-4 items-center'>
+								<div className='w-full flex gap-x-4 '>
 									<div className='w-1/2'>
 										<FormField
 											control={form.control}
@@ -189,7 +189,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															type='number'
+															// type='number'
 															step={0.0}
 															placeholder='From 1.00x'
 															// value={formatTwoDecimals(field.value || "")}
@@ -217,7 +217,7 @@ const Price: React.FC<Props> = ({ onNext, onBack }) => {
 												<FormItem>
 													<FormControl>
 														<Input
-															type='number'
+															// type='number'
 															step={0.0}
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}

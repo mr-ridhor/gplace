@@ -215,3 +215,13 @@ export const countries = [
 	{ id: 194, name: "Zambia" },
 	{ id: 195, name: "Zimbabwe" },
 ];
+export const geographies = [
+	{ label: "Global", value: "Global" },
+	{ label: "US & Canada", value: "US & Canada" },
+	{ label: "Europe", value: "Europe" },
+	{ label: "Asia", value: "Asia" },
+	{ label: "Pacific", value: "Pacific" },
+	{ label: "Middle East", value: "Middle East" },
+	{ label: "LATAM", value: "LATAM" },
+	{ label: "Africa", value: "Africa" },
+];

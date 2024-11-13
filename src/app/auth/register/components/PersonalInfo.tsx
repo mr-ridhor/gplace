@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { getRegister, setPersonalInfo } from "@/lib/slice/registerSlice";
+import { countries } from "../../../../../utils/getCountries";
 
 interface PersonalInfoProps {
 	onNext: () => void;
@@ -344,7 +345,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
 									render={({ field }) => (
 										<FormItem>
 											<FormControl>
-												<Input
+												{/* <Input
 													className='focus:border-0 focus-visible:ring-[#04acc2]'
 													{...field}
 													placeholder='Enter country'
@@ -357,6 +358,16 @@ const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext }) => {
 													//     })
 													//   );
 													// }}
+												/> */}
+												<Selects
+													value={field.value}
+													onChange={field.onChange}
+													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+													placeholder='Select Country'
+													options={countries.map((country) => ({
+														value: country.name,
+														label: country.name,
+													}))}
 												/>
 											</FormControl>
 											<FormMessage />

@@ -26,21 +26,21 @@ export const companySchema = z.object({
 	// email: z.string().email("Invalid email address"),
 	website: z.string(),
 	industry: z.string().min(1, "Industry is required"),
-	industryType: z.string().min(1, "Industry type  is required"),
+	// industryType: z.string().min(1, "Industry type  is required"),
 	foundingYear: z
 		.string()
 		.regex(/^\d{4}$/, "Founding year must be a valid 4-digit year"),
 	revenue: z.object({
-		ltm: z.string(),
-		previousYear: z.string(),
+		ltm: z.string().regex(/^\d+$/, "Must be a  number").optional(),
+		previousYear: z.string().regex(/^\d+$/, "Must be a  number").optional(),
 	}),
 	grossProfit: z.object({
-		ltm: z.string(),
-		previousYear: z.string(),
+		ltm: z.string().regex(/^\d+$/, "Must be a  number").optional(),
+		previousYear: z.string().regex(/^\d+$/, "Must be a  number").optional(),
 	}),
 	EBITDA: z.object({
-		ltm: z.string(),
-		previousYear: z.string(),
+		ltm: z.string().regex(/^\d+$/, "Must be a  number").optional(),
+		previousYear: z.string().regex(/^\d+$/, "Must be a  number").optional(),
 	}),
 });
 
@@ -72,24 +72,18 @@ export const companySchema = z.object({
 //   EBITDA: ebitdaSchema,
 // });
 const revenueSchema = z.object({
-	ltm: z.number().positive("LTM revenue must be a positive number"), // Changed to number
-	previousYear: z
-		.number()
-		.positive("Previous year revenue must be a positive number"), // Changed to number
+	ltm: z.string().regex(/^\d+$/, "Must be a number"),
+	previousYear: z.string().regex(/^\d+$/, "Must be a number"),
 });
 
 const grossProfitSchema = z.object({
-	ltm: z.number().positive("LTM gross profit must be a positive number"), // Changed to number
-	previousYear: z
-		.number()
-		.positive("Previous year gross profit must be a positive number"), // Changed to number
+	ltm: z.string().regex(/^\d+$/, "Must be a number"),
+	previousYear: z.string().regex(/^\d+$/, "Must be a number"),
 });
 
 const ebitdaSchema = z.object({
-	ltm: z.number().positive("LTM EBITDA must be a positive number"), // Changed to number
-	previousYear: z
-		.number()
-		.positive("Previous year EBITDA must be a positive number"), // Changed to number
+	ltm: z.string().regex(/^\d+$/, "Must be a number"),
+	previousYear: z.string().regex(/^\d+$/, "Must be a number"),
 });
 const industryOptionSchema = z.object({
 	// id: z.number(),
@@ -102,7 +96,7 @@ export const CompanySchema = z.object({
 	country: z.string().min(1, "Country is required"),
 	city: z.string().min(1, "City is required"),
 	email: z.string().email("Invalid email format"),
-	website: z.string().url("Invalid website URL").optional(),
+	website: z.string().optional(),
 	industry: z.string().min(1, "Industry is required"),
 	// industry: z
 	// 	.array(industryOptionSchema)

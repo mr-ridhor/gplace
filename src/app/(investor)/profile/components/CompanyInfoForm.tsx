@@ -41,6 +41,7 @@ const CompanyInfoForm = () => {
 	const { company } = useSelector(getProfile);
 	const form = useForm<Company>({
 		resolver: zodResolver(CompanySchema),
+		mode: "onChange",
 		defaultValues: {
 			name: company.name,
 			country: company.country,
@@ -64,13 +65,18 @@ const CompanyInfoForm = () => {
 			},
 		},
 	});
-	useEffect(() => {
-		form.reset(company);
-	}, [company]);
-	// console.log("company", company);
-	const formatNumberWithCommas = (value: string) => {
-		return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	// useEffect(() => {
+	// 	form.reset(company);
+	// }, [company]);
+	// console.log(
+	// 	"company",
+	// 	company.EBITDA.ltm,
+	// 	typeof company.EBITDA.ltm.toString()
+	// );
+	const formatNumberWithCommas = (value: string): string => {
+		return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	};
+
 	// alert(typeof company.foundingYear);
 	// Helper function to remove commas for submission
 	const removeCommas = (value: string) => {
@@ -342,13 +348,14 @@ const CompanyInfoForm = () => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={formatNumberWithCommas(
-																String(field.value)
-															)}
+															value={formatNumberWithCommas(field.value || "")}
+															// onChange={(e) =>
+															// 	field.onChange(
+															// 		Number(removeCommas(e.target.value))
+															// 	)
+															// }
 															onChange={(e) =>
-																field.onChange(
-																	Number(removeCommas(e.target.value))
-																)
+																field.onChange(numeralFormatter(e.target.value))
 															}
 														/>
 													</FormControl>
@@ -374,13 +381,14 @@ const CompanyInfoForm = () => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={formatNumberWithCommas(
-																String(field.value)
-															)}
+															// onChange={(e) =>
+															// 	field.onChange(
+															// 		Number(removeCommas(e.target.value))
+															// 	)
+															// }
+															value={formatNumberWithCommas(field.value || "")}
 															onChange={(e) =>
-																field.onChange(
-																	Number(removeCommas(e.target.value))
-																)
+																field.onChange(numeralFormatter(e.target.value))
 															}
 														/>
 													</FormControl>
@@ -404,13 +412,14 @@ const CompanyInfoForm = () => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={formatNumberWithCommas(
-																String(field.value)
-															)}
+															// onChange={(e) =>
+															// 	field.onChange(
+															// 		Number(removeCommas(e.target.value))
+															// 	)
+															// }
+															value={formatNumberWithCommas(field.value || "")}
 															onChange={(e) =>
-																field.onChange(
-																	Number(removeCommas(e.target.value))
-																)
+																field.onChange(numeralFormatter(e.target.value))
 															}
 														/>
 													</FormControl>
@@ -436,13 +445,14 @@ const CompanyInfoForm = () => {
 														<Input
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
-															value={formatNumberWithCommas(
-																String(field.value)
-															)}
+															// onChange={(e) =>
+															// 	field.onChange(
+															// 		Number(removeCommas(e.target.value))
+															// 	)
+															// }
+															value={formatNumberWithCommas(field.value || "")}
 															onChange={(e) =>
-																field.onChange(
-																	Number(removeCommas(e.target.value))
-																)
+																field.onChange(numeralFormatter(e.target.value))
 															}
 														/>
 													</FormControl>
@@ -460,31 +470,44 @@ const CompanyInfoForm = () => {
 										<FormField
 											control={form.control}
 											name='EBITDA.ltm'
-											render={({ field }) => (
-												<FormItem>
-													<FormControl>
-														<Input
-															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
-															{...field}
-															value={formatNumberWithCommas(
-																String(field.value)
-															)}
-															onChange={(e) =>
-																field.onChange(
-																	Number(removeCommas(e.target.value))
-																)
-															}
-														/>
-													</FormControl>
-													<FormMessage className='text-[10px]' />
-												</FormItem>
-											)}
+											render={({ field }) => {
+												console.log(
+													"here",
+													field.value.toString(),
+													typeof field.value.toString()
+												);
+												let me = formatNumberWithCommas(
+													field.value.toString() || ""
+												);
+												return (
+													<FormItem>
+														<FormControl>
+															<Input
+																className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+																{...field}
+																// onChange={(e) =>
+																// 	field.onChange(
+																// 		Number(removeCommas(e.target.value))
+																// 	)
+																// }
+																// 	value={me}
+																// 	onChange={(e) =>
+																// 		field.onChange(
+																// 			numeralFormatter(e.target.value)
+																// 		)
+																// 	}
+															/>
+														</FormControl>
+														<FormMessage className='text-[10px]' />
+													</FormItem>
+												);
+											}}
 										/>
 									</div>
 								</div>
 							</div>
 
-							<div className='w-full flex items-center gap-x-4'>
+							<div className='w-full flex  gap-x-4'>
 								{/* Input Field Container */}
 								<div className='w-1/2 flex flex-col space-y-2'>
 									<FormLabel className='font-normal text-sm'>
@@ -499,12 +522,17 @@ const CompanyInfoForm = () => {
 													<Input
 														className='focus:border-0 focus-visible:ring-[#04acc2]'
 														{...field}
-														value={formatNumberWithCommas(String(field.value))}
+														// value={formatNumberWithCommas(String(field.value))}
+														// value={formatNumberWithCommas(field.value || "")}
 														// onChange={(e) =>
 														// 	field.onChange(
 														// 		Number(removeCommas(e.target.value))
 														// 	)
 														// }
+														// onChange={(e) =>
+														// 	field.onChange(numeralFormatter(e.target.value))
+														// }
+														value={field.value.toString()}
 													/>
 												</FormControl>
 												<FormMessage className='text-[10px]' />
@@ -514,7 +542,7 @@ const CompanyInfoForm = () => {
 								</div>
 
 								{/* Button Container */}
-								<div className='w-1/2 flex items-center justify-center'>
+								<div className='w-1/2 flex  space-y-2 justify-center'>
 									<DialogClose asChild>
 										<Button
 											// disabled={!form.formState.isValid}

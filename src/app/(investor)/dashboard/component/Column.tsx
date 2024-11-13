@@ -90,44 +90,40 @@ export const Column: ColumnDef<Investor>[] = [
 				</div>
 			);
 		},
-		cell: ({ row }) => (
-			<Button
-				className={`text-black 
-						bg-[#69E7A8] hover:bg-[#69E7A8]/60  rounded-md h-8`}
-			>
-				{row.original.investmentBio.industry}
-			</Button>
-		),
+		cell: ({ row }) => {
+			const industries = row.original.investmentBio.industry;
+			// console.log(industries.length);
+			return (
+				<div className='flex gap-1'>
+					{industries &&
+					industries.length > 0 &&
+					industries[0].includes(",") ? (
+						industries[0].split(",").map((industry, id) => (
+							<div className='w-max' key={id}>
+								<Button
+									className={`text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8`}
+								>
+									{industry.trim()}{" "}
+								</Button>
+							</div>
+						))
+					) : (
+						<div className='w-max'>
+							<Button
+								className={`text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8`}
+							>
+								{industries}
+							</Button>
+						</div>
+					)}
+				</div>
+			);
+		},
 
 		enableSorting: true,
 		enableHiding: false,
 	},
-	{
-		id: "dealsIn5Years",
-		accessorKey: "investmentBio.dealsIn5Y",
-		header: ({ column }) => {
-			const isSorted = column.getIsSorted();
-			return (
-				<div
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
-				>
-					# of Deals in 5 years
-					<TiArrowUnsorted
-						className=' h-4 w-4 text-[#898989]'
-						// onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					/>
-				</div>
-			);
-		},
-		cell: ({ row }) => (
-			<p className='flex justify-center'>
-				{formatNumberWithCommas(`${row.original.investmentBio.dealsIn5Y}`)}
-			</p>
-		),
-		enableSorting: true,
-		enableHiding: false,
-	},
+
 	{
 		id: "dealsSize",
 		accessorKey: "investmentBio.dealsInLTM",
@@ -138,7 +134,7 @@ export const Column: ColumnDef<Investor>[] = [
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
-					Typical Deal Size ($M)
+					Typical Price Paid ($ 000)
 					<TiArrowUnsorted
 						className=' h-4 w-4 text-[#898989]'
 						// onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}

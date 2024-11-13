@@ -72,6 +72,9 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 		const industryValues = profile.invInd.map(
 			(industry: { value: any }) => industry.value
 		);
+		const geographyValues = profile.invGeo.map(
+			(industry: { value: any }) => industry.value
+		);
 		const payload = {
 			companyInfo: {
 				companyName: companyInfo.name,
@@ -84,8 +87,8 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 				description: companyInfo.description,
 			},
 			investmentBio: {
-				industry: industryValues.join(","),
-				geography: profile.invGeo,
+				industry: industryValues,
+				geography: geographyValues,
 				dealsInLTM: profile.noLTM,
 				medianDealSize: profile2.med,
 				AUM: profile2.aum,
@@ -129,7 +132,7 @@ const Contact = ({ onBack, onTabReset }: Props) => {
 				title: data.title,
 			},
 		};
-		console.log(payload);
+		console.log("payload", payload);
 
 		dispatch(setContact(data));
 		try {

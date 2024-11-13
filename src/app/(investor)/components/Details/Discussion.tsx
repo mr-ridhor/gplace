@@ -63,10 +63,10 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 			console.error("Error updating description:", error);
 		}
 	};
-	console.log(selectedItem);
+	let industries = selectedItem.investmentBio.industry;
 
 	return (
-		<div className='space-y-4  pb-3'>
+		<div className='space-y-4  py-3'>
 			<div className='grid gap-x-5 grid-cols-2 gap-y-3 md:grid-cols-4 w-full'>
 				<Card className='border-l-2 border-l-[#03AAC1] shadow-md rounded-none border-t-0 border-b-0 border-r-0 h-[100px] col-span-1'>
 					<CardContent className='h-[100px] gap-y-2 flex flex-col justify-center  tems-center'>
@@ -140,15 +140,31 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 					<CardHeader className='text-[#898989]'>
 						<p>Investment Profile</p>
 					</CardHeader>
-					<CardContent className='text-[10px] lg:text-sm w-full space-y-4'>
-						<div className='w-full lg:w-[80%] justify-between h-1/2 flex ap-x-3'>
-							<div className='space-y-2'>
+					<CardContent className='text-[10px] lg:text-sm w-full space-y-4  px-2'>
+						<div className='w-full  2xl:w-[80%] justify-between h-1/2 flex ap-x-3'>
+							<div className='space-y-2 w-[65%] '>
 								<p className='text-[8px] lg:text-sm'>Investment industry</p>
-								<div className='bg-[#F5E2B7] rounded-md flex items-center w-[100px] justify-center h-8'>
-									<p>{selectedItem.investmentBio.industry}</p>
+								{/* <div className='bg-[#F5E2B7] rounded-md flex items-center w-[100px] justify-center h-8'> */}
+								<div className='flex items-center flex-wrap gap-3  w-full'>
+									{industries &&
+									industries.length > 0 &&
+									industries[0].includes(",") ? (
+										industries[0].split(",").map((industry, id) => (
+											<div
+												className='flex px-2 w-max bg-[#F5E2B7] rounded-md  items-center  justify-center h-8'
+												key={id}
+											>
+												<p className={`w-max`}>{industry.trim()} </p>
+											</div>
+										))
+									) : (
+										<div className='flex  bg-[#F5E2B7] rounded-md  items-center  justify-center h-8 gap-y-3'>
+											<p className={``}>{industries}</p>
+										</div>
+									)}
 								</div>
 							</div>
-							<div className='space-y-2'>
+							<div className='space-y-2  w-[35%]'>
 								<p className='text-[8px] lg:text-sm'>Investment Geographies</p>
 								<div className='bg-[#E4DAF4] rounded-md flex items-center w-[100px] justify-center h-8'>
 									<p>{selectedItem.investmentBio.geography}</p>
@@ -237,33 +253,55 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 				<div className='text-[10px] lg:text-sm grid-cols-3 grid w-full'>
 					<div className='col-span-1'>
 						<p className=''>Valuation ($ 000)</p>
-						<p className=''>
-							$
-							{formatNumberWithCommas(
-								`${selectedItem.paidInfo.valuation.from} `
-							)}
-							- $
-							{formatNumberWithCommas(`${selectedItem.paidInfo.valuation.to} `)}
-						</p>
+						<div className='flex-row items-center gap-1 flex '>
+							<p className=''>
+								$
+								{formatNumberWithCommas(
+									`${selectedItem.paidInfo.valuation.from} `
+								)}
+							</p>
+							-
+							<p>
+								$
+								{formatNumberWithCommas(
+									`${selectedItem.paidInfo.valuation.to} `
+								)}
+							</p>
+						</div>
 					</div>
 					<div className='col-span-1'>
 						<p className=''>EV/Revenue</p>
-						<p className=''>
-							{formatNumberWithCommasDp(
-								`${selectedItem.paidInfo.revenue.from} `
-							)}
-							x -
-							{formatNumberWithCommasDp(`${selectedItem.paidInfo.revenue.to} `)}
-							x
-						</p>
+						<div className='flex-row items-center gap-1 flex '>
+							<p className=''>
+								{formatNumberWithCommasDp(
+									`${selectedItem.paidInfo.revenue.from} `
+								)}
+								x
+							</p>
+							-
+							<p>
+								{formatNumberWithCommasDp(
+									`${selectedItem.paidInfo.revenue.to} `
+								)}
+								x
+							</p>
+						</div>
 					</div>
 					<div className='col-span-1'>
 						<p className=''>EV/EBITDA</p>
-						<p className=''>
-							{formatNumberWithCommasDp(`${selectedItem.paidInfo.EBITDA.from}`)}
-							x -
-							{formatNumberWithCommasDp(`${selectedItem.paidInfo.EBITDA.to}`)}x
-						</p>
+						<div className='flex-row items-center gap-1 flex '>
+							<p className=''>
+								{formatNumberWithCommasDp(
+									`${selectedItem.paidInfo.EBITDA.from}`
+								)}
+								x
+							</p>
+							-
+							<p>
+								{formatNumberWithCommasDp(`${selectedItem.paidInfo.EBITDA.to}`)}
+								x
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -285,36 +323,55 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 				<div className='grid-cols-3 grid w-full'>
 					<div className='col-span-1'>
 						<p className=''>Deal Size ($ 000)</p>
-						<p className=''>
-							$
-							{formatNumberWithCommas(
-								`${selectedItem.targetInfo.dealSize.from} `
-							)}
-							- $
-							{formatNumberWithCommas(
-								`${selectedItem.targetInfo.dealSize.to} `
-							)}
-						</p>
+						<div className='flex-row items-center gap-1 flex '>
+							<p className=''>
+								$
+								{formatNumberWithCommas(
+									`${selectedItem.targetInfo.dealSize.from} `
+								)}
+							</p>
+							-
+							<p>
+								$
+								{formatNumberWithCommas(
+									`${selectedItem.targetInfo.dealSize.to} `
+								)}
+							</p>
+						</div>
 					</div>
 					<div className='col-span-1'>
 						<p className=''>Revenue ($ 000)</p>
-						<p className=''>
-							$
-							{formatNumberWithCommas(
-								`${selectedItem.targetInfo.revenue.from}`
-							)}{" "}
-							- $
-							{formatNumberWithCommas(`${selectedItem.targetInfo.revenue.to} `)}
-						</p>
+						<div className='flex-row items-center gap-1 flex '>
+							<p className=''>
+								$
+								{formatNumberWithCommas(
+									`${selectedItem.targetInfo.revenue.from}`
+								)}{" "}
+							</p>
+							-
+							<p>
+								$
+								{formatNumberWithCommas(
+									`${selectedItem.targetInfo.revenue.to} `
+								)}
+							</p>
+						</div>
 					</div>
 					<div className='col-span-1'>
 						<p className=''>EBITDA ($ 000)</p>
-						<p className=''>
-							$
-							{formatNumberWithCommas(`${selectedItem.targetInfo.EBITDA.from}`)}
-							- $
-							{formatNumberWithCommas(`${selectedItem.targetInfo.EBITDA.to}`)}
-						</p>
+						<div className='flex-row items-center gap-1 flex '>
+							<p className=''>
+								$
+								{formatNumberWithCommas(
+									`${selectedItem.targetInfo.EBITDA.from}`
+								)}
+							</p>
+							-
+							<p>
+								$
+								{formatNumberWithCommas(`${selectedItem.targetInfo.EBITDA.to}`)}
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
