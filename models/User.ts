@@ -75,16 +75,16 @@ const userSchema = new Schema<IUser>({
     industryType: { type: String, enum:["Financial", "Strategic"]},
     foundingYear: { type: Number, required: true },
     revenue: {
-      ltm: { type: Number, required: true }, // Last Twelve Months Revenue
-      previousYear: { type: Number, required: true },
+      ltm: { type: Number, required: true, default: 0 }, // Last Twelve Months Revenue
+      previousYear: { type: Number, default: 0 },
     },
     grossProfit: {
-      ltm: { type: Number, required: true },
-      previousYear: { type: Number, required: true },
+      ltm: { type: Number, default: 0 },
+      previousYear: { type: Number, default: 0 },
     },
     EBITDA: {
-      ltm: { type: Number, required: true }, // Last Twelve Months EBITDA
-      previousYear: { type: Number, required: true },
+      ltm: { type: Number, required: true, default: 0 }, // Last Twelve Months EBITDA
+      previousYear: { type: Number, default: 0 },
     },
   },
   team: {

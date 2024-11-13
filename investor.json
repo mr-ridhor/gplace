@@ -1,5 +1,56 @@
 {
+  "companyInfo": {
+    "companyName": "Whitebeard Inc",
+    "country": "United States",
+    "city": "Mountain View",
+    "website": "https://www.gnld.com",
+    "yearFounded": 1990,
+    "employeeNumber": 10,
+    "investorType": "Strategic",
+    "description": "Big Investor"
+  },
   "investmentBio": {
-    "industry": ["Technology"]
+    "industry": ["Energy", "Software", "E-commerce"],
+    "geography": "America",
+    "dealsInLTM": 37300,
+    "medianDealSize": 200,
+    "AUM": 100,
+    "dealsIn5Y": 40000
+  },
+  "targetInfo": {
+    "revenue": {
+      "from": 55555,
+      "to": 88764
+    },
+    "EBITDA": {
+      "from": 55555,
+      "to": 55555
+    },
+    "dealSize": {
+      "from": 55555,
+      "to": 55555
+    }
+  },
+  "paidInfo": {
+    "valuation": {
+      "from": 10000,
+      "to": 20200
+    },
+    "revenue": {
+      "from": 1.01,
+      "to": 3
+    },
+    "EBITDA": {
+      "from": 2.01,
+      "to": 3.01
+    }
+  },
+  "offeredPriceValuation": 23456890,
+  "primaryContact": {
+    "name": "John",
+    "surname": "Doe",
+    "email": "johndoe@gmail.com",
+    "phone": "08107427381",
+    "title": "PM"
   }
 }

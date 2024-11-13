@@ -79,7 +79,7 @@ const investorSchema = new Schema<InvestorInterface>(
 		},
 		investmentBio: {
 			industry: { type: [String], trim: true, required: true },
-			geography: { type: String, trim: true },
+			geography: { type: [String], trim: true },
 			dealsInLTM: { type: Number, required: true },
 			medianDealSize: { type: Number, required: true },
 			AUM: { type: Number, required: true },
@@ -178,7 +178,7 @@ investorSchema.statics.calculateMatchScore = function (
 		totalScore += 20;
 	}
 
-	if (investor.companyInfo.investorType === clientMetrics.industryType) {
+	if (investor.companyInfo.investorType === "Strategic") {
 		investor.matchScore.investorTypeScore = 10;
 		totalScore += 10;
 	}
