@@ -39,6 +39,7 @@ interface CompanyInfoProps {
 }
 const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 	const router = useRouter();
+	const a = usesState();
 	const dispatch = useDispatch();
 	// const { companyInfo, personalInfo } = useSelector(getRegister);
 	const form = useForm<companyType>({
