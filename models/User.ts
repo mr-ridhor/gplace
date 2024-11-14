@@ -71,8 +71,8 @@ const userSchema = new Schema<IUser>({
     city: { type: String, required: true },
     email: { type: String, },
     website: { type: String },
-    industry: { type: String, required: true },
-    industryType: { type: String, enum:["Financial", "Strategic"]},
+    industry: { type: String, required: true }, // ''
+    industryType: { type: String, enum:["Financial", "Strategic"], default: ''},
     foundingYear: { type: Number, required: true },
     revenue: {
       ltm: { type: Number, required: true, default: 0 }, // Last Twelve Months Revenue
