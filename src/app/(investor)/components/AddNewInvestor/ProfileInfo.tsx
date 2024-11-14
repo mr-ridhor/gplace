@@ -28,7 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { countries } from "../../../../../utils/getCountries";
+import { countries, geographies } from "../../../../../utils/getCountries";
 
 interface Props {
 	onNext: () => void;
@@ -104,7 +104,7 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 													{...field}
 												/> */}
-												<Selects
+												{/* <Selects
 													value={field.value}
 													onChange={field.onChange}
 													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
@@ -113,7 +113,16 @@ const ProfileInfo: React.FC<Props> = ({ onNext, onBack }) => {
 														value: country.name,
 														label: country.name,
 													}))}
-												/>
+												/> */}
+												<>
+													<MultipleSelector
+														{...field}
+														defaultOptions={geographies}
+														className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+														placeholder='Select Investment Industry(ies)...'
+														onChange={(selected) => field.onChange(selected)}
+													/>
+												</>
 											</FormControl>
 											<FormMessage className='text-[10px]' />
 										</FormItem>

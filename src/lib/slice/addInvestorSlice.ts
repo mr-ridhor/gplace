@@ -138,7 +138,12 @@ interface Profile {
 		label: string;
 		value: string;
 	}>;
-	invGeo: string;
+	// invGeo: string;
+	invGeo: Array<{
+		// id: number;
+		label: string;
+		value: string;
+	}>;
 	noLTM: string;
 }
 
@@ -193,7 +198,8 @@ const initialState: AddInvestorState = {
 	},
 	profile: {
 		invInd: [],
-		invGeo: "",
+		// invGeo: "",
+		invGeo: [],
 		noLTM: "",
 	},
 	profile2: {

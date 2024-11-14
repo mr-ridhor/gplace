@@ -39,29 +39,30 @@ interface CompanyInfoProps {
 }
 const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 	const router = useRouter();
+	// const a = usesState();
 	const dispatch = useDispatch();
 	const { companyInfo, personalInfo } = useSelector(getRegister);
 	const form = useForm<companyType>({
 		resolver: zodResolver(companySchema),
+		mode: "onChange",
 		defaultValues: {
 			name: companyInfo.name,
 			country: companyInfo.country,
 			city: companyInfo.city,
-			industryType: companyInfo.investorType,
 			website: companyInfo.website,
 			industry: companyInfo.industry,
 			foundingYear: companyInfo.foundingYear,
 			revenue: {
-				ltm: companyInfo.revenue.ltm,
-				previousYear: companyInfo.revenue.previousYear,
+				ltm: companyInfo.revenue?.ltm,
+				previousYear: companyInfo.revenue?.previousYear,
 			},
 			grossProfit: {
-				ltm: companyInfo.grossProfit.ltm,
-				previousYear: companyInfo.grossProfit.previousYear,
+				ltm: companyInfo.grossProfit?.ltm,
+				previousYear: companyInfo.grossProfit?.previousYear,
 			},
 			EBITDA: {
-				ltm: companyInfo.EBITDA.ltm,
-				previousYear: companyInfo.EBITDA.previousYear,
+				ltm: companyInfo.EBITDA?.ltm,
+				previousYear: companyInfo.EBITDA?.previousYear,
 			},
 		},
 	});
@@ -69,32 +70,40 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 	const onSubmit = async (data: companyType) => {
 		dispatch(setCompanyInfo(data));
 
-		// console.log("this", data);
 		const cleanedData = {
 			...companyInfo,
+			industryType: "",
 			revenue: {
-				ltm: numeralFormatter(companyInfo.revenue.ltm),
-				previousYear: numeralFormatter(companyInfo.revenue.previousYear),
+				ltm: numeralFormatter(companyInfo.revenue.ltm || "0"),
+				previousYear: numeralFormatter(
+					companyInfo.revenue?.previousYear || "0"
+				),
 			},
 			grossProfit: {
-				ltm: numeralFormatter(companyInfo.grossProfit.ltm),
-				previousYear: numeralFormatter(companyInfo.grossProfit.previousYear),
+				ltm: numeralFormatter(companyInfo.grossProfit?.ltm || "0"),
+				previousYear: numeralFormatter(
+					companyInfo.grossProfit?.previousYear || "0"
+				),
 			},
 			EBITDA: {
-				ltm: numeralFormatter(companyInfo.EBITDA.ltm),
-				previousYear: numeralFormatter(companyInfo.EBITDA.previousYear),
+				ltm: numeralFormatter(companyInfo.EBITDA?.ltm || "0"),
+				previousYear: numeralFormatter(companyInfo.EBITDA?.previousYear || "0"),
 			},
 		};
+
 		const credentials = {
 			email: personalInfo.email,
 			password: personalInfo.password,
 		};
+
 		const payload = {
 			bio: personalInfo,
 			company: cleanedData,
 			credentials,
 		};
+
 		console.log("cred", payload);
+
 		try {
 			const response = await axios.post(`/api/signup`, payload, {
 				headers: {
@@ -109,7 +118,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 				});
 				onNext();
 				router.push(`/auth/register?step=otp`);
-				// reset();
+				// reset(); : Reset form after submission
 			}
 
 			if (response.status !== 201) {
@@ -121,10 +130,10 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
 			});
 		}
-		// onNext();
-		// router.push("/auth/register?step=team-info");
-	};
 
+		onNext();
+		router.push("/auth/register?step=team-info");
+	};
 	return (
 		<Form {...form}>
 			<div className=' h-[70%]   space-y-6 overflow-y-auto no-scrollbar flex flex-col items-center w-full'>
@@ -260,7 +269,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 							/>
 						</div>
 						<div className='w-full flex gap-x-4 items-center s-y-2'>
-							<div className='w-1/2 space-y-2'>
+							<div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
 									Industry
 								</FormLabel>
@@ -311,7 +320,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 									)}
 								/>
 							</div>
-							<div className='w-1/2 space-y-2'>
+							{/* <div className='w-1/2 space-y-2'>
 								<div className='w-full space-y-2'>
 									<FormLabel className='font-normal text-[10px] md:text-sm lg:text-base'>
 										Investor type
@@ -338,7 +347,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 										)}
 									/>
 								</div>
-							</div>
+							</div> */}
 						</div>
 						<div className='w-full  flex gap-x-4'>
 							<div className='w-1/2 space-y-2'>

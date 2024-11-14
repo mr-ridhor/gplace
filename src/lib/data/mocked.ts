@@ -10,7 +10,7 @@ export interface CompanyInfo {
 }
 
 export interface InvestmentBio {
-	industry: string;
+	industry: string[];
 	geography: string;
 	dealsInLTM: number;
 	medianDealSize: number;

@@ -19,6 +19,36 @@ import { companyType } from "../zod-type/companyType";
 // companySchema.ts
 import { z } from "zod";
 
+// const numericString = z
+// 	.string()
+// 	.regex(/^\d+$/, { message: "Must be a number" });
+// const numericString = z
+// 	.string()
+// 	.regex(/^\d+$/, { message: "Must be a number" })
+// 	.optional()
+// 	.refine((val) => val === undefined || val.length > 0, {
+// 		message: "Must be a number",
+// 	});
+const numericString = z
+	.string()
+	.refine((val) => val === "" || /^\d+$/.test(val), {
+		message: "Must be a number",
+	});
+// Define revenueType schema with regex validation
+const revenueTypeSchema = z.object({
+	ltm: numericString, // Required numeric string
+	previousYear: numericString.optional(), // Optional numeric string
+});
+
+const grossProfitTypeSchema = z.object({
+	ltm: numericString.optional(), // Required numeric string
+	previousYear: numericString.optional(), // Optional numeric string
+});
+
+const ebitdaTypeSchema = z.object({
+	ltm: numericString.optional(), // Required numeric string
+	previousYear: numericString.optional(), // Optional numeric string
+});
 export const companySchema = z.object({
 	name: z.string().min(1, "Company name is required"),
 	country: z.string().min(1, "Country is required"),
@@ -26,22 +56,13 @@ export const companySchema = z.object({
 	// email: z.string().email("Invalid email address"),
 	website: z.string(),
 	industry: z.string().min(1, "Industry is required"),
-	industryType: z.string().min(1, "Industry type  is required"),
+	// industryType: z.string().min(1, "Industry type  is required"),
 	foundingYear: z
 		.string()
 		.regex(/^\d{4}$/, "Founding year must be a valid 4-digit year"),
-	revenue: z.object({
-		ltm: z.string(),
-		previousYear: z.string(),
-	}),
-	grossProfit: z.object({
-		ltm: z.string(),
-		previousYear: z.string(),
-	}),
-	EBITDA: z.object({
-		ltm: z.string(),
-		previousYear: z.string(),
-	}),
+	revenue: revenueTypeSchema.optional(),
+	grossProfit: grossProfitTypeSchema.optional(),
+	EBITDA: ebitdaTypeSchema.optional(),
 });
 
 // const revenueSchema = z.object({
@@ -72,24 +93,18 @@ export const companySchema = z.object({
 //   EBITDA: ebitdaSchema,
 // });
 const revenueSchema = z.object({
-	ltm: z.number().positive("LTM revenue must be a positive number"), // Changed to number
-	previousYear: z
-		.number()
-		.positive("Previous year revenue must be a positive number"), // Changed to number
+	ltm: z.string().regex(/^\d+$/, "Must be a number"),
+	previousYear: z.string().regex(/^\d+$/, "Must be a number"),
 });
 
 const grossProfitSchema = z.object({
-	ltm: z.number().positive("LTM gross profit must be a positive number"), // Changed to number
-	previousYear: z
-		.number()
-		.positive("Previous year gross profit must be a positive number"), // Changed to number
+	ltm: z.string().regex(/^\d+$/, "Must be a number"),
+	previousYear: z.string().regex(/^\d+$/, "Must be a number"),
 });
 
 const ebitdaSchema = z.object({
-	ltm: z.number().positive("LTM EBITDA must be a positive number"), // Changed to number
-	previousYear: z
-		.number()
-		.positive("Previous year EBITDA must be a positive number"), // Changed to number
+	ltm: z.string().regex(/^\d+$/, "Must be a number"),
+	previousYear: z.string().regex(/^\d+$/, "Must be a number"),
 });
 const industryOptionSchema = z.object({
 	// id: z.number(),
@@ -102,7 +117,7 @@ export const CompanySchema = z.object({
 	country: z.string().min(1, "Country is required"),
 	city: z.string().min(1, "City is required"),
 	email: z.string().email("Invalid email format"),
-	website: z.string().url("Invalid website URL").optional(),
+	website: z.string().optional(),
 	industry: z.string().min(1, "Industry is required"),
 	// industry: z
 	// 	.array(industryOptionSchema)

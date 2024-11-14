@@ -57,6 +57,15 @@ const Navbar = () => {
 	const [openSearch, setOpenSearch] = React.useState(false);
 	const activeTab = useSelector(getActiveTab);
 	const investors = ["John Doe", "Jane Smith", "Alice Johnson", "Bob Brown"];
+	const [showAlert, setShowAlert] = React.useState(false);
+	const modalRef = React.useRef(null);
+
+	const handleCloseModal = () => {
+		setShowAlert(false); // Hide alert
+		// setIsOpen(false); // Close the modal
+		// isDialogOpen
+		setIsDialogOpen(false);
+	};
 	const [searchTerm, setSearchTerm] = React.useState(""); // Tr
 	const { contact, companyInfo, profile, profile2, target, price } =
 		useSelector(getInvestor);
