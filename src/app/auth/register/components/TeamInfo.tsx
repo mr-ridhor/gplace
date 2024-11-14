@@ -46,9 +46,9 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
 		defaultValues: { team1: teamInfo.team1, team2: teamInfo.team2 },
 	});
 	const formValues = useWatch({ control: form.control });
-	useEffect(() => {
-		dispatch(setTeamInfo(formValues));
-	}, [formValues, dispatch]);
+	// useEffect(() => {
+	// 	dispatch(setTeamInfo(formValues));
+	// }, [formValues, dispatch]);
 	// const onSubmit = (data: teamType) => {
 	//   dispatch(setTeamInfo(data));
 	//   console.log(data);
@@ -56,7 +56,7 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ onNext, onBack }) => {
 	//   router.push("/auth/register?step=set-credentials");
 	// };
 	const onSubmit = async (data: teamType) => {
-		dispatch(setCredentials(data));
+		// dispatch(setCredentials(data));
 
 		const cleanedData = {
 			...companyInfo,
