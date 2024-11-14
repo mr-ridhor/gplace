@@ -1,10 +1,36 @@
 {
+  "bio": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "title": "Director",
+    "email": "johndoe@gmail.com",
+    "phone": "08080605941",
+    "linkedIn": "linkedin.com/johndoe",
+    "x": "x.com",
+    "country": "Nigeria",
+    "city": "Yenagoa",
+    "address": "Kpansia"
+  },
   "company": {
+    "name": "Whitebeard Inc",
+    "country": "Australia",
+    "city": "California",
+    "email": "johndoe@gmail.com",
+    "website": "https://whitebeard.com",
+    "industry": "Energy",
+    "foundingYear": 1983,
     "revenue": {
       "ltm": 20000
     },
     "EBITDA": {
       "ltm": 20000
+    },
+    "grossProfit": {
+      "ltm": 0
     }
+  },
+  "credentials": {
+    "email": "johndoe@gmail.com",
+    "password": "12345678"
   }
 }

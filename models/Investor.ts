@@ -16,7 +16,7 @@ export interface InvestorInterface extends Document {
 	};
 	investmentBio: {
 		industry: string[];
-		geography: string;
+		geography: string[];
 		dealsInLTM: number;
 		medianDealSize: number;
 		AUM: number;
