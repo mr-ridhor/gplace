@@ -19,6 +19,36 @@ import { companyType } from "../zod-type/companyType";
 // companySchema.ts
 import { z } from "zod";
 
+// const numericString = z
+// 	.string()
+// 	.regex(/^\d+$/, { message: "Must be a number" });
+// const numericString = z
+// 	.string()
+// 	.regex(/^\d+$/, { message: "Must be a number" })
+// 	.optional()
+// 	.refine((val) => val === undefined || val.length > 0, {
+// 		message: "Must be a number",
+// 	});
+const numericString = z
+	.string()
+	.refine((val) => val === "" || /^\d+$/.test(val), {
+		message: "Must be a number",
+	});
+// Define revenueType schema with regex validation
+const revenueTypeSchema = z.object({
+	ltm: numericString, // Required numeric string
+	previousYear: numericString.optional(), // Optional numeric string
+});
+
+const grossProfitTypeSchema = z.object({
+	ltm: numericString.optional(), // Required numeric string
+	previousYear: numericString.optional(), // Optional numeric string
+});
+
+const ebitdaTypeSchema = z.object({
+	ltm: numericString.optional(), // Required numeric string
+	previousYear: numericString.optional(), // Optional numeric string
+});
 export const companySchema = z.object({
 	name: z.string().min(1, "Company name is required"),
 	country: z.string().min(1, "Country is required"),
@@ -30,18 +60,9 @@ export const companySchema = z.object({
 	foundingYear: z
 		.string()
 		.regex(/^\d{4}$/, "Founding year must be a valid 4-digit year"),
-	revenue: z.object({
-		ltm: z.string().regex(/^\d+$/, "Must be a  number").optional(),
-		previousYear: z.string().regex(/^\d+$/, "Must be a  number").optional(),
-	}),
-	grossProfit: z.object({
-		ltm: z.string().regex(/^\d+$/, "Must be a  number").optional(),
-		previousYear: z.string().regex(/^\d+$/, "Must be a  number").optional(),
-	}),
-	EBITDA: z.object({
-		ltm: z.string().regex(/^\d+$/, "Must be a  number").optional(),
-		previousYear: z.string().regex(/^\d+$/, "Must be a  number").optional(),
-	}),
+	revenue: revenueTypeSchema.optional(),
+	grossProfit: grossProfitTypeSchema.optional(),
+	EBITDA: ebitdaTypeSchema.optional(),
 });
 
 // const revenueSchema = z.object({

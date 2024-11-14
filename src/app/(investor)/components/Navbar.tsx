@@ -60,12 +60,6 @@ const Navbar = () => {
 	const [showAlert, setShowAlert] = React.useState(false);
 	const modalRef = React.useRef(null);
 
-	const handleOutsideClick = (event: MouseEvent) => {
-		if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-			setShowAlert(true); // Show alert before closing
-		}
-	};
-
 	const handleCloseModal = () => {
 		setShowAlert(false); // Hide alert
 		// setIsOpen(false); // Close the modal

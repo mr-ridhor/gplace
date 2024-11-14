@@ -64,6 +64,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 		}
 	};
 	let industries = selectedItem.investmentBio.industry;
+	let geography = selectedItem.investmentBio.geography;
 
 	return (
 		<div className='space-y-4  py-3'>
@@ -146,7 +147,7 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 								<p className='text-[8px] lg:text-sm'>Investment industry</p>
 								{/* <div className='bg-[#F5E2B7] rounded-md flex items-center w-[100px] justify-center h-8'> */}
 								<div className='flex items-center flex-wrap gap-3  w-full'>
-									{industries &&
+									{/* {industries &&
 									industries.length > 0 &&
 									industries[0].includes(",") ? (
 										industries[0].split(",").map((industry, id) => (
@@ -158,17 +159,58 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 											</div>
 										))
 									) : (
-										<div className='flex  bg-[#F5E2B7] rounded-md  items-center  justify-center h-8 gap-y-3'>
+										<div
+										 className='flex  bg-[#F5E2B7] rounded-md  items-center  justify-center h-8 gap-y-3'
+										 >
 											<p className={``}>{industries}</p>
+										</div>
+									)} */}
+									{industries.length > 0 ? (
+										industries[0].includes(",") ? (
+											industries[0].split(",").map((industry, id) => (
+												<div
+													className='flex px-2 w-max bg-[#F5E2B7] rounded-md  items-center  justify-center h-8 '
+													key={id}
+												>
+													<p className={`w-max`}>{industry.trim()} </p>
+												</div>
+											))
+										) : (
+											industries.map((industry, index) => (
+												<div
+													key={index}
+													className='flex px-2  bg-[#F5E2B7] rounded-md  items-center  justify-center h-8 gap-y-3'
+												>
+													<p className={`w-max`}>{industry}</p>
+												</div>
+											))
+										)
+									) : (
+										<div className='w-max'>
+											<p className='text-black bg-[#F5E2B7] rounded-md h-8'>
+												No Industry Listed
+											</p>
 										</div>
 									)}
 								</div>
 							</div>
 							<div className='space-y-2  w-[35%]'>
 								<p className='text-[8px] lg:text-sm'>Investment Geographies</p>
-								<div className='bg-[#E4DAF4] rounded-md flex items-center w-[100px] justify-center h-8'>
+								{/* <div className='bg-[#E4DAF4] rounded-md flex items-center w-[100px] justify-center h-8'>
 									<p>{selectedItem.investmentBio.geography}</p>
-								</div>
+								</div> */}
+								{Array.isArray(geography) ? (
+									geography.map((geo: any, index: any) => (
+										<div
+											key={index}
+											className='flex px-2 w-max bg-[#F5E2B7] rounded-md items-center justify-center h-8 gap-y-3'
+										>
+											<p className={`w-fit`}>{geo}</p>
+										</div>
+									))
+								) : (
+									<p>No geography data available</p>
+								)}
 							</div>
 						</div>
 						<div className='h2'>

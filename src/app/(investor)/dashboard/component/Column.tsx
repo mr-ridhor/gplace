@@ -95,24 +95,28 @@ export const Column: ColumnDef<Investor>[] = [
 			// console.log(industries.length);
 			return (
 				<div className='flex gap-1'>
-					{industries &&
-					industries.length > 0 &&
-					industries[0].includes(",") ? (
-						industries[0].split(",").map((industry, id) => (
-							<div className='w-max' key={id}>
-								<Button
-									className={`text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8`}
-								>
-									{industry.trim()}{" "}
-								</Button>
-							</div>
-						))
+					{industries.length > 0 ? (
+						industries.flatMap((item) =>
+							item.includes(",") ? (
+								item.split(",").map((industry, index) => (
+									<div className='w-max' key={index}>
+										<Button className='text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8'>
+											{industry.trim()}
+										</Button>
+									</div>
+								))
+							) : (
+								<div className='w-max' key={item}>
+									<Button className='text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8'>
+										{item}
+									</Button>
+								</div>
+							)
+						)
 					) : (
 						<div className='w-max'>
-							<Button
-								className={`text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8`}
-							>
-								{industries}
+							<Button className='text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8'>
+								No Industry Listed
 							</Button>
 						</div>
 					)}
