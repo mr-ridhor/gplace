@@ -52,27 +52,20 @@ const CompanyInfoForm = () => {
 			foundingYear: company.foundingYear,
 
 			revenue: {
-				ltm: company.revenue.ltm,
-				previousYear: company.revenue.previousYear,
+				ltm: company.revenue.ltm.toString(),
+				previousYear: company.revenue.previousYear.toString(),
 			},
 			grossProfit: {
-				ltm: company.grossProfit.ltm,
-				previousYear: company.grossProfit.previousYear,
+				ltm: company.grossProfit.ltm.toString(),
+				previousYear: company.grossProfit.previousYear.toString(),
 			},
 			EBITDA: {
-				ltm: company.EBITDA.ltm,
-				previousYear: company.EBITDA.previousYear,
+				ltm: company.EBITDA.ltm.toString(),
+				previousYear: company.EBITDA.previousYear.toString(),
 			},
 		},
 	});
-	// useEffect(() => {
-	// 	form.reset(company);
-	// }, [company]);
-	// console.log(
-	// 	"company",
-	// 	company.EBITDA.ltm,
-	// 	typeof company.EBITDA.ltm.toString()
-	// );
+
 	const formatNumberWithCommas = (value: string): string => {
 		return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	};
@@ -86,16 +79,16 @@ const CompanyInfoForm = () => {
 		const formData = {
 			...data,
 			revenue: {
-				ltm: data.revenue.ltm,
-				previousYear: data.revenue.previousYear,
-			},
-			EDITDA: {
-				ltm: data.EBITDA.ltm,
-				previousYear: data.EBITDA.previousYear,
+				ltm: removeCommas(data.revenue.ltm),
+				previousYear: removeCommas(data.revenue.previousYear),
 			},
 			grossProfit: {
-				ltm: data.grossProfit.ltm,
-				previousYear: data.grossProfit.previousYear,
+				ltm: removeCommas(data.grossProfit.ltm),
+				previousYear: removeCommas(data.grossProfit.previousYear),
+			},
+			EBITDA: {
+				ltm: removeCommas(data.EBITDA.ltm),
+				previousYear: removeCommas(data.EBITDA.previousYear),
 			},
 		};
 		dispatch(updateCompanyInfo(formData));
@@ -349,11 +342,6 @@ const CompanyInfoForm = () => {
 															className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
 															{...field}
 															value={formatNumberWithCommas(field.value || "")}
-															// onChange={(e) =>
-															// 	field.onChange(
-															// 		Number(removeCommas(e.target.value))
-															// 	)
-															// }
 															onChange={(e) =>
 																field.onChange(numeralFormatter(e.target.value))
 															}
@@ -496,6 +484,14 @@ const CompanyInfoForm = () => {
 																// 			numeralFormatter(e.target.value)
 																// 		)
 																// 	}
+																value={formatNumberWithCommas(
+																	field.value || ""
+																)}
+																onChange={(e) =>
+																	field.onChange(
+																		numeralFormatter(e.target.value)
+																	)
+																}
 															/>
 														</FormControl>
 														<FormMessage className='text-[10px]' />
@@ -523,16 +519,16 @@ const CompanyInfoForm = () => {
 														className='focus:border-0 focus-visible:ring-[#04acc2]'
 														{...field}
 														// value={formatNumberWithCommas(String(field.value))}
-														// value={formatNumberWithCommas(field.value || "")}
+														value={formatNumberWithCommas(field.value || "")}
 														// onChange={(e) =>
 														// 	field.onChange(
 														// 		Number(removeCommas(e.target.value))
 														// 	)
 														// }
-														// onChange={(e) =>
-														// 	field.onChange(numeralFormatter(e.target.value))
-														// }
-														value={field.value.toString()}
+														onChange={(e) =>
+															field.onChange(numeralFormatter(e.target.value))
+														}
+														// value={field.value.toString()}
 													/>
 												</FormControl>
 												<FormMessage className='text-[10px]' />
