@@ -29,11 +29,17 @@ import moment from "moment";
 import { title } from "process";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { GrClose } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 
-const PersonalInfoForm = () => {
+interface Props {
+	onClose: () => void;
+	isOpen: boolean; // New prop to determine if the dialog is open
+}
+const PersonalInfoForm = ({ onClose, isOpen }: Props) => {
 	const dispatch = useDispatch();
 	const { bio } = useSelector(getProfile);
+	const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
 
 	const form = useForm<Bio>({
 		resolver: zodResolver(bioSchema),
@@ -50,7 +56,17 @@ const PersonalInfoForm = () => {
 			// address: bio.address,
 		},
 	});
+	const handleClose = () => {
+		setShowConfirmation(true); // Show confirmation dialog
+	};
 
+	// Confirm exit
+	const confirmExit = (confirm: boolean) => {
+		if (confirm) {
+			onClose(); // Close the form
+		}
+		setShowConfirmation(false); // Hide the confirmation dialog
+	};
 	const onSubmit = async (data: Bio) => {
 		console.log(data);
 		dispatch(updatePersonalInfo(data));
@@ -80,7 +96,18 @@ const PersonalInfoForm = () => {
 	};
 
 	return (
-		<DialogContent className='h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar'>
+		<DialogContent
+			onInteractOutside={(e) => {
+				e.preventDefault();
+			}}
+			className=' h-[450px] md:h-fit  max-h-[500px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar'
+		>
+			<div
+				onClick={handleClose}
+				className='flex flex-col h-8 right-1 absolute m-2 cursor-pointer items-center justify-center rounded-full  hover:bg-gray-200 w-8 p-3 '
+			>
+				<GrClose size={24} color='black' />
+			</div>
 			<div className='py-4'>
 				<DialogHeader className=' w-full flex text-lg '>
 					<strong className='text-sm xl:text-2xl text-left '>
@@ -95,7 +122,7 @@ const PersonalInfoForm = () => {
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
-						className='w-full   items-center flex flex-col h-full '
+						className='w-full   items-center flex flex-col h-fit '
 					>
 						<div className='space-y-4 w-full'>
 							<div className='w-full  flex gap-x-4'>
@@ -304,6 +331,29 @@ const PersonalInfoForm = () => {
 					</form>
 				</Form>
 			</div>
+			{showConfirmation && (
+				<div className='absolute inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-10'>
+					<div className='bg-white p-5 rounded-md shadow-md'>
+						<p>Are you sure you want to exit?</p>
+						<div className='w-full flex justify-center'>
+							<div className='flex gap-4 mt-4 w-[80%]  justify-between'>
+								<button
+									onClick={() => confirmExit(true)}
+									className='px-4 py-2 bg-[#04acc2] text-white  rounded-md'
+								>
+									Yes
+								</button>
+								<button
+									onClick={() => confirmExit(false)}
+									className='px-4 py-2 bg-[#CCC]  rounded-md'
+								>
+									No
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
 		</DialogContent>
 	);
 };

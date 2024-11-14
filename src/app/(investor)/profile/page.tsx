@@ -21,7 +21,20 @@ const page = () => {
 	const [loading, setLoading] = useState(true); // Add loading state
 	const dispatch = useDispatch();
 	const profile = useSelector(getProfile);
-
+	const [isDialogOpen, setIsDialogOpen] = React.useState(false); //
+	const [isCompanyDialogOpen, setIsCompanyDialogOpen] = React.useState(false); //
+	const handleOpenDialog = () => {
+		setIsDialogOpen(true); // Open the dialog
+	};
+	const handleClose = () => {
+		setIsDialogOpen(false);
+	};
+	const handleOpenCompanyDialog = () => {
+		setIsCompanyDialogOpen(true); // Open the dialog
+	};
+	const handleCloseCompany = () => {
+		setIsCompanyDialogOpen(false); // Open the dialog
+	};
 	useEffect(() => {
 		setLoading(true); // Start loading
 		fetch("/api/profile")
@@ -91,15 +104,13 @@ const page = () => {
 			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center px'>
 				<div className='w-[85%] flex justify-between items-center h-full'>
 					<p>Personal Information</p>
-
-					<Dialog>
-						<DialogTrigger className='flex gap-x-2 text-sm h-14 items-center'>
-							Edit
-							<LuPencil />
-						</DialogTrigger>
-
-						<PersonalnfoForm />
-					</Dialog>
+					<Button
+						className='flex gap-x-2 text-sm h-14 bg-transparent hover:bg-transparent items-center'
+						onClick={handleOpenDialog}
+					>
+						Edit
+						<LuPencil />
+					</Button>
 				</div>
 			</div>
 			<div className='w-[85%]   space-y-6'>
@@ -157,14 +168,13 @@ const page = () => {
 			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center '>
 				<div className='w-[85%] flex justify-between items-center'>
 					<p>Company Information</p>
-
-					<Dialog>
-						<DialogTrigger className='flex gap-x-2 text-sm h-14 items-center'>
-							Edit
-							<LuPencil />
-						</DialogTrigger>
-						<CompanyInfoForm />
-					</Dialog>
+					<Button
+						className='flex gap-x-2 text-sm  bg-transparent hover:bg-transparent items-center'
+						onClick={handleOpenCompanyDialog}
+					>
+						Edit
+						<LuPencil />
+					</Button>
 				</div>
 			</div>
 			<div className='w-[85%]  space-y-6'>
@@ -229,45 +239,7 @@ const page = () => {
 					</div>
 				</div>
 			</div>
-			{/* <div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center  '>
-				<div className='w-[85%] flex justify-between items-center'>
-					<p>Team Credential</p>
 
-					<Dialog>
-						<DialogTrigger className='flex gap-x-2 text-sm h-14 items-center'>
-							Edit
-							<LuPencil />
-						</DialogTrigger>
-						<TeamInfoForm />
-					</Dialog>
-				</div>
-			</div>
-			<div className='w-[85%]  space-y-6'>
-				<div className='grid grid-cols-2 lg:grid-cols-4'>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>User 1</p>
-						<p>{profile?.team?.team1?.fullName}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Email</p>
-						<p>{profile?.team?.team1?.email}</p>
-					</div>
-					<div className='col-span-1 space-y-2'></div>
-					<div className='col-span-1 space-y-2'></div>
-				</div>
-				<div className='grid grid-cols-2 lg:grid-cols-4'>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>User 2</p>
-						<p>{profile?.team?.team2?.fullName}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Email</p>
-						<p>{profile?.team?.team2?.email}</p>
-					</div>
-					<div className='col-span-1 space-y-2'></div>
-					<div className='col-span-1 space-y-2'></div>
-				</div>
-			</div> */}
 			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center  '>
 				<div className='w-[85%] flex justify-between items-center'>
 					<p>Log in credential</p>
@@ -299,6 +271,15 @@ const page = () => {
 					</Button>
 				</div>
 			</div>
+			<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+				<PersonalnfoForm isOpen={isDialogOpen} onClose={handleClose} />
+			</Dialog>
+			<Dialog open={isCompanyDialogOpen} onOpenChange={setIsCompanyDialogOpen}>
+				<CompanyInfoForm
+					isOpen={isCompanyDialogOpen}
+					onClose={handleCloseCompany}
+				/>
+			</Dialog>
 		</div>
 	);
 };
