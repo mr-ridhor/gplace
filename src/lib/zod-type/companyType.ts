@@ -20,6 +20,18 @@
 // 		previousYear: string;
 // 	};
 // };
+export type revenueType = {
+	ltm: string;
+	previousYear: string;
+};
+export type grossprofitType = {
+	ltm: string;
+	previousYear: string;
+};
+export type ebitdaType = {
+	ltm: string;
+	previousYear: string;
+};
 export type companyType = {
 	name: string;
 	country: string;
@@ -28,17 +40,7 @@ export type companyType = {
 	foundingYear: string;
 
 	website?: string;
-
-	revenue: {
-		ltm: string;
-		previousYear?: string;
-	};
-	grossProfit?: {
-		ltm?: string;
-		previousYear?: string;
-	};
-	EBITDA?: {
-		ltm?: string;
-		previousYear?: string;
-	};
+	revenue?: revenueType;
+	grossProfit?: grossprofitType;
+	EBITDA?: ebitdaType;
 };

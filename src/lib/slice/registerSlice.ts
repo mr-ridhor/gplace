@@ -23,9 +23,9 @@ interface CompanyInfo {
 	industry: string;
 	industryType: string;
 	foundingYear: string;
-	revenue: Revenue;
-	grossProfit?: GrossProfit;
-	EBITDA?: EBITDA;
+	revenue: Revenue | null;
+	grossProfit: GrossProfit | null;
+	EBITDA: EBITDA | null;
 }
 
 interface TeamMember {
@@ -85,9 +85,9 @@ const initialState = {
 		industry: "",
 		industryType: "",
 		foundingYear: "",
-		revenue: {
-			ltm: "",
-		},
+		revenue: null as Revenue | null,
+		grossProfit: null as GrossProfit | null,
+		EBITDA: null as EBITDA | null,
 	},
 	teamInfo: {
 		team1: {
@@ -109,16 +109,16 @@ const registerSlice = createSlice({
 	name: "register",
 	initialState,
 	reducers: {
-		setPersonalInfo: (state, action) => {
+		setPersonalInfo: (state, action: PayloadAction<Partial<PersonalInfo>>) => {
 			state.personalInfo = { ...state.personalInfo, ...action.payload };
 		},
-		setCompanyInfo: (state, action) => {
+		setCompanyInfo: (state, action: PayloadAction<Partial<CompanyInfo>>) => {
 			state.companyInfo = { ...state.companyInfo, ...action.payload };
 		},
-		setTeamInfo: (state, action) => {
+		setTeamInfo: (state, action: PayloadAction<Partial<TeamInfo>>) => {
 			state.teamInfo = { ...state.teamInfo, ...action.payload };
 		},
-		setCredentials: (state, action) => {
+		setCredentials: (state, action: PayloadAction<Partial<Credentials>>) => {
 			state.credentials = { ...state.credentials, ...action.payload };
 		},
 		reset: (state) => {

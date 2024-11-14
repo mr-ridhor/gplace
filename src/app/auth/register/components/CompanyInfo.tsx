@@ -39,119 +39,100 @@ interface CompanyInfoProps {
 }
 const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 	const router = useRouter();
-	const a = usesState();
+	// const a = usesState();
 	const dispatch = useDispatch();
-	// const { companyInfo, personalInfo } = useSelector(getRegister);
+	const { companyInfo, personalInfo } = useSelector(getRegister);
 	const form = useForm<companyType>({
 		resolver: zodResolver(companySchema),
 		mode: "onChange",
 		defaultValues: {
-			name: "",
-			country: "",
-			website: "",
-			city: "",
-			industry: "",
-			foundingYear: "",
+			name: companyInfo.name,
+			country: companyInfo.country,
+			city: companyInfo.city,
+			website: companyInfo.website,
+			industry: companyInfo.industry,
+			foundingYear: companyInfo.foundingYear,
 			revenue: {
-				ltm: "",
-				previousYear: "",
+				ltm: companyInfo.revenue?.ltm,
+				previousYear: companyInfo.revenue?.previousYear,
 			},
 			grossProfit: {
-				ltm: "",
-				previousYear: "",
+				ltm: companyInfo.grossProfit?.ltm,
+				previousYear: companyInfo.grossProfit?.previousYear,
 			},
 			EBITDA: {
-				ltm: "",
-				previousYear: "",
+				ltm: companyInfo.EBITDA?.ltm,
+				previousYear: companyInfo.EBITDA?.previousYear,
 			},
 		},
-		// {
-		// 	name: companyInfo.name,
-		// 	country: companyInfo.country,
-		// 	city: companyInfo.city,
-		// 	website: companyInfo.website,
-		// 	industry: companyInfo.industry,
-		// 	foundingYear: companyInfo.foundingYear,
-		// 	revenue: {
-		// 		ltm: companyInfo.revenue.ltm,
-		// 		previousYear: companyInfo.revenue?.previousYear || "a",
-		// 	},
-		// 	grossProfit: {
-		// 		ltm: companyInfo.grossProfit?.ltm || "a",
-		// 		previousYear: companyInfo.grossProfit?.previousYear || "a",
-		// 	},
-		// 	EBITDA: {
-		// 		ltm: companyInfo.EBITDA?.ltm || "a",
-		// 		previousYear: companyInfo.EBITDA?.previousYear || "a",
-		// 	},
-		// },
 	});
 
 	const onSubmit = async (data: companyType) => {
 		dispatch(setCompanyInfo(data));
 
-		// const cleanedData = {
-		// 	...companyInfo,
-		// 	revenue: {
-		// 		ltm: numeralFormatter(companyInfo.revenue.ltm || "0"),
-		// 		previousYear: numeralFormatter(
-		// 			companyInfo.revenue?.previousYear || "0"
-		// 		),
-		// 	},
-		// 	grossProfit: {
-		// 		ltm: numeralFormatter(companyInfo.grossProfit?.ltm || "0"),
-		// 		previousYear: numeralFormatter(
-		// 			companyInfo.grossProfit?.previousYear || "0"
-		// 		),
-		// 	},
-		// 	EBITDA: {
-		// 		ltm: numeralFormatter(companyInfo.EBITDA?.ltm || "0"),
-		// 		previousYear: numeralFormatter(companyInfo.EBITDA?.previousYear || "0"),
-		// 	},
-		// };
+		const cleanedData = {
+			...companyInfo,
+			industryType: "",
+			revenue: {
+				ltm: numeralFormatter(companyInfo.revenue.ltm || "0"),
+				previousYear: numeralFormatter(
+					companyInfo.revenue?.previousYear || "0"
+				),
+			},
+			grossProfit: {
+				ltm: numeralFormatter(companyInfo.grossProfit?.ltm || "0"),
+				previousYear: numeralFormatter(
+					companyInfo.grossProfit?.previousYear || "0"
+				),
+			},
+			EBITDA: {
+				ltm: numeralFormatter(companyInfo.EBITDA?.ltm || "0"),
+				previousYear: numeralFormatter(companyInfo.EBITDA?.previousYear || "0"),
+			},
+		};
 
-		// const credentials = {
-		// 	email: personalInfo.email,
-		// 	password: personalInfo.password,
-		// };
+		const credentials = {
+			email: personalInfo.email,
+			password: personalInfo.password,
+		};
 
-		// const payload = {
-		// 	bio: personalInfo,
-		// 	company: cleanedData,
-		// 	credentials,
-		// };
+		const payload = {
+			bio: personalInfo,
+			company: cleanedData,
+			credentials,
+		};
 
-		// console.log("cred", payload);
+		console.log("cred", payload);
 
-		// try {
-		// 	const response = await axios.post(`/api/signup`, payload, {
-		// 		headers: {
-		// 			"Content-Type": "application/json",
-		// 		},
-		// 	});
-		// 	console.log("res", response);
+		try {
+			const response = await axios.post(`/api/signup`, payload, {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			console.log("res", response);
 
-		// 	if (response.status === 201) {
-		// 		toast(response.data.message, {
-		// 			description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
-		// 		});
-		// 		onNext();
-		// 		router.push(`/auth/register?step=otp`);
-		// 		// reset(); : Reset form after submission
-		// 	}
+			if (response.status === 201) {
+				toast(response.data.message, {
+					description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+				});
+				onNext();
+				router.push(`/auth/register?step=otp`);
+				// reset(); : Reset form after submission
+			}
 
-		// 	if (response.status !== 201) {
-		// 		throw new Error("Failed to submit the data");
-		// 	}
-		// } catch (error: any) {
-		// 	console.error("Error submitting data:", error);
-		// 	toast("Form can't be submitted", {
-		// 		description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
-		// 	});
-		// }
+			if (response.status !== 201) {
+				throw new Error("Failed to submit the data");
+			}
+		} catch (error: any) {
+			console.error("Error submitting data:", error);
+			toast("Form can't be submitted", {
+				description: moment().format("dddd, MMMM DD, YYYY [at] h:mm A"),
+			});
+		}
 
-		// onNext();
-		// router.push("/auth/register?step=team-info");
+		onNext();
+		router.push("/auth/register?step=team-info");
 	};
 	return (
 		<Form {...form}>
