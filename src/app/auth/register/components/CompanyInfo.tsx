@@ -72,7 +72,6 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 
 		const cleanedData = {
 			...companyInfo,
-			industryType: "",
 			revenue: {
 				ltm: numeralFormatter(companyInfo.revenue.ltm || "0"),
 				previousYear: numeralFormatter(
@@ -131,8 +130,8 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 			});
 		}
 
-		onNext();
-		router.push("/auth/register?step=team-info");
+		// onNext();
+		// router.push("/auth/register?step=team-info");
 	};
 	return (
 		<Form {...form}>
