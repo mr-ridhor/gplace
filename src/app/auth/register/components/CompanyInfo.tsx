@@ -73,7 +73,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 		const cleanedData = {
 			...companyInfo,
 			revenue: {
-				ltm: numeralFormatter(companyInfo.revenue.ltm || "0"),
+				ltm: numeralFormatter(companyInfo.revenue.ltm),
 				previousYear: numeralFormatter(
 					companyInfo.revenue?.previousYear || "0"
 				),
