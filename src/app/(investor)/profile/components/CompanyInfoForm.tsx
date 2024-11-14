@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { companyType } from "@/lib/zod-type/companyType";
 import { CompanySchema, companySchema } from "@/lib/zod-schema/companySchema";
@@ -34,10 +34,26 @@ import moment from "moment";
 import axios from "axios";
 import { countries } from "../../../../../utils/getCountries";
 import { industries } from "@/lib/data/industry";
-
-const CompanyInfoForm = () => {
+import { GrClose } from "react-icons/gr";
+interface Props {
+	onClose: () => void;
+	isOpen: boolean; // New prop to determine if the dialog is open
+}
+const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 	const router = useRouter(); // Initialize router
 	const dispatch = useDispatch();
+	const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+	const handleClose = () => {
+		setShowConfirmation(true); // Show confirmation dialog
+	};
+
+	// Confirm exit
+	const confirmExit = (confirm: boolean) => {
+		if (confirm) {
+			onClose(); // Close the form
+		}
+		setShowConfirmation(false); // Hide the confirmation dialog
+	};
 	const { company } = useSelector(getProfile);
 	const form = useForm<Company>({
 		resolver: zodResolver(CompanySchema),
@@ -118,7 +134,19 @@ const CompanyInfoForm = () => {
 	// };
 
 	return (
-		<DialogContent className='h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar'>
+		<DialogContent
+			onInteractOutside={(e) => {
+				e.preventDefault();
+			}}
+			className='h-[450px] md:h-fit  max-h-[550px] w-[340px] md:w-[600px] my-3 overflow-auto no-scrollbar'
+		>
+			{" "}
+			<div
+				onClick={handleClose}
+				className='flex flex-col h-8 right-1 absolute m-2 cursor-pointer items-center justify-center rounded-full  hover:bg-gray-200 w-8 p-3 '
+			>
+				<GrClose size={24} color='black' />
+			</div>
 			<Form {...form}>
 				<div className='   space-y-6 flex flex-col items-center w-full'>
 					<div className='w-full items-center flex flex-col  '>
@@ -560,6 +588,29 @@ const CompanyInfoForm = () => {
 					</form>
 				</div>
 			</Form>
+			{showConfirmation && (
+				<div className='absolute inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-10'>
+					<div className='bg-white p-5 rounded-md shadow-md'>
+						<p>Are you sure you want to exit?</p>
+						<div className='w-full flex justify-center'>
+							<div className='flex gap-4 mt-4 w-[80%]  justify-between'>
+								<button
+									onClick={() => confirmExit(true)}
+									className='px-4 py-2 bg-[#04acc2] text-white  rounded-md'
+								>
+									Yes
+								</button>
+								<button
+									onClick={() => confirmExit(false)}
+									className='px-4 py-2 bg-[#CCC]  rounded-md'
+								>
+									No
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
 		</DialogContent>
 	);
 };
