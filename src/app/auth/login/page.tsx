@@ -5,7 +5,7 @@ import Login from "./component/Login";
 // import { signIn } from "next-auth/react";
 
 const page = () => {
-  // const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('')
   // const [password, setPassword] = useState('')
   
   // const handleSubmit = (e: any) =>{
