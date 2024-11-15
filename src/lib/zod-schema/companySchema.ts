@@ -43,7 +43,7 @@ export const CompanySchema = z.object({
 	name: z.string().min(1, "Company name is required"),
 	country: z.string().min(1, "Country is required"),
 	city: z.string().min(1, "City is required"),
-	email: z.string().email("Invalid email format"),
+	// email: z.string().email("Invalid email format"),
 	website: z.string().optional(),
 	industry: z.string().min(1, "Industry is required"),
 

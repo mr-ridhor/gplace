@@ -18,7 +18,7 @@ export type Company = {
 	name: string;
 	country: string;
 	city: string;
-	email: string;
+	// email: string;
 	website?: string;
 	industry: string;
 
