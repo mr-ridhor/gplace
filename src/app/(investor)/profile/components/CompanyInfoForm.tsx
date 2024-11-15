@@ -68,16 +68,31 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 			foundingYear: company.foundingYear,
 
 			revenue: {
-				ltm: company.revenue.ltm.toString() || 0,
-				previousYear: company.revenue.previousYear.toString() || 0,
+				ltm: company.revenue.ltm.toString() || "0",
+				previousYear:
+					company.revenue.previousYear == null
+						? "0"
+						: company.revenue.previousYear.toString() || "0",
 			},
 			grossProfit: {
-				ltm: company.grossProfit.ltm.toString(),
-				previousYear: company.grossProfit.previousYear.toString() || 0,
+				ltm:
+					company.grossProfit.ltm == null
+						? "0"
+						: company.grossProfit.ltm.toString(),
+				previousYear:
+					company.grossProfit.previousYear == null
+						? "0"
+						: company.grossProfit.previousYear.toString() || "0",
 			},
 			EBITDA: {
-				ltm: company.EBITDA.ltm.toString() || 0,
-				previousYear: company.EBITDA.previousYear.toString() || 0,
+				ltm:
+					company.EBITDA.ltm == null
+						? "0"
+						: company.EBITDA.ltm.toString() || "0",
+				previousYear:
+					company.EBITDA.previousYear == null
+						? "0"
+						: company.EBITDA.previousYear.toString() || "0",
 			},
 		},
 	});
