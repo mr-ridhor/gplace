@@ -68,16 +68,16 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 			foundingYear: company.foundingYear,
 
 			revenue: {
-				ltm: company.revenue.ltm.toString(),
-				previousYear: company.revenue.previousYear.toString(),
+				ltm: company.revenue.ltm.toString() || 0,
+				previousYear: company.revenue.previousYear.toString() || 0,
 			},
 			grossProfit: {
 				ltm: company.grossProfit.ltm.toString(),
-				previousYear: company.grossProfit.previousYear.toString(),
+				previousYear: company.grossProfit.previousYear.toString() || 0,
 			},
 			EBITDA: {
-				ltm: company.EBITDA.ltm.toString(),
-				previousYear: company.EBITDA.previousYear.toString(),
+				ltm: company.EBITDA.ltm.toString() || 0,
+				previousYear: company.EBITDA.previousYear.toString() || 0,
 			},
 		},
 	});
@@ -487,14 +487,6 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 											control={form.control}
 											name='EBITDA.ltm'
 											render={({ field }) => {
-												console.log(
-													"here",
-													field.value.toString(),
-													typeof field.value.toString()
-												);
-												let me = formatNumberWithCommas(
-													field.value.toString() || ""
-												);
 												return (
 													<FormItem>
 														<FormControl>
