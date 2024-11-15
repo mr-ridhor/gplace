@@ -272,7 +272,12 @@ const Discussion: React.FC<Props> = ({ selectedItem }) => {
 					</div>
 					<div className='col-span-1'>
 						<p className=''>EV/EBITDA</p>
-						<p className=''>{selectedItem.offeredPrice.EBITDA}x</p>
+						<p className=''>
+							{selectedItem.offeredPrice.EBITDA == null
+								? 0
+								: selectedItem.offeredPrice.EBITDA}
+							x
+						</p>
 					</div>
 				</div>
 			</div>
