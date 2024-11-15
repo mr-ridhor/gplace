@@ -147,9 +147,13 @@ export const Column: ColumnDef<Investor>[] = [
 			);
 		},
 		cell: ({ row }) => (
-			<p>
-				{formatNumberWithCommas(`${row.original.investmentBio.dealsInLTM}`)}
-			</p>
+			<div className='flex flex-row  gap-x-1 items-center w-full justify-center'>
+				<p>
+					{formatNumberWithCommas(`${row.original.paidInfo.valuation.from}`)}
+				</p>
+				-
+				<p>{formatNumberWithCommas(`${row.original.paidInfo.valuation.to}`)}</p>
+			</div>
 		),
 		enableSorting: true,
 		enableHiding: false,
