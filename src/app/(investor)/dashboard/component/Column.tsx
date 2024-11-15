@@ -188,7 +188,7 @@ export const Column: ColumnDef<Investor>[] = [
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
 					className='text-center cursor-pointer  justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
 				>
-					Offered Price ($M)
+					Offered Price ($ 000)
 					<TiArrowUnsorted
 						className=' h-4 w-4 text-[#898989]'
 						// onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
