@@ -62,7 +62,7 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 			name: company.name,
 			country: company.country,
 			city: company.city,
-			email: company.email,
+			// email: company.email,
 			website: company.website,
 			industry: company.industry,
 			foundingYear: company.foundingYear,
@@ -109,6 +109,7 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 	const onSubmit = async (data: Company) => {
 		const formData = {
 			...data,
+			// email: "",
 			revenue: {
 				ltm: removeCommas(data.revenue.ltm || "0"),
 				previousYear: removeCommas(data.revenue.previousYear || "0"),
@@ -281,7 +282,7 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 									/>
 								</div>
 							</div>
-							<div className='w-full space-y-2'>
+							{/* <div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-sm'>
 									Company Email
 								</FormLabel>
@@ -300,7 +301,7 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 										</FormItem>
 									)}
 								/>
-							</div>
+							</div> */}
 							<div className='w-full space-y-2'>
 								<FormLabel className='font-normal text-sm'>Website</FormLabel>
 								<FormField

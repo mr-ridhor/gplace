@@ -194,10 +194,6 @@ const page = () => {
 				</div>
 				<div className='grid grid-cols-2 lg:grid-cols-4 '>
 					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Comapany Email</p>
-						<p>{profile?.company?.email}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
 						<p className='text-[#808080] '>Founding Year</p>
 						<p>{profile?.company?.foundingYear}</p>
 					</div>
@@ -208,6 +204,10 @@ const page = () => {
 					<div className='col-span-1 space-y-2'>
 						<p className='text-[#808080] '>Website</p>
 						<p>{profile?.company?.website}</p>
+					</div>
+					<div className='col-span-1 space-y-2'>
+						{/* <p className='text-[#808080] '>Comapany Email</p>
+						<p>{profile?.company?.email}</p> */}
 					</div>
 				</div>
 				<div className='grid grid-cols-2 lg:grid-cols-4 w-[100%] '>
