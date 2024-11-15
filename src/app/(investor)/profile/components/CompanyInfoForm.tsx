@@ -95,16 +95,16 @@ const CompanyInfoForm = ({ onClose, isOpen }: Props) => {
 		const formData = {
 			...data,
 			revenue: {
-				ltm: removeCommas(data.revenue.ltm),
-				previousYear: removeCommas(data.revenue.previousYear),
+				ltm: removeCommas(data.revenue.ltm || "0"),
+				previousYear: removeCommas(data.revenue.previousYear || "0"),
 			},
 			grossProfit: {
-				ltm: removeCommas(data.grossProfit.ltm),
-				previousYear: removeCommas(data.grossProfit.previousYear),
+				ltm: removeCommas(data.grossProfit.ltm || "0"),
+				previousYear: removeCommas(data.grossProfit.previousYear || "0"),
 			},
 			EBITDA: {
-				ltm: removeCommas(data.EBITDA.ltm),
-				previousYear: removeCommas(data.EBITDA.previousYear),
+				ltm: removeCommas(data.EBITDA.ltm || "0"),
+				previousYear: removeCommas(data.EBITDA.previousYear || "0"),
 			},
 		};
 		dispatch(updateCompanyInfo(formData));
