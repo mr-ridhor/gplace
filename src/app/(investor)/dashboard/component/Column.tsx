@@ -5,7 +5,7 @@ import { Investor } from "@/lib/data/mocked";
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Line, Circle } from "rc-progress";
-import { TiArrowUnsorted } from "react-icons/ti";
+import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from "react-icons/ti";
 import ActionCell from "./ActionCell";
 import { formatNumberWithCommas } from "@/lib/numeralFormatter";
 const columnHelper = createColumnHelper();
@@ -92,37 +92,50 @@ export const Column: ColumnDef<Investor>[] = [
 		},
 		cell: ({ row }) => {
 			const industries = row.original.investmentBio.industry;
-			// console.log(industries.length);
+			
+			// Function to chunk the industries array into groups of 3
+			const chunkedIndustries = (arr: string[], size: number): string[][] => { 
+				const result: string[][] = [];
+				for (let i = 0; i < arr.length; i += size) {
+				  result.push(arr.slice(i, i + size));
+				}
+				return result;
+			  };
+			  
+			  const groupedIndustries = chunkedIndustries(
+				industries.flatMap((item: string) =>
+				  item.includes(",") 
+					? item.split(",").map((industry: string) => industry.trim()) 
+					: [item]
+				),
+				3
+			  );
+			  
+		
 			return (
-				<div className='flex gap-1'>
-					{industries.length > 0 ? (
-						industries.flatMap((item) =>
-							item.includes(",") ? (
-								item.split(",").map((industry, index) => (
-									<div className='w-max' key={index}>
-										<Button className='text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8'>
-											{industry.trim()}
+				<div>
+					{groupedIndustries.length > 0 ? (
+						groupedIndustries.map((group, groupIndex) => (
+							<div key={groupIndex} className="flex gap-2 mb-2">
+								{group.map((industry, index) => (
+									<div key={index} className="flex-shrink-0 w-auto">
+										<Button className="text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8 px-4">
+											{industry}
 										</Button>
 									</div>
-								))
-							) : (
-								<div className='w-max' key={item}>
-									<Button className='text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8'>
-										{item}
-									</Button>
-								</div>
-							)
-						)
+								))}
+							</div>
+						))
 					) : (
-						<div className='w-max'>
-							<Button className='text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8'>
+						<div className="flex justify-center">
+							<Button className="text-black bg-[#69E7A8] hover:bg-[#69E7A8]/60 rounded-md h-8 px-4 w-auto">
 								No Industry Listed
 							</Button>
 						</div>
 					)}
 				</div>
 			);
-		},
+		},							
 
 		enableSorting: true,
 		enableHiding: false,
@@ -131,33 +144,52 @@ export const Column: ColumnDef<Investor>[] = [
 	{
 		id: "dealsSize",
 		accessorKey: "investmentBio.dealsInLTM",
-		header: ({ column }) => {
-			const isSorted = column.getIsSorted();
-			return (
-				<div
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
-				>
-					Typical Price Paid ($ 000)
-					<TiArrowUnsorted
-						className=' h-4 w-4 text-[#898989]'
-						// onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					/>
-				</div>
-			);
+		header: ({ column, table }) => {
+		  const isSorted = column.getIsSorted(); // null, "asc", or "desc"
+	  
+		  return (
+			<div
+			  onClick={() => {
+				if (!isSorted) {
+				  column.toggleSorting(); // Toggles to ascending
+				} else if (isSorted === "asc") {
+				  column.toggleSorting(); // Toggles to descending
+				} else {
+				  table.resetSorting(); // Resets to unsorted
+				}
+			  }}
+			  className="w-max text-center cursor-pointer justify-center flex-row flex gap-x-2 items-center"
+			>
+			  Typical Price Paid ($K)
+			  <TiArrowUnsorted className="h-4 w-4 text-[#898989]" />
+			</div>
+		  );
 		},
 		cell: ({ row }) => (
-			<div className='flex flex-row  gap-x-1 items-center w-full justify-center'>
-				<p>
-					{formatNumberWithCommas(`${row.original.paidInfo.valuation.from}`)}
-				</p>
-				-
-				<p>{formatNumberWithCommas(`${row.original.paidInfo.valuation.to}`)}</p>
-			</div>
+		  <div className="w-max flex flex-row gap-x-1 items-center justify-center">
+			<p>{formatNumberWithCommas(`${row.original.paidInfo.valuation.from}`)}</p>
+			-
+			<p>{formatNumberWithCommas(`${row.original.paidInfo.valuation.to}`)}</p>
+		  </div>
 		),
 		enableSorting: true,
 		enableHiding: false,
-	},
+		sortingFn: (rowA, rowB) => {
+			const a = rowA.original.paidInfo.valuation;
+			const b = rowB.original.paidInfo.valuation;
+		  
+			// Convert string to number for arithmetic operations
+			if (Number(a.to) !== Number(b.to)) return Number(a.to) - Number(b.to);
+		  
+			if (Number(a.from) !== Number(b.from)) return Number(a.from) - Number(b.from);
+		  
+			// Default: equal
+			return 0;
+		  },
+		  
+	  }
+	  
+,	
 	{
 		id: "primaryContact",
 		accessorKey: "primaryContact.name",
@@ -166,7 +198,7 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer justify-center w-max  flex-row flex gap-x-2 items-center'
 				>
 					Primary Contact
 					<TiArrowUnsorted
@@ -190,9 +222,9 @@ export const Column: ColumnDef<Investor>[] = [
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer  justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer  justify-center w-max  flex-row flex gap-x-2 items-center'
 				>
-					Offered Price ($ 000)
+					Offered Price ($K)
 					<TiArrowUnsorted
 						className=' h-4 w-4 text-[#898989]'
 						// onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -208,13 +240,13 @@ export const Column: ColumnDef<Investor>[] = [
 	},
 	{
 		id: "status",
-		accessorKey: "row.original.status",
+		accessorKey: "status",
 		header: ({ column }) => {
 			const isSorted = column.getIsSorted();
 			return (
 				<div
 					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-					className='text-center cursor-pointer justify-center w-max 2xl:w-full flex-row flex gap-x-2 items-center'
+					className='text-center cursor-pointer justify-center w-max  flex-row flex gap-x-2 items-center'
 				>
 					Status
 					<TiArrowUnsorted

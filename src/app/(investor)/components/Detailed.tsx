@@ -63,8 +63,8 @@ const Detailed: React.FC<Props> = ({ selectedItem }) => {
 	};
 
 	return (
-		<TabsContent value='detail' className='w-full overflow-x-auto'>
-			<div className='mt-4'>
+		<TabsContent value='detail' className='w-full py-2 overflow-x-auto '>
+			<div className='my-4 py-2 overflow-auto'>
 				<p>Transaction Status</p>
 				<Tabs
 					defaultValue={selectedTab}

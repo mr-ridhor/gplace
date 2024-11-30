@@ -114,7 +114,7 @@ const page = () => {
 				</div>
 			</div>
 			<div className='w-[85%]   space-y-6'>
-				<div className='grid grid-cols-2  gap-3 lg:grid-cols-4 '>
+				<div className='grid grid-cols-2  gap-y-3 lg:grid-cols-4 '>
 					<div className='col-span-1  space-y-2'>
 						<p className='text-[#808080] '>First Name</p>
 						<p>{profile?.bio?.firstName}</p>

@@ -306,7 +306,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 												<Selects
 													value={field.value}
 													onChange={field.onChange}
-													className='focus:border-0 focus-visible:ring-[#04acc2] text-sm'
+													className='focus:border-0 focus-visible:ring-[#04acc2] md:text-sm lg:text-base'
 													placeholder='Select Investment industry'
 													options={industries.map((industry) => ({
 														value: industry.value,
@@ -362,7 +362,7 @@ const CompanyInfo: React.FC<CompanyInfoProps> = ({ onNext, onBack }) => {
 												<YearSelect
 													value={field.value}
 													onChange={field.onChange}
-													className='focus:border-0 focus-visible:ring-[#04acc2] text-[10px] md:text-sm lg:text-base'
+													className='focus:border-0 focus-visible:ring-[#04acc2] text-[10px]  md:text-sm lg:text-base'
 													placeholder='Select Year'
 												/>
 											</FormControl>
