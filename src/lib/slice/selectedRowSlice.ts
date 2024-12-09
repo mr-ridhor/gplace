@@ -1,27 +1,4 @@
-// import { createSlice } from "@reduxjs/toolkit";
 
-// // Create the slice
-// export const selectedRowSlice = createSlice({
-//   name: "selectedRow",
-//   initialState: {
-//     row: null, // The selected row, initially null
-//   },
-//   reducers: {
-//     setSelectedRow: (state, action) => {
-//       state.row = action.payload; // Set the selected row
-//     },
-//     clearSelectedRow: (state) => {
-//       state.row = null; // Clear the selected row
-//     },
-//   },
-// });
-
-// // Export actions
-// export const { setSelectedRow, clearSelectedRow } = selectedRowSlice.actions;
-// export const getSelectedRow = (state: any) => state.selectedRow;
-
-// // Export reducer
-// export default selectedRowSlice.reducer;
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RowState {

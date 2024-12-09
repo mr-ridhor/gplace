@@ -123,7 +123,8 @@ const Navbar = () => {
 
 	const handleSelectedRowClick = () => {
 		if (selectedRow) {
-			router.push(`/dashboard?detail=${selectedRowId}&tab=detail`);
+			router.push(`/dashboard/${selectedRowId}`); // Navigate to the dynamic route
+			// router.push(`/dashboard?detail=${selectedRowId}&tab=detail`);
 			dispatch(setActiveTab(selectedRow));
 		}
 	};
@@ -134,21 +135,7 @@ const Navbar = () => {
 		router.push(`/dashboard?detail=&tab=detail`); // Optionally reset to a default tab
 		localStorage.removeItem("selectedRowId");
 	};
-	// Handle search input changes
-	// const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	const value = e.target.value;
-	// 	setSearchTerm(value);
 
-	// 	// Filter investors based on input
-	// 	if (value.trim() === "") {
-	// 		setResults([]); // Clear results if input is empty
-	// 	} else {
-	// 		const filteredResults = investors.filter((investor) =>
-	// 			investor.toLowerCase().includes(value.toLowerCase())
-	// 		);
-	// 		setResults(filteredResults);
-	// 	}
-	// };
 	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setSearchTerm(value);

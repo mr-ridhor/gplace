@@ -16,272 +16,299 @@ import { signOut } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfile, setProfile } from "@/lib/slice/profileSlice";
 import LoaderComponent from "@/components/LoaderComponent";
+import UpdatePlan from "./components/UpdatePlan";
 
 const page = () => {
-	const [loading, setLoading] = useState(true); // Add loading state
-	const dispatch = useDispatch();
-	const profile = useSelector(getProfile);
-	const [isDialogOpen, setIsDialogOpen] = React.useState(false); //
-	const [isCompanyDialogOpen, setIsCompanyDialogOpen] = React.useState(false); //
-	const handleOpenDialog = () => {
-		setIsDialogOpen(true); // Open the dialog
-	};
-	const handleClose = () => {
-		setIsDialogOpen(false);
-	};
-	const handleOpenCompanyDialog = () => {
-		setIsCompanyDialogOpen(true); // Open the dialog
-	};
-	const handleCloseCompany = () => {
-		setIsCompanyDialogOpen(false); // Open the dialog
-	};
-	useEffect(() => {
-		setLoading(true); // Start loading
-		fetch("/api/profile")
-			.then((response) => response.json())
-			.then((data) => {
-				console.log(data);
-				dispatch(setProfile(data));
-				setLoading(false); // Stop loading when data is fetched
-			})
-			.catch((err) => {
-				console.log(err);
-				setLoading(false); // Stop loading on error
-			});
-	}, [dispatch]);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const dispatch = useDispatch();
+  const profile = useSelector(getProfile);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false); //
+  const [isCompanyDialogOpen, setIsCompanyDialogOpen] = React.useState(false); //
+  const [isCancelPlan, setIsCancelPlan] = React.useState(false);
+  const [isUpdatePlan, setIsUpdatePlan] = React.useState(false);
+  const hanldeUpdatePlan = () => {
+    setIsUpdatePlan(true);
+  };
+  const handleCancelPlan = () => {
+    setIsCancelPlan(true);
+  };
+  const hanldeCloseUpdatePlan = () => {
+    setIsUpdatePlan(false);
+  };
+  const handleCloseCancelPlan = () => {
+    setIsCancelPlan(false);
+  };
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true); // Open the dialog
+  };
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
+  const handleOpenCompanyDialog = () => {
+    setIsCompanyDialogOpen(true); // Open the dialog
+  };
+  const handleCloseCompany = () => {
+    setIsCompanyDialogOpen(false); // Open the dialog
+  };
+  useEffect(() => {
+    setLoading(true); // Start loading
+    fetch("/api/profile")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        dispatch(setProfile(data));
+        setLoading(false); // Stop loading when data is fetched
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false); // Stop loading on error
+      });
+  }, [dispatch]);
 
-	if (loading) {
-		return (
-			<div className='w-full h-72 flex items-center justify-center'>
-				<LoaderComponent className='w-8 h-8 text-[#03AAC1]' />
-			</div>
-		); // Render loader while loading
-	}
+  if (loading) {
+    return (
+      <div className="w-full h-72 flex items-center justify-center">
+        <LoaderComponent className="w-8 h-8 text-[#03AAC1]" />
+      </div>
+    ); // Render loader while loading
+  }
 
-	return (
-		<div className='w-full py-5 flex flex-col items-center gap-y-5 text-sm overflow-y-auto no-scrollbar h-[90%]'>
-			<div className='w-[85%] '>
-				<div className='space-y-2 '>
-					<div className='flex gap-x-2'>
-						<Image
-							src={"/images/pfp (1).png"}
-							width={100}
-							height={100}
-							className=''
-							alt='img'
-						/>
-						<div className='space-y-2'>
-							<p className='font-bold'>
-								{profile?.bio?.firstName} {profile?.bio?.lastName}
-							</p>
-							<p className='text-[#808080]'>
-								{profile?.bio?.title} {profile?.company?.name}.
-							</p>
-							<p className='text-[#808080]'>
-								{profile?.bio?.city}, {profile?.bio?.country}
-							</p>
-						</div>
-					</div>
-					<div className='grid-cols-1 grid gap-y-2 md:flex gap-x-2 '>
-						<Link href={""}>
-							<Button className='text-sm text-white hover:bg-[#0691A5]'>
-								Click here to update plan
-							</Button>
-						</Link>
-						<Link href={""}>
-							<Button className='text-sm  bg-[#D8D8D8] hover:bg-[#D8D8D8]/50'>
-								Check Payment History
-							</Button>
-						</Link>
-						<Link href={""}>
-							<Button className='bg-transparent hover:border hover:border-[#D9D9D9] hover:bg-transparent text-sm '>
-								Cancel current plan
-							</Button>
-						</Link>
-					</div>
-				</div>
-			</div>
-			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center px'>
-				<div className='w-[85%] flex justify-between items-center h-full'>
-					<p>Personal Information</p>
-					<Button
-						className='flex gap-x-2 text-sm h-14 bg-transparent hover:bg-transparent items-center'
-						onClick={handleOpenDialog}
-					>
-						Edit
-						<LuPencil />
-					</Button>
-				</div>
-			</div>
-			<div className='w-[85%]   space-y-6'>
-				<div className='grid grid-cols-2  gap-y-3 lg:grid-cols-4 '>
-					<div className='col-span-1  space-y-2'>
-						<p className='text-[#808080] '>First Name</p>
-						<p>{profile?.bio?.firstName}</p>
-					</div>
-					<div className='col-span-1 space-y-2 '>
-						<p className='text-[#808080] '>Last Name</p>
-						<p>{profile?.bio?.lastName}</p>
-					</div>
-					<div className='col-span-1 space-y-2 '>
-						<p className='text-[#808080] '>Title</p>
-						<p>{profile?.bio?.title}</p>
-					</div>
-					<div className='col-span-1 space-y-2 '></div>
-				</div>
-				<div className='grid grid-cols-2 lg:grid-cols-4 '>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Email</p>
-						<p className='line-clamp-3 md:line-clamp-0'>
-							{profile?.bio?.email}
-						</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Phone number</p>
-						<p>{profile?.bio?.phone}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>LinkedIn</p>
-						<p>{profile?.bio?.linkedIn}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>X</p>
-						<p>{profile?.bio?.x}</p>
-					</div>
-				</div>
-				<div className='grid grid-cols-2 lg:grid-cols-4 '>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Country</p>
-						<p>{profile?.bio?.country}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>City</p>
-						<p>{profile?.bio?.city}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Address</p>
-						<p>{profile?.bio?.address}</p>
-					</div>
-					<div className='col-span-1 space-y-2'></div>
-				</div>
-			</div>
-			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center '>
-				<div className='w-[85%] flex justify-between items-center'>
-					<p>Company Information</p>
-					<Button
-						className='flex gap-x-2 text-sm  bg-transparent hover:bg-transparent items-center'
-						onClick={handleOpenCompanyDialog}
-					>
-						Edit
-						<LuPencil />
-					</Button>
-				</div>
-			</div>
-			<div className='w-[85%]  space-y-6'>
-				<div className='grid grid-cols-2 lg:grid-cols-4 '>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Company Name</p>
-						<p>{profile?.company?.name}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Country</p>
-						<p>{profile?.company?.country}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>City</p>
-						<p>{profile?.company?.city}</p>
-					</div>
-				</div>
-				<div className='grid grid-cols-2 lg:grid-cols-4 '>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Founding Year</p>
-						<p>{profile?.company?.foundingYear}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Industry</p>
-						<p>{profile?.company?.industry}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Website</p>
-						<p>{profile?.company?.website}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						{/* <p className='text-[#808080] '>Comapany Email</p>
+  return (
+    <div className="w-full py-5 flex flex-col items-center gap-y-5 text-sm overflow-y-auto no-scrollbar h-[90%]">
+      <div className="w-[85%] ">
+        <div className="space-y-2 ">
+          <div className="flex gap-x-2">
+            <Image
+              src={"/images/pfp (1).png"}
+              width={100}
+              height={100}
+              className=""
+              alt="img"
+            />
+            <div className="space-y-2">
+              <p className="font-bold">
+                {profile?.bio?.firstName} {profile?.bio?.lastName}
+              </p>
+              <p className="text-[#808080]">
+                {profile?.bio?.title} {profile?.company?.name}.
+              </p>
+              <p className="text-[#808080]">
+                {profile?.bio?.city}, {profile?.bio?.country}
+              </p>
+            </div>
+          </div>
+          <div className="grid-cols-1 grid gap-y-2 md:flex gap-x-2 ">
+            {/* <Link href={""}> */}
+            <Button
+              onClick={hanldeUpdatePlan}
+              className="text-sm text-white hover:bg-[#0691A5]"
+            >
+              Click here to update plan
+            </Button>
+            {/* </Link> */}
+            <Link href={"/payment"}>
+              <Button className="text-sm  bg-[#D8D8D8] hover:bg-[#D8D8D8]/50">
+                Check Payment History
+              </Button>
+            </Link>
+            {/* <Link href={""}> */}
+            <Button
+              onClick={handleCancelPlan}
+              className="bg-transparent hover:border hover:border-[#D9D9D9] hover:bg-transparent text-sm "
+            >
+              Cancel current plan
+            </Button>
+            {/* </Link> */}
+          </div>
+        </div>
+      </div>
+      <div className="w-full bg-[#EDFDFF] h-14 flex items-center justify-center px">
+        <div className="w-[85%] flex justify-between items-center h-full">
+          <p>Personal Information</p>
+          <Button
+            className="flex gap-x-2 text-sm h-14 bg-transparent hover:bg-transparent items-center"
+            onClick={handleOpenDialog}
+          >
+            Edit
+            <LuPencil />
+          </Button>
+        </div>
+      </div>
+      <div className="w-[85%]   space-y-6">
+        <div className="grid grid-cols-2  gap-y-3 lg:grid-cols-4 ">
+          <div className="col-span-1  space-y-2">
+            <p className="text-[#808080] ">First Name</p>
+            <p>{profile?.bio?.firstName}</p>
+          </div>
+          <div className="col-span-1 space-y-2 ">
+            <p className="text-[#808080] ">Last Name</p>
+            <p>{profile?.bio?.lastName}</p>
+          </div>
+          <div className="col-span-1 space-y-2 ">
+            <p className="text-[#808080] ">Title</p>
+            <p>{profile?.bio?.title}</p>
+          </div>
+          <div className="col-span-1 space-y-2 "></div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 ">
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Email</p>
+            <p className="line-clamp-3 md:line-clamp-0">
+              {profile?.bio?.email}
+            </p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Phone number</p>
+            <p>{profile?.bio?.phone}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">LinkedIn</p>
+            <p>{profile?.bio?.linkedIn}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">X</p>
+            <p>{profile?.bio?.x}</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 ">
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Country</p>
+            <p>{profile?.bio?.country}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">City</p>
+            <p>{profile?.bio?.city}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Address</p>
+            <p>{profile?.bio?.address}</p>
+          </div>
+          <div className="col-span-1 space-y-2"></div>
+        </div>
+      </div>
+      <div className="w-full bg-[#EDFDFF] h-14 flex items-center justify-center ">
+        <div className="w-[85%] flex justify-between items-center">
+          <p>Company Information</p>
+          <Button
+            className="flex gap-x-2 text-sm  bg-transparent hover:bg-transparent items-center"
+            onClick={handleOpenCompanyDialog}
+          >
+            Edit
+            <LuPencil />
+          </Button>
+        </div>
+      </div>
+      <div className="w-[85%]  space-y-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 ">
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Company Name</p>
+            <p>{profile?.company?.name}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Country</p>
+            <p>{profile?.company?.country}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">City</p>
+            <p>{profile?.company?.city}</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 ">
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Founding Year</p>
+            <p>{profile?.company?.foundingYear}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Industry</p>
+            <p>{profile?.company?.industry}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Website</p>
+            <p>{profile?.company?.website}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            {/* <p className='text-[#808080] '>Comapany Email</p>
 						<p>{profile?.company?.email}</p> */}
-					</div>
-				</div>
-				<div className='grid grid-cols-2 lg:grid-cols-4 w-[100%] '>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Revenue (LTM, $K)</p>
-						<p>{formatPrice(profile?.company?.revenue?.ltm)}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Revenue (Previous year, $K) </p>
-						<p>{formatPrice(profile?.company?.revenue?.previousYear)}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Gross Profit (LTM, $K) </p>
-						<p>{formatPrice(profile?.company?.grossProfit?.ltm)}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Gross profit (Previous year, $K) </p>
-						<p>{formatPrice(profile?.company?.grossProfit?.previousYear)}</p>
-					</div>
-				</div>
-				<div className='grid  grid-cols-2 lg:grid-cols-4 '>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>EBIDTA (LTM, $K)</p>
-						<p>{formatPrice(profile?.company?.EBITDA?.ltm)}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>EBIDTA (Previous year, $K) </p>
-						<p>{formatPrice(profile?.company?.EBITDA?.previousYear)}</p>
-					</div>
-				</div>
-			</div>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 w-[100%] ">
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Revenue (LTM, $K)</p>
+            <p>{formatPrice(profile?.company?.revenue?.ltm)}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Revenue (Previous year, $K) </p>
+            <p>{formatPrice(profile?.company?.revenue?.previousYear)}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Gross Profit (LTM, $K) </p>
+            <p>{formatPrice(profile?.company?.grossProfit?.ltm)}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Gross profit (Previous year, $K) </p>
+            <p>{formatPrice(profile?.company?.grossProfit?.previousYear)}</p>
+          </div>
+        </div>
+        <div className="grid  grid-cols-2 lg:grid-cols-4 ">
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">EBIDTA (LTM, $K)</p>
+            <p>{formatPrice(profile?.company?.EBITDA?.ltm)}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">EBIDTA (Previous year, $K) </p>
+            <p>{formatPrice(profile?.company?.EBITDA?.previousYear)}</p>
+          </div>
+        </div>
+      </div>
 
-			<div className='w-full bg-[#EDFDFF] h-14 flex items-center justify-center  '>
-				<div className='w-[85%] flex justify-between items-center'>
-					<p>Log in credential</p>
-					<Button className='bg-transparent hover:bg-transparent text-[#808080] h-fit items-center flex gap-x-2'>
-						Edit
-						<LuPencil />
-					</Button>
-				</div>
-			</div>
-			<div className='w-[85%] space-y-6'>
-				<div className='grid grid-cols-2 lg:grid-cols-4'>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Username</p>
-						<p>{profile?.credentials?.email}</p>
-					</div>
-					<div className='col-span-1 space-y-2'>
-						<p className='text-[#808080] '>Password</p>
-						<p>**********</p>
-					</div>
-					<div className='col-span-1 space-y-2'></div>
-					<div className='col-span-1 space-y-2'></div>
-				</div>
-				<div className='w-full flex justify-end'>
-					<Button
-						onClick={() => signOut({ callbackUrl: "/auth/login" })}
-						className='flex gap-x-2 bg-transparent hover:bg-transparent'
-					>
-						Log out <GrLogout />
-					</Button>
-				</div>
-			</div>
-			<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-				<PersonalnfoForm isOpen={isDialogOpen} onClose={handleClose} />
-			</Dialog>
-			<Dialog open={isCompanyDialogOpen} onOpenChange={setIsCompanyDialogOpen}>
-				<CompanyInfoForm
-					isOpen={isCompanyDialogOpen}
-					onClose={handleCloseCompany}
-				/>
-			</Dialog>
-		</div>
-	);
+      <div className="w-full bg-[#EDFDFF] h-14 flex items-center justify-center  ">
+        <div className="w-[85%] flex justify-between items-center">
+          <p>Log in credential</p>
+          <Button className="bg-transparent hover:bg-transparent text-[#808080] h-fit items-center flex gap-x-2">
+            Edit
+            <LuPencil />
+          </Button>
+        </div>
+      </div>
+      <div className="w-[85%] space-y-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4">
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Username</p>
+            <p>{profile?.credentials?.email}</p>
+          </div>
+          <div className="col-span-1 space-y-2">
+            <p className="text-[#808080] ">Password</p>
+            <p>**********</p>
+          </div>
+          <div className="col-span-1 space-y-2"></div>
+          <div className="col-span-1 space-y-2"></div>
+        </div>
+        <div className="w-full flex justify-end">
+          <Button
+            onClick={() => signOut({ callbackUrl: "/auth/login" })}
+            className="flex gap-x-2 bg-transparent hover:bg-transparent"
+          >
+            Log out <GrLogout />
+          </Button>
+        </div>
+      </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <PersonalnfoForm isOpen={isDialogOpen} onClose={handleClose} />
+      </Dialog>
+      <Dialog open={isCompanyDialogOpen} onOpenChange={setIsCompanyDialogOpen}>
+        <CompanyInfoForm
+          isOpen={isCompanyDialogOpen}
+          onClose={handleCloseCompany}
+        />
+      </Dialog>
+      <Dialog open={isUpdatePlan} onOpenChange={setIsUpdatePlan}>
+        <UpdatePlan isOpen={isUpdatePlan} onClose={hanldeCloseUpdatePlan} />
+      </Dialog>
+      <Dialog open={isCancelPlan} onOpenChange={setIsCancelPlan}>
+        <UpdatePlan isOpen={isCancelPlan} onClose={handleCloseCancelPlan} />
+      </Dialog>
+    </div>
+  );
 };
 
 export default page;
