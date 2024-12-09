@@ -125,7 +125,19 @@ const Table: React.FC<Props> = ({ investors }) => {
     },
     [dispatch, router]
   );
- 
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    name: true,
+    country: true,
+    website: true,
+    investmentIndustry: true,
+    investmentGeographies: true,
+    dealsIn5Years: true,
+    dealSize: true,
+    primaryContact: true,
+    status: true,
+    match: true,
+    userId: true,
+  });
 
   return (
     <div className="w-full h-full">
