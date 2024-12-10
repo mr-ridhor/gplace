@@ -8,7 +8,7 @@ export default withAuth(
 			nextauth: { token },
 		} = req;
 
-		if (pathname.startsWith("/auth") && token) {
+		if (["/auth/signup", "/auth/login"].includes(pathname) && token) {
 			return NextResponse.redirect(new URL("/dashboard", req.url));
 		}
 		return NextResponse.next();
@@ -22,11 +22,13 @@ export default withAuth(
 
 				if (["/profile", "/dashboard"].includes(pathname) && !token) {
 					return false;
-				} else if (["/"].includes(pathname)) {
+				} 
+				
+				if (["/"].includes(pathname)) {
 					return false;
-				} else {
-					return true;
-				}
+				} 
+
+				return true
 
 				// return (!token && pathname.startsWith("/auth")) || !!token;
 			},

@@ -1,7 +1,7 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
 // Define the TypeScript interface for Subscription document
-interface ISubscription extends Document {
+export interface ISubscription extends Document {
   user: mongoose.Schema.Types.ObjectId;
   amount: number;
   plan: 'Free' | 'Platinum';
@@ -20,19 +20,18 @@ const subscriptionSchema = new Schema<ISubscription>(
     },
     amount: {
       type: Number,
+      default: 0,
       required: true,
     },
     plan: {
       type: String,
       enum: ['Free', 'Platinum'],
-      default: 'Free',
     },
-    startDate: { type: Date, default: null },  // Allow null
-    endDate: { type: Date, default: null },    // Allow null
+    startDate: { type: Date, default: null }, // Allow null
+    endDate: { type: Date, default: null },   // Allow null
     status: {
       type: String,
       enum: ['Active', 'Expired', 'Free'],
-      default: 'Free',
     },
   },
   { timestamps: true }
@@ -43,14 +42,13 @@ subscriptionSchema.pre('save', function (next) {
   const now = new Date();
 
   // Check the plan and endDate to determine the status
-  if (this.plan === 'Free') {
-    this.status = 'Free';
-  } else if (this.endDate < now) {
-    this.status = 'Expired';
-  } else {
-    this.status = 'Active';
+  if (this.plan === 'Platinum') {
+    if (this.endDate && this.endDate < now) {
+      this.status = 'Expired';
+    } else {
+      this.status = 'Active';
+    }
   }
-
   next();
 });
 

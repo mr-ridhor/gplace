@@ -72,7 +72,7 @@ const userSchema = new Schema<IUser>({
     email: { type: String, },
     website: { type: String },
     industry: { type: String, required: true }, // ''
-    industryType: { type: String},
+    industryType: { type: String },
     foundingYear: { type: Number, required: true },
     revenue: {
       ltm: { type: Number, required: true, default: 0 }, // Last Twelve Months Revenue
