@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "../../../../../../config/db";
 import { authOptions } from "../../../../../../utils/authOptions";
 import { getServerSession } from "next-auth";
-import Investor from "../../../../../../models/Investor";
-import googleKey from "../../../../../../utils/googleKey";
 import { google } from "googleapis";
 import Email from "../../../../../../models/Email";
 
