@@ -19,10 +19,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         await connectDB()
         const data = await getServerSession(authOptions)
 
-        // if (!data || !data.user) {
-        //     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-        // }
-        const userEmail: IEmail | any = await Email.findOne({ user: '6734471c48bb937658dac880', emailAddress, emailType: 'gmail' })
+        if (!data || !data.user) {
+            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        }
+        const userEmail: IEmail | any = await Email.findOne({ user: data.user.id, emailAddress, emailType: 'gmail' })
 
         if (!userEmail) {
             return NextResponse.json({ message: 'Gmail Account not found' }, { status: 200 });
