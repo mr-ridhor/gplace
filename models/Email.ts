@@ -3,6 +3,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 // Define an interface for the Note document
 export interface IEmail extends Document {
     user: mongoose.Types.ObjectId;
+    emailAddress: string;
     gmail: {
         access_token: string;
         refresh_token: string;
@@ -30,7 +31,6 @@ const emailSchema = new Schema<IEmail>(
             required: true,
         },
         gmail: {
-            emailAddress:{type: String },
             access_token: {type: String },
             refresh_token: {type: String },
             // scope: [String],
@@ -38,7 +38,8 @@ const emailSchema = new Schema<IEmail>(
             expiry_date: {type: Number},
             code: {type: String}
         },
-        emailType: {type: String, enum:["gmail", "custom"], default: 'gmail'}
+        emailAddress: { type: String },
+        emailType: {type: String, enum:["gmail", "outlook", "custom"]}
     },
     { timestamps: true }
 );

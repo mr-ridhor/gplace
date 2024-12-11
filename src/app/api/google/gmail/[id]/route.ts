@@ -6,7 +6,9 @@ import { authOptions } from "../../../../../../utils/authOptions";
 import Email, { IEmail } from "../../../../../../models/Email";
 
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+    const { emailAddress } = await req.json()
+    
     const oauth2Client = new google.auth.OAuth2(
         process.env.CLIENT_ID,
         process.env.CLIENT_SECRET,
@@ -17,10 +19,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
         await connectDB()
         const data = await getServerSession(authOptions)
 
-        if (!data || !data.user) {
-            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-        }
-        const userEmail: IEmail | any = await Email.findOne({ user: data.user.id, emailType: 'gmail' })
+        // if (!data || !data.user) {
+        //     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        // }
+        const userEmail: IEmail | any = await Email.findOne({ user: '6734471c48bb937658dac880', emailAddress, emailType: 'gmail' })
 
         if (!userEmail) {
             return NextResponse.json({ message: 'Gmail Account not found' }, { status: 200 });

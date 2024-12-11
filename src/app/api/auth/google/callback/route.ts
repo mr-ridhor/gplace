@@ -35,21 +35,39 @@ export async function POST(req: NextRequest) {
 
         const emailAddress = (await gmail.users.getProfile({ userId: 'me' })).data.emailAddress
 
-        const email = new Email({
-            user: data.user.id,
-            gmail: {
+        const emailExist = await Email.findOne({ user: data.user.id, emailAddress })
+        console.log(emailExist)
+
+        if (!emailExist) {
+
+            const email = new Email({
+                user: data.user.id,
+                gmail: {
+                    access_token,
+                    refresh_token,
+                    token_type,
+                    expiry_date,
+                    code
+                },
                 emailAddress,
-                access_token,
-                refresh_token,
-                token_type,
-                expiry_date,
-                code
-            }
-        })
+                emailType: 'gmail'
+            })
 
-        await email.save()
+            await email.save()
 
-        // console.log(email)
+        } else {
+            await Email.updateOne({ user: data.user.id, emailAddress }, {
+                gmail: {
+                    access_token,
+                    refresh_token,
+                    token_type,
+                    expiry_date,
+                    code
+                },
+                emailAddress,
+                emailType: 'gmail'
+            }, { new: true, runValidators: true })
+        }
 
         return NextResponse.json({ message: "success" }, { status: 200 });
 

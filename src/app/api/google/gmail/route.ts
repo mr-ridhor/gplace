@@ -9,6 +9,7 @@ import Email, { IEmail } from "../../../../../models/Email";
 
 
 export async function GET(req: NextRequest) {
+    const { emailAddress } = await req.json()
     const oauth2Client = new google.auth.OAuth2(
         process.env.CLIENT_ID,
         process.env.CLIENT_SECRET,
@@ -23,7 +24,7 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
-        const userEmail: any = await Email.findOne({ user: data.user.id })
+        const userEmail: any = await Email.findOne({ user: data.user.id, emailAddress, emailType: 'gmail' })
         if (!userEmail) return NextResponse.json({ message: 'No Synced Email' }, { status: 401 });
 
         oauth2Client.setCredentials({ refresh_token: userEmail.gmail.refresh_token });
@@ -49,7 +50,7 @@ export async function GET(req: NextRequest) {
 
 
 export async function POST(req: NextRequest) {
-    const { to, subject, message } = await req.json();
+    const { to, subject, message, emailAddress } = await req.json();
 
     if (!to || !subject || !message) {
         return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -69,7 +70,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
-        const userEmail: any = await Email.findOne({ user: data.user.id });
+        const userEmail: any = await Email.findOne({ user: data.user.id, emailAddress, emailType: 'gmail' });
         if (!userEmail) return NextResponse.json({ message: 'No Synced Email' }, { status: 401 });
         const from = userEmail.gmail.emailAddress
         console.log(userEmail.gmail.emailAddress)
