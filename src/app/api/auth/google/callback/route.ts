@@ -3,7 +3,7 @@ import connectDB from "../../../../../../config/db";
 import { authOptions } from "../../../../../../utils/authOptions";
 import { getServerSession } from "next-auth";
 import { google } from "googleapis";
-import Email from "../../../../../../models/Email";
+import Email from "../../../../../../models/Gmail";
 
 
 export async function POST(req: NextRequest) {

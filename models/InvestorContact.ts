@@ -20,11 +20,11 @@ const InvestorContactSchema: Schema<IInvestorContact> = new Schema(
       ref: 'Investor',
       required: true,
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
+    // user: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: 'User',
+    //   required: true,
+    // },
     name: { type: String, required: true },
     surname: { type: String, required: true },
     email: { type: String, required: true },

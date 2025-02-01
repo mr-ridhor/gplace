@@ -55,6 +55,7 @@ export interface InvestorInterface extends Document {
 		dealSizeScore?: number;
 		totalScore?: number;
 	};
+	createdBy: { type: mongoose.Schema.Types.ObjectId; ref: "User" },
 }
 
 // Investor model interface including static methods
@@ -65,7 +66,7 @@ export interface InvestorModel extends Model<InvestorInterface> {
 // Investor schema definition
 const investorSchema = new Schema<InvestorInterface>(
 	{
-		user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+		// user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 		companyInfo: {
 			companyName: { type: String, trim: true, required: true },
 			country: { type: String, trim: true, required: true },
@@ -146,6 +147,7 @@ const investorSchema = new Schema<InvestorInterface>(
 			investorTypeScore: { type: Number, default: 0 },
 			industryScore: { type: Number, default: 0 },
 		},
+		createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
 	},
 	{ timestamps: true }
 );

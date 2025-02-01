@@ -5,11 +5,11 @@ import { getServerSession } from "next-auth";
 import Investor from "../../../../../models/Investor";
 import googleKey from "../../../../../utils/googleKey";
 import { google } from "googleapis";
-import Email, { IEmail } from "../../../../../models/Email";
+import Gmail, { IGmail } from "../../../../../models/Gmail";
 
 
 export async function GET(req: NextRequest) {
-    const { emailAddress } = await req.json()
+    // const { emailAddress } = await req.json()
     const oauth2Client = new google.auth.OAuth2(
         process.env.CLIENT_ID,
         process.env.CLIENT_SECRET,
@@ -20,11 +20,11 @@ export async function GET(req: NextRequest) {
         await connectDB()
         const data = await getServerSession(authOptions)
 
-        if (!data || !data.user) {
-            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-        }
+        // if (!data || !data.user) {
+        //     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+        // }
 
-        const userEmail: any = await Email.findOne({ user: data.user.id, emailAddress, emailType: 'gmail' })
+        const userEmail: any = await Gmail.findOne({ emailAddress: 'boro2dev@gmail.com' })
         if (!userEmail) return NextResponse.json({ message: 'No Synced Email' }, { status: 401 });
 
         oauth2Client.setCredentials({ refresh_token: userEmail.gmail.refresh_token });
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
 
-        const userEmail: any = await Email.findOne({ user: data.user.id, emailAddress, emailType: 'gmail' });
+        const userEmail: any = await Gmail.findOne({ user: data.user.id, emailAddress, emailType: 'gmail' });
         if (!userEmail) return NextResponse.json({ message: 'No Synced Email' }, { status: 401 });
         const from = userEmail.gmail.emailAddress
         console.log(userEmail.gmail.emailAddress)

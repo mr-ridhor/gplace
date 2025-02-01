@@ -3,11 +3,11 @@ import { google } from "googleapis";
 import connectDB from "../../../../../../config/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../../../utils/authOptions";
-import Email, { IEmail } from "../../../../../../models/Email";
+import Email, { IGmail } from "../../../../../../models/Gmail";
 
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-    const { emailAddress } = await req.json()
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+    // const { emailAddress } = await req.json()
     
     const oauth2Client = new google.auth.OAuth2(
         process.env.CLIENT_ID,
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         if (!data || !data.user) {
             return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
         }
-        const userEmail: IEmail | any = await Email.findOne({ user: data.user.id, emailAddress, emailType: 'gmail' })
+        const userEmail: IGmail | any = await Email.findOne({ user: data.user.id, emailAddress: 'boro2dev@gmail.com', emailType: 'gmail' })
 
         if (!userEmail) {
             return NextResponse.json({ message: 'Gmail Account not found' }, { status: 200 });

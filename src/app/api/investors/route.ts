@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
         EBITDA: parseFloat((valuation / user?.company.EBITDA.ltm).toFixed(1)),
       },
       primaryContact,
+      createdBy: data?.user.id,
     });
 
     const matchScore = (Investor as InvestorModel).calculateMatchScore(clientMetrics, newInvestor);
@@ -108,7 +109,7 @@ export async function GET(req: NextRequest) {
     if (match) query["matchScore.totalScore"] = { $gte: match };
 
     // Fetch the investors based on the query
-    const investors: InvestorInterface[] = await Investor.find(query).exec();
+    const investors: InvestorInterface[] = await Investor.find();
 
     // Return found investors
     return NextResponse.json(investors, { status: 200 });
