@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
 	const options = [
 		{ value: "10", label: "10" },
 		{ value: "25", label: "25" },
-		{ value: "3", label: "50" },
+		{ value: "50", label: "50" },
 		{ value: "100", label: "100 " },
 	];
 
