@@ -3,6 +3,7 @@ import User from "../../../../models/User";
 import transporter from "../../../../utils/transporter"; // Adjust the path if needed
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcrypt'
+import { createActivityLog } from "../../../../utils/ActivityLog";
 
 export async function POST(req: NextRequest) {
   try {
@@ -35,6 +36,13 @@ export async function POST(req: NextRequest) {
 
     // Send the verification email
     await transporter.sendMail(mailOptions);
+
+    // Log activity (User Created)
+    await createActivityLog(
+      "Created User",
+      "User",
+      `User ${newUser.credentials.email} was created with verification code ${verificationCode}.`
+    );
 
     return NextResponse.json(
       { message: "User created successfully and verification code sent" },

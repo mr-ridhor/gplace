@@ -147,10 +147,24 @@ const investorSchema = new Schema<InvestorInterface>(
 			investorTypeScore: { type: Number, default: 0 },
 			industryScore: { type: Number, default: 0 },
 		},
-		createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+		createdBy: { type: String, enum: ["User", "Admin"], default: "Admin" },
+		user: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null }
 	},
 	{ timestamps: true }
-);
+); 
+
+investorSchema.pre("save", function (next) {
+	if (this.createdBy === "User" && !this.user) {
+		return next(new Error("User field is required when createdBy is 'User'"));
+	}
+
+	if (this.createdBy === "Admin") {
+		this.user = null as any; // Explicitly set it to null
+	}
+
+	next();
+});
+
 
 // Static method for calculating match scores
 investorSchema.statics.calculateMatchScore = function (
