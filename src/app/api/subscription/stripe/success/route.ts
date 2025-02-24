@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
 
         // Update startDate and endDate only if the plan is 'Platinum'
         const session = await stripe.checkout.sessions.retrieve(session_id)
+        
         if(session.payment_status !== 'paid' || session.status !== 'complete') return NextResponse.json({ message: 'Payment incomplete' }, { status: 200 });
         
         const subscription = await Subscription.findOne({ user: session.metadata.userId })
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest) {
             await Subscription.updateOne({ user: session.metadata.userId }, {
                 user: session.metadata.userId,
                 amount: session.amount_total,
+                customerId: session.customer,
                 endDate: new Date(session.expires_at * 1000),
                 startDate: new Date(session.created * 1000),
                 plan: 'Platinum',
@@ -32,6 +34,7 @@ export async function POST(req: NextRequest) {
         } else {
             const subscription = new Subscription({
                 user: session.metadata.userId,
+                customerId: session.customer,
                 amount: session.amount_total,
                 endDate: new Date(session.expires_at * 1000),
                 startDate: new Date(session.created * 1000),
@@ -42,7 +45,7 @@ export async function POST(req: NextRequest) {
             await subscription.save()
         }
 
-        console.log('success payment', session)
+        // console.log('success payment', session)
         return NextResponse.json({ session }, { status: 200 });
     } catch (error: any) {
         return NextResponse.json({ message: 'Server error', error: error.message }, { status: 500 });

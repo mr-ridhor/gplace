@@ -4,6 +4,7 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 export interface ISubscription extends Document {
   user: mongoose.Schema.Types.ObjectId;
   amount: number;
+  customerId: string;
   plan: 'Free' | 'Platinum';
   startDate: Date;
   endDate: Date;
@@ -17,6 +18,10 @@ const subscriptionSchema = new Schema<ISubscription>(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+    },
+    customerId: {
+      type: String,
+      required: true
     },
     amount: {
       type: Number,
