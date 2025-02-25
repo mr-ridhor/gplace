@@ -42,6 +42,7 @@ next-env.d.ts
 src/app/test
 src/app/api/test
 src/app/api/stripe
+src/app/api/activity
 investor - 2.json
 /utils/googleKey.ts
 

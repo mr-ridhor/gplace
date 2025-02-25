@@ -5,6 +5,8 @@ import User from "../../../../models/User";
 import connectDB from "../../../../config/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../../utils/authOptions";
+import { createActivityLog } from "../../../../utils/ActivityLog";
+import UserWatchlist from "../../../../models/UserWatchlist";
 
 // POST route to create a new Investor entry
 export async function POST(req: NextRequest) {
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     // Create a new investor instance
     const newInvestor = new Investor({
-      user: data?.user.id,
+      // user: data?.user.id,
       companyInfo,
       investmentBio,
       targetInfo,
@@ -40,7 +42,8 @@ export async function POST(req: NextRequest) {
         EBITDA: parseFloat((valuation / user?.company.EBITDA.ltm).toFixed(1)),
       },
       primaryContact,
-      createdBy: data?.user.id,
+      createdBy: "User",
+      user: data?.user.id,
     });
 
     const matchScore = (Investor as InvestorModel).calculateMatchScore(clientMetrics, newInvestor);
@@ -49,6 +52,25 @@ export async function POST(req: NextRequest) {
 
     // Save the new investor document
     await newInvestor.save();
+
+    // Add new investor to user's watchlist
+    let watchlist = await UserWatchlist.findOne({ user: data?.user.id });
+
+    if (!watchlist) {
+      // Create new watchlist if it doesn't exist
+      watchlist = await UserWatchlist.create({ user: data?.user.id, investors: [newInvestor._id] });
+    } else if (!watchlist.investors.includes(newInvestor._id)) {
+      // Add investor to existing watchlist if not already present
+      watchlist.investors.push(newInvestor._id);
+      await watchlist.save();
+    }
+
+    // Log successful investor creation
+    await createActivityLog(
+      "Investor Added",
+      "Investor",
+      `Investor ${companyInfo.companyName} added by user ${data?.user.id}`
+    );
 
     return NextResponse.json(
       { message: "Investor Added Successfully" },

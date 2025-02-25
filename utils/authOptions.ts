@@ -64,6 +64,9 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        user.updateAt = Date.now();
+        await user.save();
+
         const response: IUserResponse = {
           id: user._id, // Use type assertion here
           email: user.credentials.email,

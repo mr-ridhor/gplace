@@ -3,6 +3,7 @@ import connectDB from "../../../../../config/db";
 import User, { IUser } from "../../../../../models/User";
 // import hashPassword from '../../../../../utils/hashPassword';
 import bcrypt from 'bcrypt'
+import { createActivityLog } from '../../../../../utils/ActivityLog';
 
 
 export async function POST(request: NextRequest) {
@@ -30,6 +31,9 @@ export async function POST(request: NextRequest) {
     user.credentials.passwordReset.code = undefined;
     user.credentials.password = await bcrypt.hash(newPassword, 10)
     await user.save();
+
+    // Log successful password reset
+    await createActivityLog("Password Reset Successful", "User", `User with email ${email} successfully reset their password`);
 
     return NextResponse.json({ message: 'Password reset Successful' }, { status: 200 });
 
